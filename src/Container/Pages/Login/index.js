@@ -37,7 +37,7 @@ export default memo(({ navigation: { navigate, replace } }) => {
                 style={{ marginVertical: 6.5 }}
             />
             <MyText bold large color={colors.black}>Selamat Datang!</MyText>
-            <MyText>Silahkan, masukkan username dan passwordmu disini.</MyText>
+            <MyText>Selanjutnya, masukkan Nama Pengguna dan Kata sandimu disini ya.</MyText>
             <InputItems.MyTextInput
                 placeholder={'Username'} />
             <InputItems.MyTextInput
