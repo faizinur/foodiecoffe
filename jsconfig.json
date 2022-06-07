@@ -1,0 +1,51 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            //component
+            "@Atoms": [
+                "./src/Components/Atoms/*"
+            ],
+            "@Molecules": [
+                "./src/Components/Molecules/*"
+            ],
+            "@Organisms": [
+                "./src/Components/Organisms/*"
+            ],
+            //config
+            "@Config": [
+                "./src/Config/*"
+            ],
+            "@Redux": [
+                "./src/Config/Redux/*"
+            ],
+            "@Actions": [
+                "./src/Config/Redux/Actions/*"
+            ],
+            "@Reducers": [
+                "./src/Config/Redux/Reducers/*"
+            ],
+            "@Store": [
+                "./src/Config/Redux/Store/*"
+            ],
+            "@RootNavigation": [
+                "./src/Config/RootNavigation/*"
+            ],
+            //Container
+            "@Pages": [
+                "./src/Container/Pages/*"
+            ],
+            "@Templates": [
+                "./src/Container/Templates/*"
+            ],
+            //utils
+            "@Utils": [
+                "./src/Utils/*"
+            ],
+        }
+    },
+    "exclude": [
+        "node_modules",
+        "dist"
+    ]
+}
