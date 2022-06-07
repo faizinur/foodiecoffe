@@ -11,7 +11,9 @@ import { IC_APP } from '@Atoms/Icons'
 export default memo(({ navigation }) => {
     const { colors } = useTheme();
     const refPagerViewChild = useRef(<PagerView />);
-    const sliderAnimationRef = React.useRef(new Animated.Value(0)).current;;
+    const sliderAnimationRef = React.useRef(new Animated.Value(0)).current;
+    const refTabPesanan = useRef(null)
+    const refTabRiwayat = useRef(null)
     let tabPosition = [0, 0];
     const _onTabPres = useCallback(tabIndex => {
         Animated.timing(sliderAnimationRef, {
@@ -20,6 +22,8 @@ export default memo(({ navigation }) => {
             useNativeDriver: true,
         }).start(() => {
             refPagerViewChild.current?.setPage(tabIndex);
+            refTabPesanan.current?.setNativeProps({ style: { fontFamily: tabIndex == 0 ? 'ReadexProBold' : 'ReadexProLight' } })
+            refTabRiwayat.current?.setNativeProps({ style: { fontFamily: tabIndex == 1 ? 'ReadexProBold' : 'ReadexProLight' } })
         })
     }, []);
     useEffect(() => {
@@ -38,14 +42,14 @@ export default memo(({ navigation }) => {
                         activeOpacity={.8}
                         onPress={() => _onTabPres(0)}
                         style={styles.tabItem}>
-                        <MyText center>Pesanan</MyText>
+                        <MyText ref={refTabPesanan} center bold>Pesanan</MyText>
                     </TouchableOpacity>
                     <TouchableOpacity
                         onLayout={({ nativeEvent: { layout: { x } } }) => { tabPosition[1] = x - 15 }}
                         activeOpacity={.8}
                         onPress={() => _onTabPres(1)}
                         style={styles.tabItem}>
-                        <MyText center>Riwayat</MyText>
+                        <MyText ref={refTabRiwayat} center>Riwayat</MyText>
                     </TouchableOpacity>
                 </View>
             </View>

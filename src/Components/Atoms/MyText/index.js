@@ -1,8 +1,14 @@
 import { Text } from 'react-native'
-import React from 'react'
+import React, { forwardRef, useImperativeHandle, useRef } from 'react'
 import { useTheme } from 'react-native-paper';
 import { log } from '@Utils'
-export default (props) => {
+export default forwardRef((props, ref) => {
+    useImperativeHandle(ref, () => ({
+        setNativeProps: (styles = {}) => {
+            refText.current?.setNativeProps(styles)
+        }
+    }));
+    const refText = useRef(<Text />);
     const { colors } = useTheme();
     const textStyle = {
         color: 'color' in props ? props?.color : colors.jumbo,
@@ -17,10 +23,11 @@ export default (props) => {
     const numberOfLines = 'numberOfLines' in props ? props?.numberOfLines : 4;
     return (
         <Text
+            ref={refText}
             onPress={props.onPress}
             style={textStyle}
             ellipsizeMode={ellipsizeMode}
             numberOfLines={numberOfLines}
         >{props?.children}</Text>
     )
-}
+})

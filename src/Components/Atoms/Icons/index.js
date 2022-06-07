@@ -8,6 +8,8 @@ const IC_MENU = require('../../../Assets/Images/ic_menu.png');
 const IC_MEJA = require('../../../Assets/Images/ic_meja.png');
 const IC_AKUN = require('../../../Assets/Images/ic_akun.png');
 const IC_AVATAR_ORDER = require('../../../Assets/Images/ic_avatar_order.png');
+const IC_AVATAR_ORDER_SUCCESS = require('../../../Assets/Images/ic_avatar_order_success.png');
+const IC_AVATAR_ORDER_FAIL = require('../../../Assets/Images/ic_avatar_order_fail.png');
 
 export {
     IC_SPLASH,
@@ -20,4 +22,6 @@ export {
     IC_MEJA,
     IC_AKUN,
     IC_AVATAR_ORDER,
+    IC_AVATAR_ORDER_SUCCESS,
+    IC_AVATAR_ORDER_FAIL,
 }

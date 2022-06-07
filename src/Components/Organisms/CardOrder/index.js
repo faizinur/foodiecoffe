@@ -1,6 +1,6 @@
 import { View, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { IC_AVATAR_ORDER } from '@Atoms/Icons'
+import { IC_AVATAR_ORDER, IC_AVATAR_ORDER_SUCCESS, IC_AVATAR_ORDER_FAIL } from '@Atoms/Icons'
 import { MyText } from '@Atoms'
 import { useTheme } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -13,7 +13,7 @@ export default (props) => {
             activeOpacity={.9}
             onPress={props?.onPress}>
             <View style={styles.userInfo}>
-                <Image source={IC_AVATAR_ORDER} tintColor={colors.cerulean} />
+                <Image source={'orderStatus' in props ? (props.orderStatus == 'success' ? IC_AVATAR_ORDER_SUCCESS : IC_AVATAR_ORDER_FAIL) : IC_AVATAR_ORDER} tintColor={colors.cerulean} />
                 <View style={styles.userInfoWrapper}>
                     <View style={styles.userInfoDetail}>
                         <MyText fontSize={14} lineHeight={18} bold color={colors.black} numberOfLines={1} style={styles.userTextlength}>Didin Ruhiyat</MyText>
