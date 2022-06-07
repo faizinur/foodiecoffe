@@ -45,7 +45,7 @@ const MyTextInput = (props) => {
             }
             {/* //RIGHT */}
             {keyboardType == 'phone-pad' && <View style={{ position: 'absolute', top: 24, left: 15, zIndex: 999999, flexDirection: 'row' }}>
-                <MyText>+62</MyText>
+                <MyText style={{ marginVertical: 5 }}>+62</MyText>
                 <View style={{ width: 1.3, height: 24, marginTop: 3, marginLeft: 16, backgroundColor: colors.lightgray }} />
             </View>}
             {props.error && <MyText small color={colors.wildWatermelon} style={{ marginBottom: 12 }}>Input Salah</MyText>}
