@@ -97,8 +97,27 @@ const MyRadioInput = (props) => {
     );
 }
 
+const MyTitleBarInput = (props) => {
+    const { colors } = useTheme();
+    return <TextInput
+        mode='outlined'
+        style={{ flex: 1, alignSelf: 'center', backgroundColor: colors.athensGray, fontSize: 14, fontFamily: 'ReadexProLight', paddingLeft: 15 }}
+        activeOutlineColor={colors.white}
+        outlineColor={colors.white}
+        selectionColor={colors.cerulean}
+        placeholderTextColor={colors.cerulean}
+        theme={{ colors: { text: colors.cerulean } }}
+        onSubmitEditing={props.onSubmitEditing}
+        placeholder="Search"
+        returnKeyType='search'
+        returnKeyLabel='Ayo Cari!'
+        dense={true}
+    />
+}
+
 export {
     MyButton,
     MyTextInput,
     MyRadioInput,
+    MyTitleBarInput,
 }

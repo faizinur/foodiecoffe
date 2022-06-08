@@ -1,6 +1,5 @@
 import { View } from 'react-native'
 import React, { useEffect, useCallback } from 'react';
-import { ScrollView } from 'react-native';
 import { MyText, PageWrapper } from '@Atoms';
 import { TitleBar, InputItems } from '@Molecules';
 import { useTheme } from 'react-native-paper';

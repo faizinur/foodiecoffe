@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
-    container: {
+    container: (paddingHorizontal = '5%') => ({
         flex: 1,
         backgroundColor: 'white',
-        paddingHorizontal: '5%',
+        paddingHorizontal,
         alignContent: 'center',
-    }
+    })
 })

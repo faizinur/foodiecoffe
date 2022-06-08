@@ -19,4 +19,21 @@ export default StyleSheet.create({
         flex: 1,
         padding: '5%',
     },
+    renderTitleWrappwe: (display) => ({
+        flex: 1,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexDirection: 'row',
+        display
+    }),
+    pressableIcon: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modal: {
+        flex: 1
+    }
 })

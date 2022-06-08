@@ -1,7 +1,8 @@
-import { View, Image, TouchableOpacity } from 'react-native'
-import React, { memo, useState, useCallback } from 'react'
+import { Image, TouchableOpacity, Animated } from 'react-native'
+import React, { useEffect, memo, useState, useCallback } from 'react'
 import { log, UUID } from '@Utils';
 import { useTheme } from 'react-native-paper';
+import { UseKeyboard } from '../../../Config/CustomHooks';
 import {
     IC_HOME,
     IC_TRANSAKSI,
@@ -36,6 +37,7 @@ const navMenu = [
 export default memo(({ onChange, navigation: { navigate } }) => {
     const { colors } = useTheme();
     const [activeMenu, setActiveMenu] = useState('Home')
+    const refSliderAnimation = React.useRef(new Animated.Value(0)).current;
     const onMenuPress = useCallback((title, index) => {
         if (index == 4) {
             navigate('Akun')
@@ -43,23 +45,40 @@ export default memo(({ onChange, navigation: { navigate } }) => {
         }
         setActiveMenu(title);
         onChange(index)
-    }, [activeMenu])
+    }, [activeMenu]);
+
+    const isKeyBoardOpen = UseKeyboard();
+    const _animateNavbar = useCallback((toValue) => {
+        return Animated.timing(refSliderAnimation, {
+            toValue,
+            duration: 250,
+            useNativeDriver: true,
+        }).start();
+    }, [])
+    useEffect(() => {
+        log('Mount Navbar')
+        isKeyBoardOpen ? _animateNavbar(66) : _animateNavbar(0)
+        return () => {
+            log('Unmount Navbar')
+        }
+    })
     return (
-        <View style={styles.navbarContainer}>
-            {navMenu.map(({ icon, title }, index) =>
-                <TouchableOpacity
-                    activeOpacity={.8}
-                    onPress={() => onMenuPress(title, index)}
-                    key={`${title}-${UUID()}`}
-                    style={styles.navItem}>
-                    <Image source={icon}
-                        style={styles.icon}
-                        tintColor={activeMenu == title ? colors.cerulean : colors.jumbo}
-                    />
-                    <MyText center light color={activeMenu == title ? colors.cerulean : colors.jumbo}
-                        style={styles.title(activeMenu == title ? '700' : '400')}>{title}</MyText>
-                </TouchableOpacity>)
+        <Animated.View style={[styles.navbarContainer, { transform: [{ translateY: refSliderAnimation }] }]}>
+            {
+                navMenu.map(({ icon, title }, index) =>
+                    <TouchableOpacity
+                        activeOpacity={.8}
+                        onPress={() => onMenuPress(title, index)}
+                        key={`${title}-${UUID()}`}
+                        style={styles.navItem}>
+                        <Image source={icon}
+                            style={styles.icon}
+                            tintColor={activeMenu == title ? colors.cerulean : colors.jumbo}
+                        />
+                        <MyText center light color={activeMenu == title ? colors.cerulean : colors.jumbo}
+                            style={styles.title(activeMenu == title ? '700' : '400')}>{title}</MyText>
+                    </TouchableOpacity>)
             }
-        </View >
+        </Animated.View >
     )
 })

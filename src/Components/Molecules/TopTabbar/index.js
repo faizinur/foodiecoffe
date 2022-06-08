@@ -4,12 +4,12 @@ import { MyText } from '@Atoms'
 import styles from './styles';
 
 export default memo((props) => {
-    const sliderAnimationRef = React.useRef(new Animated.Value(0)).current;
-    const refTabPesanan = useRef(null)
-    const refTabRiwayat = useRef(null)
+    const refSliderAnimation = React.useRef(new Animated.Value(0)).current;
+    const refTabPesanan = useRef(null);
+    const refTabRiwayat = useRef(null);
     let tabPosition = [0, 0];
     const _onTabPres = useCallback(tabIndex => {
-        Animated.timing(sliderAnimationRef, {
+        Animated.timing(refSliderAnimation, {
             toValue: tabPosition[tabIndex],
             duration: 250,
             useNativeDriver: true,
@@ -22,7 +22,7 @@ export default memo((props) => {
     return (
         <View style={styles.sliderContainer}>
             <View style={styles.sliderWrapper}>
-                <Animated.View style={{ ...styles.slider, transform: [{ translateX: sliderAnimationRef }] }} />
+                <Animated.View style={[styles.slider, { transform: [{ translateX: refSliderAnimation }] }]} />
                 <TouchableOpacity
                     onLayout={({ nativeEvent: { layout: { x } } }) => { tabPosition[0] = x }}
                     activeOpacity={.8}
