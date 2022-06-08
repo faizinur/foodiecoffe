@@ -5,7 +5,7 @@ import { useTheme } from 'react-native-paper';
 import { MyText } from '@Atoms';
 import styles from './styles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-export default memo(props => {
+export default memo(({ reset }) => {
     const { colors } = useTheme();
     const _onLogOut = () => {
         log('_onLogOut : ');
@@ -13,10 +13,10 @@ export default memo(props => {
             'Foodie Coffe',
             'Mau keluar nih?',
             [{
-                text: "Cancel", onPress: () => log("Cancel Pressed"), style: "cancel"
+                text: "Batal", onPress: () => log("Cancel Pressed"), style: "cancel"
             },
             {
-                text: "OK", onPress: () => BackHandler.exitApp()
+                text: "Mau aja", onPress: () => BackHandler.exitApp()//reset('Login')
             }]
         )
     }

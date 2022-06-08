@@ -24,7 +24,7 @@ export default memo(({ navigation }) => {
                 <CardTransaksi />
                 <CardTraffic />
             </ScrollView>
-            <ExitBar />
+            <ExitBar {...navigation} />
         </View>
     )
 })
