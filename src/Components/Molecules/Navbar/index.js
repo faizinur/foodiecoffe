@@ -2,7 +2,7 @@ import { Image, TouchableOpacity, Animated } from 'react-native'
 import React, { useEffect, memo, useState, useCallback } from 'react'
 import { log, UUID } from '@Utils';
 import { useTheme } from 'react-native-paper';
-import { UseKeyboard } from '../../../Config/CustomHooks';
+import { UseKeyboard } from '@CustomHooks';
 import {
     IC_HOME,
     IC_TRANSAKSI,
