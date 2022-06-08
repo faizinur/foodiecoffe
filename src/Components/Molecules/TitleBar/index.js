@@ -15,6 +15,10 @@ export default memo(props => {
             style={{ width: 50, height: '100%', justifyContent: 'center', alignItems: 'center' }}>
             <Icon name={'arrow-left'} size={25} color={colors.black} />
         </TouchableOpacity>
-        <MyText center color={colors.black} style={{ textTransform: 'capitalize' }}>{props?.title || 'Kembali'}</MyText>
+        {'renderTitle' in props && typeof props?.renderTitle == 'function' ? props?.renderTitle() :
+            <MyText center color={colors.black} style={{ textTransform: 'capitalize' }}>{props?.title || 'Kembali'}</MyText>
+        }
+        {'renderRight' in props && typeof props?.renderRight == 'function' ? props?.renderRight()
+            : <View style={{ width: 50, height: '100%', justifyContent: 'center', alignItems: 'center' }} />}
     </View>)
 })

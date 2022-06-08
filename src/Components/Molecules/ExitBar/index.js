@@ -1,4 +1,4 @@
-import { View, TouchableOpacity, BackHandler } from 'react-native';
+import { View, TouchableOpacity, BackHandler, Alert } from 'react-native';
 import React, { memo } from 'react';
 import { log } from '@Utils';
 import { useTheme } from 'react-native-paper';
@@ -9,7 +9,16 @@ export default memo(props => {
     const { colors } = useTheme();
     const _onLogOut = () => {
         log('_onLogOut : ');
-        BackHandler.exitApp();
+        Alert.alert(
+            'Foodie Coffe',
+            'Mau keluar nih?',
+            [{
+                text: "Cancel", onPress: () => log("Cancel Pressed"), style: "cancel"
+            },
+            {
+                text: "OK", onPress: () => BackHandler.exitApp()
+            }]
+        )
     }
     return (
         <TouchableOpacity
