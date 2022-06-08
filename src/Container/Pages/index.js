@@ -8,6 +8,7 @@ import Splash from "./Splash";
 import Login from "./Login";
 import Home from "./Home";
 import Register from "./Register";
+import Akun from "./Akun";
 
 const Stack = createNativeStackNavigator();
 
@@ -21,7 +22,7 @@ export default stackProps => (
         ref={navigationRef}
         onReady={() => { log('Root Props : ', stackProps) }}>
         <Stack.Navigator
-            initialRouteName={"Splash"}
+            initialRouteName={"Home"}
             mode={"card"}
             ScreenOptions={{}}>
             <Stack.Screen name="Splash" options={() => (animationSlide)}>
@@ -35,6 +36,9 @@ export default stackProps => (
             </Stack.Screen>
             <Stack.Screen name="Home" options={() => (animationSlide)}>
                 {props => <Home  {...props} {...stackProps} />}
+            </Stack.Screen>
+            <Stack.Screen name="Akun" options={() => (animationSlide)}>
+                {props => <Akun  {...props} {...stackProps} />}
             </Stack.Screen>
         </Stack.Navigator>
     </NavigationContainer>

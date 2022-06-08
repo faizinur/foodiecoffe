@@ -9,7 +9,10 @@ import { back } from '@RootNavigation';
 export default memo(props => {
     const { colors } = useTheme()
     return (<View style={{ width, backgroundColor: colors.white, height: 60, flexDirection: 'row' }}>
-        <TouchableOpacity activeOpacity={.9} onPress={back} style={{ width: 50, height: '100%', justifyContent: 'center', alignItems: 'center' }}>
+        <TouchableOpacity
+            activeOpacity={.9}
+            onPress={() => 'customLeftPress' in props ? props?.customLeftPress() : back()}
+            style={{ width: 50, height: '100%', justifyContent: 'center', alignItems: 'center' }}>
             <Icon name={'arrow-left'} size={25} color={colors.black} />
         </TouchableOpacity>
         <MyText center color={colors.black} style={{ textTransform: 'capitalize' }}>{props?.title || 'Kembali'}</MyText>

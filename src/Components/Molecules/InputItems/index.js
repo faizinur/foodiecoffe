@@ -76,7 +76,7 @@ const MyRadioInput = (props) => {
     return (
         <RadioButton.Group onValueChange={newValue => setValue(newValue)} value={value}>
             <View style={{ marginVertical: 12 }}>
-                <MyText color={colors.black}>{props.placeholder}</MyText>
+                <MyText left color={colors.black}>{props.placeholder}</MyText>
                 <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
                     {
                         props.config.data.map(({ code, description }) =>

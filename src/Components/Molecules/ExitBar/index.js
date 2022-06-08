@@ -1,4 +1,4 @@
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, BackHandler } from 'react-native';
 import React, { memo } from 'react';
 import { log } from '@Utils';
 import { useTheme } from 'react-native-paper';
@@ -7,11 +7,15 @@ import styles from './styles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 export default memo(props => {
     const { colors } = useTheme();
+    const _onLogOut = () => {
+        log('_onLogOut : ');
+        BackHandler.exitApp();
+    }
     return (
         <TouchableOpacity
             activeOpacity={.8}
-            onPress={props?.onPress}
-            style={{ width: '100%', height: 80, backgroundColor: colors.white, paddingHorizontal: '5%', flexDirection: 'row' }}>
+            onPress={_onLogOut}
+            style={{ width: '100%', height: 80, backgroundColor: colors.white, paddingHorizontal: '5%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
             <Icon name='location-exit' size={30} color={colors.cerulean} style={{ marginRight: 15 }} />
             <View style={{ flex: 1 }}>
                 <MyText medium bold left color={colors.black}>Keluar</MyText>

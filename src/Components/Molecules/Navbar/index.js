@@ -33,10 +33,14 @@ const navMenu = [
         title: 'Akun',
     },
 ]
-export default memo(({ onChange }) => {
+export default memo(({ onChange, navigation: { navigate } }) => {
     const { colors } = useTheme();
     const [activeMenu, setActiveMenu] = useState('Home')
     const onMenuPress = useCallback((title, index) => {
+        if (index == 4) {
+            navigate('Akun')
+            return false;
+        }
         setActiveMenu(title);
         onChange(index)
     }, [activeMenu])

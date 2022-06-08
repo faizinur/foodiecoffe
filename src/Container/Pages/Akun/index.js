@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import React, { useEffect, memo } from 'react';
 import { log } from '@Utils';
 import { useTheme } from 'react-native-paper';
@@ -8,22 +8,23 @@ import styles from './styles';
 export default memo(({ navigation }) => {
     const { colors } = useTheme();
     useEffect(() => {
-        log('Mount AkunTemp');
+        log('Mount Akun');
         return () => {
-            log('Unmount AkunTemp')
+            log('Unmount Akun')
         }
     }, [])
     return (
         <View style={styles.pages}>
             <TitleBar title={'profil'} />
-            <View>
-                {/* <CardProfile /> */}
-                {/* <CardTransaksi /> */}
-                {/* <CardTraffic /> */}
-                <ExitBar
-                    onPress={() => alert('KELUAR')}
-                />
-            </View>
+            <ScrollView
+                showsHorizontalScrollIndicator={false}
+                showsVerticalScrollIndicator={false}
+                style={{ flex: 1 }}>
+                <CardProfile />
+                <CardTransaksi />
+                <CardTraffic />
+            </ScrollView>
+            <ExitBar />
         </View>
     )
 })

@@ -4,30 +4,26 @@ import { useTheme } from 'react-native-paper';
 import { Navbar } from '@Molecules';
 import { log } from '@Utils';
 import { PagerView } from 'react-native-pager-view';
-import { HomeTemp, TransTemp, MenuTemp, MejaTemp, AkunTemp } from '@Templates';
+import { HomeTemp, TransTemp, MenuTemp, MejaTemp } from '@Templates';
 import styles from './styles';
 const INITIAL_PAGE = 0;
 export default props => {
     const refPagerView = useRef(<PagerView />);
     const { colors } = useTheme()
-    const _onNavbarChange = (index) => {
-        refPagerView.current?.setPageWithoutAnimation(index)
-    }
+    const _onNavbarChange = (index) => refPagerView.current?.setPageWithoutAnimation(index)
     return (
         <>
             <PagerView
                 ref={refPagerView}
                 style={styles.container}
                 initialPage={INITIAL_PAGE}
-                scrollEnabled={false}
-            >
+                scrollEnabled={false}>
                 <HomeTemp  {...props} key={0} />
                 <TransTemp {...props} key={1} />
                 <MenuTemp {...props} key={2} />
                 <MejaTemp {...props} key={3} />
-                <AkunTemp {...props} key={4} />
             </PagerView>
-            <Navbar onChange={_onNavbarChange} />
+            <Navbar {...props} onChange={_onNavbarChange} />
         </>
     )
 }
