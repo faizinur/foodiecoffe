@@ -20,7 +20,7 @@ export default {
         moonRaker: '#DFDBFF',
         titanWhite: '#EEEBFF',
         magnolia: '#F5F4FF',
-        wildWatermelon: '#F1556C',
+        wildWaterMelon: '#F1556C',
         emerald: '#19CC85',
         lightningYellow: '#FAC319',
         text: 'black',

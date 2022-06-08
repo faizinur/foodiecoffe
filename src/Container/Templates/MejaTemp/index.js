@@ -1,9 +1,11 @@
-import { View, Image } from 'react-native';
+import { View } from 'react-native';
 import React, { useEffect, memo } from 'react';
 import { log } from '@Utils';
-import { IC_SPLASH } from '@Atoms/Icons';
 import { useTheme } from 'react-native-paper';
-
+import { MyText } from '@Atoms';
+import { TitleBar } from '@Molecules';
+import { CardMeja } from '@Organisms';
+import styles from './styles';
 export default memo(({ navigation }) => {
     const { colors } = useTheme();
 
@@ -14,8 +16,17 @@ export default memo(({ navigation }) => {
         }
     }, [])
     return (
-        <View style={{ width: '100%', height: '100%', backgroundColor: colors.primary, justifyContent: 'center', alignItems: 'center' }}>
-            <Image source={IC_SPLASH} resizeMethod={'auto'} />
+        <View style={styles.pages}>
+            <TitleBar title={'pilih meja'} />
+            <View style={styles.sectionContainer}>
+                <MyText bold medium color={colors.black} left>Cek Mejamu disini</MyText>
+                <MyText left>Yuk, pilih lokasi mejamu sebelum penuh</MyText>
+            </View>
+            <View style={styles.content}>
+                <CardMeja number={'01'} isServed={false} location={'Lantai 1'} capaity={'1 - 10'} onPress={() => log('pressed')} />
+                <CardMeja number={'02'} isServed={true} location={'Lantai 1'} capaity={'1 - 10'} onPress={() => log('pressed')} />
+                <CardMeja number={'01'} isServed={false} location={'Lantai 1'} capaity={'1 - 10'} onPress={() => log('pressed')} />
+            </View>
         </View>
     )
 })

@@ -1,9 +1,11 @@
-import { View, Image } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import React, { useEffect, memo } from 'react';
 import { log } from '@Utils';
-import { IC_SPLASH } from '@Atoms/Icons';
 import { useTheme } from 'react-native-paper';
-
+import { MyText } from '@Atoms';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { CardOrder } from '@Organisms';
+import styles from './styles';
 export default memo(({ navigation }) => {
     const { colors } = useTheme();
 
@@ -14,8 +16,24 @@ export default memo(({ navigation }) => {
         }
     }, [])
     return (
-        <View style={{ width: '100%', height: '100%', backgroundColor: colors.emerald, justifyContent: 'center', alignItems: 'center' }}>
-            <Image source={IC_SPLASH} resizeMethod={'auto'} />
+        <View style={styles.container}>
+            <View style={styles.titleContainer}>
+                <MyText medium bold left color={colors.black}>List Pesanan</MyText>
+            </View>
+            <View style={styles.sectionTitle}>
+                <MyText small color={colors.black}>Daftar Transaksi</MyText>
+                <TouchableOpacity
+                    activeOpacity={.8}
+                    style={[styles.sectionTitle, styles.btnSection]}>
+                    <MyText light color={colors.black}>Terbayar</MyText>
+                    <Icon name='chevron-down' size={15} />
+                </TouchableOpacity>
+            </View>
+            <View style={styles.content}>
+                <CardOrder orderStatus={true} orderDone={false} />
+                <CardOrder orderStatus={true} orderDone={false} />
+                <CardOrder orderStatus={true} orderDone={false} />
+            </View>
         </View>
     )
 })

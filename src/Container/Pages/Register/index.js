@@ -28,7 +28,13 @@ export default ({ navigation: { replace, goBack } }) => {
                 <InputItems.MyTextInput placeholder={'Email'} />
                 <InputItems.MyTextInput placeholder={'No HP'} keyboardType={'phone-pad'} />
                 <InputItems.MyTextInput placeholder={'Kata sandi'} secureTextEntry />
-                <InputItems.MyRadioInput placeholder={'Jenis Kelamin'} />
+                <InputItems.MyRadioInput placeholder={'Jenis Kelamin'}
+                    config={{
+                        data: [
+                            { code: 'L', description: 'Laki-Laki' },
+                            { code: 'P', description: 'Perempuan' },
+                        ]
+                    }} />
                 <InputItems.MyButton
                     label={'Daftar'}
                     onPress={_onRegister} />

@@ -12,6 +12,6 @@ export default memo(props => {
         <TouchableOpacity activeOpacity={.9} onPress={back} style={{ width: 50, height: '100%', justifyContent: 'center', alignItems: 'center' }}>
             <Icon name={'arrow-left'} size={25} color={colors.black} />
         </TouchableOpacity>
-        <MyText center color={colors.black}>{props?.title || 'Kembali'}</MyText>
+        <MyText center color={colors.black} style={{ textTransform: 'capitalize' }}>{props?.title || 'Kembali'}</MyText>
     </View>)
 })

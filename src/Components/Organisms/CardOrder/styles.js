@@ -7,6 +7,7 @@ export default StyleSheet.create({
     cardContainer: {
         width: '100%',
         height: 150,
+        marginVertical: 8,
         borderRadius: 16,
         padding: 16,
         backgroundColor: 'white',
@@ -63,12 +64,12 @@ export default StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
     },
-    tableNumber: {
+    tableNumber: (backgroundColor) => ({
         width: 55,
         height: 21,
         borderRadius: 6,
-        backgroundColor: colors.cerulean,
+        backgroundColor,
         justifyContent: 'center',
         alignItems: 'center',
-    },
+    }),
 })

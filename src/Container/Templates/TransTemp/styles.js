@@ -7,23 +7,12 @@ export default StyleSheet.create({
     container: {
         width: '100%',
         height: '100%',
-        backgroundColor: colors.white
+        backgroundColor: colors.white,
+        padding: '5%',
     },
-    fab: {
-        colors: {
-            accent: colors.cerulean
-        }
-    },
-    fabStyles: {
-        position: 'absolute',
-        right: 24,
-        bottom: 90,
-    },
-    pagerContainer: {
-        flex: 1
-    },
-    pagerInnerContainer: {
-        paddingHorizontal: '5%'
+    titleContainer: {
+        height: 60,
+        width: '100%',
     },
     sectionTitle: {
         flexDirection: 'row',
@@ -38,5 +27,8 @@ export default StyleSheet.create({
         borderRadius: 100,
         paddingHorizontal: 15,
         marginVertical: 5
-    }
+    },
+    content: {
+        flex: 1
+    },
 })

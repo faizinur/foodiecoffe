@@ -5,7 +5,7 @@ import { MyText } from '@Atoms';
 import { View } from 'react-native'
 const MyTextInput = (props) => {
     const { colors } = useTheme();
-    const defaultColor = props.error ? colors.wildWatermelon : colors.cerulean;
+    const defaultColor = props.error ? colors.wildWaterMelon : colors.cerulean;
     let keyboardType = 'keyboardType' in props ? props.keyboardType : 'default';
     const [secureTextEntry, setSecureTextEntry] = useState('secureTextEntry' in props)
     let disabled = props.disabled || false;
@@ -45,10 +45,10 @@ const MyTextInput = (props) => {
             }
             {/* //RIGHT */}
             {keyboardType == 'phone-pad' && <View style={{ position: 'absolute', top: 24, left: 15, zIndex: 999999, flexDirection: 'row' }}>
-                <MyText style={{ marginVertical: 5 }}>+62</MyText>
+                <MyText color={colors.lightgray} style={{ marginVertical: 5 }}>+62</MyText>
                 <View style={{ width: 1.3, height: 24, marginTop: 3, marginLeft: 16, backgroundColor: colors.lightgray }} />
             </View>}
-            {props.error && <MyText small color={colors.wildWatermelon} style={{ marginBottom: 12 }}>Input Salah</MyText>}
+            {props.error && <MyText small color={colors.wildWaterMelon} style={{ marginBottom: 12 }}>Input Salah</MyText>}
         </View>
     )
 }
@@ -71,32 +71,28 @@ const MyButton = (props) => {
 
 const MyRadioInput = (props) => {
     const { colors } = useTheme();
-    const defaultColor = props.error ? colors.wildWatermelon : colors.cerulean;
+    const defaultColor = props.error ? colors.wildWaterMelon : colors.cerulean;
     const [value, setValue] = useState('')
     return (
         <RadioButton.Group onValueChange={newValue => setValue(newValue)} value={value}>
             <View style={{ marginVertical: 12 }}>
                 <MyText color={colors.black}>{props.placeholder}</MyText>
                 <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
-                    <View style={{ flexDirection: 'row', flex: 1 }}>
-                        <RadioButton
-                            value="first"
-                            uncheckedColor={colors.lightgray}
-                            color={defaultColor}
-                        />
-                        <MyText onPress={() => setValue('first')} color={value == 'first' ? colors.black : colors.lightgray}>First</MyText>
-                    </View>
-                    <View style={{ flexDirection: 'row', flex: 1 }}>
-                        <RadioButton
-                            value="second"
-                            uncheckedColor={colors.lightgray}
-                            color={defaultColor}
-                        />
-                        <MyText onPress={() => setValue('second')} color={value == 'second' ? colors.black : colors.lightgray}>Second</MyText>
-                    </View>
+                    {
+                        props.config.data.map(({ code, description }) =>
+                            <View key={`${code}-${description}`} style={{ flexDirection: 'row', flex: 1 }}>
+                                <RadioButton
+                                    value={code}
+                                    uncheckedColor={colors.lightgray}
+                                    color={defaultColor}
+                                />
+                                <MyText onPress={() => setValue(code)} center color={value == code ? colors.black : colors.lightgray}>{description}</MyText>
+                            </View>
+                        )
+                    }
                 </View>
             </View>
-            {props.error && <MyText small color={colors.wildWatermelon} style={{ marginBottom: 12 }}>Input Salah</MyText>}
+            {props.error && <MyText small color={colors.wildWaterMelon} style={{ marginBottom: 12 }}>Input Salah</MyText>}
         </RadioButton.Group>
     );
 }

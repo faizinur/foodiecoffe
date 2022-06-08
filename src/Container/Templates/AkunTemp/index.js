@@ -1,12 +1,12 @@
-import { View, Image } from 'react-native';
+import { View } from 'react-native';
 import React, { useEffect, memo } from 'react';
 import { log } from '@Utils';
-import { IC_SPLASH } from '@Atoms/Icons';
 import { useTheme } from 'react-native-paper';
-
+import { TitleBar, ExitBar } from '@Molecules';
+import { CardProfile, CardTransaksi, CardTraffic } from '@Organisms';
+import styles from './styles';
 export default memo(({ navigation }) => {
     const { colors } = useTheme();
-
     useEffect(() => {
         log('Mount AkunTemp');
         return () => {
@@ -14,8 +14,16 @@ export default memo(({ navigation }) => {
         }
     }, [])
     return (
-        <View style={{ width: '100%', height: '100%', backgroundColor: colors.fog, justifyContent: 'center', alignItems: 'center' }}>
-            <Image source={IC_SPLASH} resizeMethod={'auto'} />
+        <View style={styles.pages}>
+            <TitleBar title={'profil'} />
+            <View>
+                {/* <CardProfile /> */}
+                {/* <CardTransaksi /> */}
+                {/* <CardTraffic /> */}
+                <ExitBar
+                    onPress={() => alert('KELUAR')}
+                />
+            </View>
         </View>
     )
 })

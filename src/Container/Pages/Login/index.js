@@ -6,7 +6,7 @@ import { log } from '@Utils';
 import { MyText, PageWrapper } from '@Atoms';
 import { InputItems } from '@Molecules';
 import { useTheme } from 'react-native-paper';
-import { IC_HORIZONTAL, ONBOARDINGIMAGE } from '@Atoms/Icons'
+import { IC_HORIZONTAL, ONBOARDINGIMAGE } from '@Atoms/Icons';
 export default memo(({ navigation: { navigate, replace } }) => {
     const { colors } = useTheme()
     //selector 
@@ -36,8 +36,8 @@ export default memo(({ navigation: { navigate, replace } }) => {
                 resizeMode={'stretch'}
                 style={{ marginVertical: 6.5 }}
             />
-            <MyText bold large color={colors.black}>Selamat Datang!</MyText>
-            <MyText>Selanjutnya, masukkan Nama Pengguna dan Kata sandimu disini ya.</MyText>
+            <MyText bold large color={colors.black} style={{ marginVertical: 6 }}>Selamat Datang!</MyText>
+            <MyText style={{ marginVertical: 6 }}>Selanjutnya, masukkan Nama Pengguna dan Kata sandimu disini ya.</MyText>
             <InputItems.MyTextInput
                 placeholder={'Username'} />
             <InputItems.MyTextInput
