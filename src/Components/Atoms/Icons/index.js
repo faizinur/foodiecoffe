@@ -14,6 +14,7 @@ const IC_DEFAULT_PROFILE = require('../../../Assets/Images/ic_default_profile.pn
 const IC_ICON_TRANSAKSI = require('../../../Assets/Images/ic_icon_transaksi.png');
 const IC_TRAFFIC_GRAPH = require('../../../Assets/Images/ic_taffic_graph.png');
 const IC_PRODUCT = require('../../../Assets/Images/ic_product.png');
+const IC_PRODUCT_BIG = require('../../../Assets/Images/ic_product_big.png');
 
 export {
     IC_SPLASH,
@@ -32,4 +33,5 @@ export {
     IC_ICON_TRANSAKSI,
     IC_TRAFFIC_GRAPH,
     IC_PRODUCT,
+    IC_PRODUCT_BIG,
 }

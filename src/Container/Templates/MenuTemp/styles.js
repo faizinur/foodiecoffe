@@ -11,4 +11,17 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    modal: {
+        flex: 1
+    },
+    modalContainer: {
+        flex: 1,
+        backgroundColor: colors.white,
+        paddingHorizontal: '5%',
+    },
+    description: {
+        width: '100%',
+        paddingVertical: 24,
+        justifyContent: 'center',
+    }
 })

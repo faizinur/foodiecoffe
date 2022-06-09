@@ -1,15 +1,16 @@
 import { View, TouchableOpacity } from 'react-native';
-import React, { useEffect, memo, useCallback } from 'react';
+import React, { useEffect, memo, useCallback, useRef } from 'react';
 import { log } from '@Utils';
 import { useTheme } from 'react-native-paper';
 import { TitleBar } from '@Molecules';
 import { CardMenu } from '@Organisms';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from './styles';
+import MenuModals from './MenuModals';
 import { MyText } from '@Atoms';
 export default memo(({ navigation }) => {
     const { colors } = useTheme();
-
+    const refMenuModals = useRef(<MenuModals />)
     const _onClickSetting = () => {
         log('_onClickSetting : ')
     }
@@ -21,6 +22,10 @@ export default memo(({ navigation }) => {
         <Icon name={props.iconName} size={26} color={colors.black} />
     </TouchableOpacity>)
 
+    const _onMenuPress = useCallback(() => {
+        log('_onMenuPress : ')
+        refMejaModals.current?.toggle({})
+    }, [])
     useEffect(() => {
         log('Mount MenuTemp');
         return () => {
@@ -34,8 +39,9 @@ export default memo(({ navigation }) => {
                 title={'Daftar Menu'}
                 renderRight={() => <MyPressableIcon onClickSearch={_onClickSetting} iconName={'cog'} />} />
             <View style={{ paddingHorizontal: '5%' }}>
-                <CardMenu onPress={() => log('Product Pressed! ')} />
+                <CardMenu onPress={_onMenuPress} />
             </View>
+            <MenuModals ref={refMenuModals} />
         </View>
     )
 })
