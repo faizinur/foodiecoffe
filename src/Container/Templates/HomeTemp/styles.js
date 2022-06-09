@@ -38,5 +38,13 @@ export default StyleSheet.create({
         borderRadius: 100,
         paddingHorizontal: 15,
         marginVertical: 5
-    }
+    },
+    modal: {
+        flex: 1
+    },
+    sectionContainer: {
+        height: 60,
+        width: '100%',
+        paddingHorizontal: '5%',
+    },
 })

@@ -23,5 +23,27 @@ export default StyleSheet.create({
         width: '100%',
         paddingVertical: 24,
         justifyContent: 'center',
+        borderBottomWidth: 1,
+        borderBottomColor: colors.lightgray
+    },
+    sectionStatus: {
+        marginTop: 24,
+        marginBottom: 15,
+        width: '100%',
+        borderBottomWidth: 1,
+        borderBottomColor: colors.lightgray,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    sectionVariant: {
+        marginBottom: 15,
+        width: '100%',
+        borderBottomWidth: 1,
+        borderBottomColor: colors.lightgray,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    titleVariant: {
+        marginVertival: 22
     }
 })

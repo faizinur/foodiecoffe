@@ -8,15 +8,18 @@ import styles from './styles';
 import { CardOrder } from '@Organisms';
 import { TopTabbar, AccordionHistory, EmptyOrderScreen } from '@Molecules';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import HomeModals from './HomeModals'
 const INITIAL_PAGE = 0;
 export default memo(({ navigation }) => {
     const { colors } = useTheme();
     const refPagerViewChild = useRef(<PagerView />);
+    const refHomeModals = useRef(<HomeModals />);
     const _onTabChange = useCallback((index) => {
         refPagerViewChild.current?.setPage(index);
     }, [])
     const _onFABPress = useCallback(() => {
-        log('_onFABPress Pressed')
+        log('_onFABPress Pressed');
+        refHomeModals.current?.toggle()
     }, [])
     const _onPressCalendar = useCallback(() => {
         log('_onPressCalendar Pressed')
@@ -64,6 +67,7 @@ export default memo(({ navigation }) => {
                     </AccordionHistory>
                 </View>
             </PagerView>
+            <HomeModals useRef={refHomeModals} />
         </View>
     )
 })

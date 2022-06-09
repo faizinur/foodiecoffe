@@ -29,7 +29,7 @@ export default forwardRef((props, ref) => {
             style={styles.modal}>
             <View style={styles.modal}>
                 <TitleBar
-                    disabledLeft={true}
+                    customLeftPress={_onCloseModal}
                     title={'Edit Menu'} />
                 <View style={styles.modalContainer}>
                     <Image source={IC_PRODUCT_BIG} style={{ width: '100%', height: 200 }} />
@@ -38,6 +38,39 @@ export default forwardRef((props, ref) => {
                         <MyText left color={colors.black}>Rp.60.250</MyText>
                         <MyText left light numberOfLines={2}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fames interdum diam. </MyText>
                     </View>
+                    <View style={styles.sectionStatus}>
+                        <MyText left bold color={colors.black}>Status</MyText>
+                        <MySwitch />
+                    </View>
+
+                    <MyText left bold color={colors.black} style={styles.titleVariant}>Varian Ukuran</MyText>
+                    <View style={styles.sectionVariant}>
+                        <MyText left light color={colors.black}>Kecil</MyText><MySwitch />
+                    </View>
+                    <View style={styles.sectionVariant}>
+                        <MyText left light color={colors.black}>Sedang</MyText><MySwitch />
+                    </View>
+                    <View style={styles.sectionVariant}>
+                        <MyText left light color={colors.black}>Besar</MyText><MySwitch />
+                    </View>
+                    <MyText left bold color={colors.black} style={styles.titleVariant}>Varian Topping</MyText>
+                    <View style={styles.sectionVariant}>
+                        <MyText left light color={colors.black}>Extra Cocout Jelly</MyText><MySwitch />
+                    </View>
+                    <View style={styles.sectionVariant}>
+                        <MyText left light color={colors.black}>Extra Sugar Syrup</MyText><MySwitch />
+                    </View>
+                    <View style={styles.sectionVariant}>
+                        <MyText left light color={colors.black}>Extra Expresso Shot</MyText><MySwitch />
+                    </View>
+                    <View style={styles.sectionVariant}>
+                        <MyText left light color={colors.black}>Extra Grass Jelly</MyText><MySwitch />
+                    </View>
+                    <View style={styles.sectionVariant}>
+                        <MyText left light color={colors.black}>Extra Oreo</MyText><MySwitch />
+                    </View>
+
+
                 </View>
             </View>
         </Modal>
