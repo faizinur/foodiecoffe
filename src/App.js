@@ -10,8 +10,12 @@ import React from 'react';
 import { View, StatusBar, StyleSheet } from 'react-native';
 import MainStackNavigator from '@Pages';
 import { enableFreeze } from 'react-native-screens';
+import { LogBox } from "react-native";
 enableFreeze(true)
 const App = () => {
+	LogBox.ignoreLogs([
+		"exported from 'deprecated-react-native-prop-types'.",
+	])
 	return (
 		<View style={styles.container}>
 			<StatusBar

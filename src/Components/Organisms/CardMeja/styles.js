@@ -4,8 +4,13 @@ export { height, width };
 import { THEME } from '@Utils';
 const { colors } = THEME;
 export default StyleSheet.create({
+    cardWrapper: (width) => ({
+        width,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: 4
+    }),
     container: {
-        margin: 8,
         height: 121,
         width: 156,
         backgroundColor: colors.white,
@@ -30,15 +35,6 @@ export default StyleSheet.create({
         alignItems: 'center',
         borderWidth: 0.7,
         borderColor: colors.lightgray,
-    },
-    servedOverlay: {
-        height: 121,
-        width: 156,
-        backgroundColor: 'rgba(1,1,1,0.08)',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        borderRadius: 12,
     },
     cardShadow: {
         shadowColor: "#000",

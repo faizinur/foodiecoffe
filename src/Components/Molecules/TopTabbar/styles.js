@@ -21,7 +21,7 @@ export default StyleSheet.create({
     slider: {
         position: 'absolute',
         top: 7.5,
-        left: 7.5,
+        // left: 7.5,
         backgroundColor: colors.white,
         width: '49%',
         height: 39,

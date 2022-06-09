@@ -26,6 +26,7 @@ module.exports = {
           "@Config": "./src/Config/",
           "@CustomHooks": "./src/Config/CustomHooks/",
           "@Data": "./src/Config/Data/",
+          "@Data": "./src/Config/Data/",
           "@Redux": "./src/Config/Redux/",
           "@Actions": "./src/Config/Redux/Actions/",
           "@Reducers": "./src/Config/Redux/Reducers/",

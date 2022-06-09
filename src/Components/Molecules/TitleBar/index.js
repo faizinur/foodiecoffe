@@ -23,7 +23,7 @@ export default memo(props => {
                 <View style={{ width: '5%', height: '100%', justifyContent: 'center', alignItems: 'center' }} />
         }
         {'renderTitle' in props && typeof props?.renderTitle == 'function' ? props?.renderTitle() :
-            <MyText center color={colors.black} style={{ textTransform: 'capitalize' }}>{props?.title || 'Kembali'}</MyText>
+            <MyText center color={colors.black} style={{ textTransform: 'capitalize', flexGrow: 1 }}>{props?.title || 'Kembali'}</MyText>
         }
         <View style={{ width: 50, height: '100%', justifyContent: 'center', alignItems: 'center' }} >
             {'renderRight' in props && typeof props?.renderRight == 'function' && props?.renderRight()}

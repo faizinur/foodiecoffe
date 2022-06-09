@@ -1,42 +1,46 @@
-import { View, TouchableOpacity, Animated } from 'react-native';
-import React, { memo, useRef, useCallback, } from 'react';
+import { View, TouchableOpacity } from 'react-native';
+import React, { memo, useRef, useCallback, useEffect } from 'react';
 import { MyText } from '@Atoms'
-import styles from './styles';
+import styles, { width } from './styles';
+import { log, CONSTANT } from '@Utils'
+import Animated, {
+    useSharedValue,
+    useAnimatedStyle,
+    withSpring,
+} from 'react-native-reanimated';
 
 export default memo((props) => {
-    const refSliderAnimation = React.useRef(new Animated.Value(0)).current;
-    const refTabPesanan = useRef(null);
-    const refTabRiwayat = useRef(null);
-    let tabPosition = [0, 0];
+    let tabPosition = [
+        { title: 'Pesanan', position: 7.5, ref: useRef(null) },
+        { title: 'Riwayat', position: width * .44, ref: useRef(null) },
+    ];
+    const xPosSlider = useSharedValue({ left: 7.5 })
+    const xPosSliderStyle = useAnimatedStyle(() => ({
+        left: withSpring(xPosSlider.value.left, CONSTANT.SPRING_CONFIG),
+    }))
     const _onTabPres = useCallback(tabIndex => {
-        Animated.timing(refSliderAnimation, {
-            toValue: tabPosition[tabIndex],
-            duration: 250,
-            useNativeDriver: true,
-        }).start(() => {
-            refTabPesanan.current?.setNativeProps({ style: { fontFamily: tabIndex == 0 ? 'ReadexProBold' : 'ReadexProLight' } })
-            refTabRiwayat.current?.setNativeProps({ style: { fontFamily: tabIndex == 1 ? 'ReadexProBold' : 'ReadexProLight' } })
-            'onTabChange' in props && props?.onTabChange(tabIndex);
-        })
+        xPosSlider.value = { left: tabPosition[tabIndex].position };
+        'onTabChange' in props && props?.onTabChange(tabIndex);
+        tabPosition[0].ref.current?.setNativeProps({ style: { fontFamily: tabIndex == 0 ? 'ReadexProBold' : 'ReadexProLight' } })
+        tabPosition[1].ref.current?.setNativeProps({ style: { fontFamily: tabIndex == 1 ? 'ReadexProBold' : 'ReadexProLight' } })
     }, []);
+    useEffect(() => {
+        tabPosition[0].ref.current?.setNativeProps({ style: { fontFamily: 'ReadexProBold' } })
+        return () => { }
+    }, [])
     return (
         <View style={styles.sliderContainer}>
             <View style={styles.sliderWrapper}>
-                <Animated.View style={[styles.slider, { transform: [{ translateX: refSliderAnimation }] }]} />
-                <TouchableOpacity
-                    onLayout={({ nativeEvent: { layout: { x } } }) => { tabPosition[0] = x }}
-                    activeOpacity={.8}
-                    onPress={() => _onTabPres(0)}
-                    style={styles.tabItem}>
-                    <MyText ref={refTabPesanan} center bold>Pesanan</MyText>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onLayout={({ nativeEvent: { layout: { x } } }) => { tabPosition[1] = x - 15 }}
-                    activeOpacity={.8}
-                    onPress={() => _onTabPres(1)}
-                    style={styles.tabItem}>
-                    <MyText ref={refTabRiwayat} center>Riwayat</MyText>
-                </TouchableOpacity>
+                <Animated.View style={[styles.slider, xPosSliderStyle]} />
+                {tabPosition.map(({ title, ref }, index) =>
+                    <TouchableOpacity
+                        key={`tab${title}`}
+                        activeOpacity={.8}
+                        onPress={() => _onTabPres(index)}
+                        style={styles.tabItem}>
+                        <MyText ref={ref} center>{title}</MyText>
+                    </TouchableOpacity>
+                )}
             </View>
         </View>
     )

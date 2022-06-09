@@ -19,6 +19,9 @@
             "@CustomHooks": [
                 "./src/Config/CustomHooks/*"
             ],
+            "@Data": [
+                "./src/Config/Data/*"
+            ],
             "@Redux": [
                 "./src/Config/Redux/*"
             ],

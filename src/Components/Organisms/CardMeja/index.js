@@ -3,24 +3,30 @@ import React, { memo } from 'react';
 import { log } from '@Utils';
 import { useTheme } from 'react-native-paper';
 import { MyText } from '@Atoms';
-import styles from './styles';
+import styles, { width } from './styles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 export default memo(props => {
     const { colors } = useTheme();
+    const textColor = props?.isServed ? colors.lightgray : colors.black;
+    const iconColor = props?.isServed ? colors.lightgray : colors.cerulean;
+    const iconName = props?.isServed ? 'silverware-fork-knife' : 'qrcode';
+    const disabled = props?.isServed || false;
     return (
-        <TouchableOpacity
-            activeOpacity={props?.isServed ? 1 : .9}
-            onPress={props?.isServed ? undefined : props?.onPress}
-            style={props?.isServed ? styles.container : [styles.cardShadow, styles.container]}>
-            <View style={styles.qrWrapper}>
-                <MyText large bold color={props?.isServed ? colors.lightgray : colors.black}>{props?.number || '??'}</MyText>
-                <View style={styles.qr}>
-                    <Icon name={props?.isServed ? 'silverware-fork-knife' : 'qrcode'} size={25} color={props?.isServed ? colors.lightgray : colors.cerulean} />
+        <View style={styles.cardWrapper(width / props?.numColumns)}>
+            <TouchableOpacity
+                disabled={disabled}
+                activeOpacity={.9}
+                onPress={() => props?.onPress(props)}
+                style={[styles.cardShadow, styles.container]}>
+                <View style={styles.qrWrapper}>
+                    <MyText large bold color={textColor}>{props?.number || '??'}</MyText>
+                    <View style={styles.qr}>
+                        <Icon name={iconName} size={25} color={iconColor} />
+                    </View>
                 </View>
-            </View>
-            <MyText left small bold color={props?.isServed ? colors.lightgray : colors.black}>{props?.location || 'Lantai ?'}</MyText>
-            <MyText left light color={props?.isServed ? colors.lightgray : colors.black}>{props?.capacity || 'x - x'} Orang</MyText>
-            {props?.isServed && <View style={styles.servedOverlay} />}
-        </TouchableOpacity>
+                <MyText left small bold color={textColor}>{props?.location || 'Lantai ?'}</MyText>
+                <MyText left light color={textColor}>{props?.capacity || 'x - x'} Orang</MyText>
+            </TouchableOpacity>
+        </View>
     )
 })

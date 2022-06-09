@@ -6,7 +6,6 @@ const { colors } = THEME;
 export default StyleSheet.create({
     navbarContainer: {
         position: 'absolute',
-        bottom: 0,
         left: 0,
         height: 66,
         width: '100%',

@@ -13,6 +13,7 @@ const IC_AVATAR_ORDER_FAIL = require('../../../Assets/Images/ic_avatar_order_fai
 const IC_DEFAULT_PROFILE = require('../../../Assets/Images/ic_default_profile.png');
 const IC_ICON_TRANSAKSI = require('../../../Assets/Images/ic_icon_transaksi.png');
 const IC_TRAFFIC_GRAPH = require('../../../Assets/Images/ic_taffic_graph.png');
+const IC_PRODUCT = require('../../../Assets/Images/ic_product.png');
 
 export {
     IC_SPLASH,
@@ -30,4 +31,5 @@ export {
     IC_DEFAULT_PROFILE,
     IC_ICON_TRANSAKSI,
     IC_TRAFFIC_GRAPH,
+    IC_PRODUCT,
 }
