@@ -19,6 +19,11 @@ export default StyleSheet.create({
         backgroundColor: colors.white,
         paddingHorizontal: '5%',
     },
+    imgBadge: {
+        width: '100%',
+        height: 200,
+        borderRadius: 12
+    },
     description: {
         width: '100%',
         paddingVertical: 24,
@@ -30,7 +35,9 @@ export default StyleSheet.create({
         marginTop: 24,
         marginBottom: 15,
         width: '100%',
-        borderBottomWidth: 1,
+        height: 60,
+        borderBottomWidth: .8,
+        flexDirection: 'row',
         borderBottomColor: colors.lightgray,
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -38,12 +45,30 @@ export default StyleSheet.create({
     sectionVariant: {
         marginBottom: 15,
         width: '100%',
-        borderBottomWidth: 1,
+        height: 50,
+        borderBottomWidth: .8,
+        flexDirection: 'row',
         borderBottomColor: colors.lightgray,
         justifyContent: 'space-between',
         alignItems: 'center',
     },
     titleVariant: {
         marginVertival: 22
+    },
+    buttonsContainer: {
+        width: '100%',
+        height: 80,
+        backgroundColor: colors.white,
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        flexDirection: 'row',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
     }
 })

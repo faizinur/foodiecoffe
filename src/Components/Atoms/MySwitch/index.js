@@ -14,7 +14,7 @@ const START_X_POS = 3;
 const END_X_POS = 23;
 const MySwitch = props => {
     const { colors } = useTheme();
-    let ACTIVE_COLOR = 'color' in props ? props.color : colors.cerulean;
+    let ACTIVE_COLOR = 'color' in props ? props?.color : colors.cerulean;
     let INAVTIVE_COLOR = colors.lightgray;
     const xPos = useSharedValue(3);
     const bgColor = useSharedValue({ backgroundColor: INAVTIVE_COLOR })
@@ -28,20 +28,20 @@ const MySwitch = props => {
     const _onSwitchPresss = useCallback((initialValue = START_X_POS) => {
         xPos.value = (initialValue == START_X_POS ? END_X_POS : START_X_POS);
         bgColor.value = { backgroundColor: (initialValue == START_X_POS ? ACTIVE_COLOR : INAVTIVE_COLOR) }
-        props?.onValueChange(initialValue == START_X_POS)
+        // 'onValueChange' in props && props?.onValueChange(initialValue == START_X_POS)
     }, [])
 
     useEffect(() => {
-        if (props.disabled == true) {
+        if (props?.disabled == true) {
             bgColor.value = { backgroundColor: colors.moonRaker }
         } else {
-            _onSwitchPresss(props.value ? START_X_POS : END_X_POS)
+            _onSwitchPresss(props?.value ? START_X_POS : END_X_POS)
         }
         return () => { }
     }, [])
     return (
         <TouchableOpacity
-            disabled={props.disabled}
+            disabled={props?.disabled}
             activeOpacity={.8}
             onPress={() => _onSwitchPresss(xPos.value)}>
             <Animated.View

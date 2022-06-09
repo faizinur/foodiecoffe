@@ -24,7 +24,7 @@ export default memo(({ navigation }) => {
 
     const _onMenuPress = useCallback(() => {
         log('_onMenuPress : ')
-        refMejaModals.current?.toggle({})
+        refMenuModals.current?.toggle({})
     }, [])
     useEffect(() => {
         log('Mount MenuTemp');
