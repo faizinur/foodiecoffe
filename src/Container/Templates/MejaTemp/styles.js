@@ -40,23 +40,23 @@ export default StyleSheet.create({
     separator: {
         height: 60
     },
-    modal: {
-        flex: 1
-    },
-    modalContainer: {
+    contentContainerStyle: {
         flex: 1,
-        backgroundColor: 'rgba(1,1,1,0.1)',
-        marginTop: StatusBar.currentHeight,
-        borderTopLeftRadius: 16,
-        borderTopRightRadius: 16,
-        borderTopWidth: 0.5,
-        borderTopColor: colors.athensGray,
-        // paddingTop: 4,
+        backgroundColor: colors.white,
+        borderTopRightRadius: 12,
+        borderTopLeftRadius: 12,
+        paddingTop: 7,
+    },
+    drawerIndicator: {
+        height: 4,
+        width: 30,
+        alignSelf: 'center',
+        backgroundColor: colors.athensGray,
+        borderRadius: 100,
+        marginBottom: 6
     },
     rnCamera: {
         flex: 1,
-        borderTopLeftRadius: 16,
-        borderTopRightRadius: 16,
     },
     drawwerIndicator: {
         height: 4,
@@ -193,5 +193,11 @@ export default StyleSheet.create({
         height: 80,
         paddingHorizontal: '5%',
         justifyContent: 'center',
+    },
+    orderDetailContainer: {
+        height: 80,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })

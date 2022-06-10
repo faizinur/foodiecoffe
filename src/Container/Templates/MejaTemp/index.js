@@ -41,7 +41,7 @@ export default memo(({ navigation }) => {
     }, [])
     const _onMout = useCallback(() => {
         log('_onMout MejaTemp');
-        setListMeja(DataMeja.sort((prev, next) => prev.isServed != false));
+        setListMeja(DataMeja.sort((prev, next) => prev.available != false));
     }, [listMeja])
     useEffect(() => {
         log('Mount MejaTemp');

@@ -53,7 +53,7 @@ export default StyleSheet.create({
         alignItems: 'center',
     },
     titleVariant: {
-        marginVertival: 22
+        marginVertical: 22
     },
     buttonsContainer: {
         width: '100%',
@@ -70,5 +70,9 @@ export default StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
+    },
+    button: {
+        flexGrow: 1,
+        marginHorizontal: 10
     }
 })

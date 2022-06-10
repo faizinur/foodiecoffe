@@ -14,7 +14,7 @@ export default memo(({ navigation: { replace } }) => {
     useEffect(() => {
         log('Mount Splash');
         dispatch(setUser({ email: "email@email.com", password: "1234", "username": 'FoodieCoffe' }))
-        setTimeout(() => replace('Login'), 2000);
+        setTimeout(() => replace('Login'), 1000);
         return () => {
             log('Unmount Splash')
         }

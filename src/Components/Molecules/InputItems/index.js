@@ -57,13 +57,16 @@ const MyTextInput = (props) => {
 const MyButton = (props) => {
     const { colors } = useTheme();
     const isDisabled = props?.disabled || false;
+    const backgroundColor = props?.disabled ? colors.magnolia : ('secondary' in props ? colors.white : colors.cerulean);
+    const labelColor = props?.disabled ? colors.silverChalice : ('secondary' in props ? colors.cerulean : colors.white);
+    const borderWidth = props?.disabled ? 0 : ('secondary' in props ? 0.8 : 0);
     return (
         <Button
             disabled={isDisabled}
             onPress={props.onPress}
-            style={{ marginVertical: 5, ...props?.style }}
-            contentStyle={{ height: 52, backgroundColor: isDisabled ? colors.magnolia : colors.cerulean, ...props?.contentStyle }}
-            labelStyle={{ color: isDisabled ? colors.lightgray : colors.white, fontWeight: '700', textTransform: 'capitalize' }}
+            style={{ marginVertical: 5, borderWidth, borderColor: colors.cerulean, ...props?.style }}
+            contentStyle={{ height: 52, backgroundColor, ...props?.contentStyle }}
+            labelStyle={{ color: labelColor, fontWeight: '700', textTransform: 'capitalize' }}
             mode="contained"
         >{props?.label || 'label'}</Button>
     )

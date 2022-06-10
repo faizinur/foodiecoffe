@@ -4,6 +4,13 @@ export { height, width };
 import { THEME } from '@Utils';
 const { colors } = THEME;
 export default StyleSheet.create({
+    contentContainerStyle: {
+        flex: 1,
+        backgroundColor: colors.white,
+        borderTopRightRadius: 12,
+        borderTopLeftRadius: 12,
+        paddingTop: 7,
+    },
     container: {
         width: '100%',
         height: '100%',
@@ -39,15 +46,13 @@ export default StyleSheet.create({
         paddingHorizontal: 15,
         marginVertical: 5
     },
-    modal: {
-        flex: 1,
-    },
-    drawwerIndicator: {
+    drawerIndicator: {
         height: 4,
         width: 30,
         alignSelf: 'center',
-        backgroundColor: colors.cerulean,
-        borderRadius: 100
+        backgroundColor: colors.athensGray,
+        borderRadius: 100,
+        marginBottom: 6
     },
     sectionContainer: {
         // height: 60,

@@ -8,12 +8,12 @@ import { IC_CATEGORY } from '@Atoms/Icons';
 export default memo(props => {
     const { colors } = useTheme();
     return (
-        <View style={{ width: width / 3, height: 140, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={styles.cardWrapper(props?.numColumns)}>
             <TouchableOpacity
                 activeOpacity={.8}
                 onPress={props?.onPress}
-                style={{ height: 130, backgroundColor: colors.white }}>
-                <Image source={IC_CATEGORY} resizeMode={'stretch'} style={{ height: 100, width: 100, borderRadius: 10, marginVertical: 4 }} />
+                style={styles.cardContainer}>
+                <Image source={IC_CATEGORY} resizeMode={'stretch'} style={styles.cardImage} />
                 <MyText bold color={colors.black}>{props?.category}</MyText>
             </TouchableOpacity>
         </View>

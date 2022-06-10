@@ -28,7 +28,9 @@ const MySwitch = props => {
     const _onSwitchPresss = useCallback((initialValue = START_X_POS) => {
         xPos.value = (initialValue == START_X_POS ? END_X_POS : START_X_POS);
         bgColor.value = { backgroundColor: (initialValue == START_X_POS ? ACTIVE_COLOR : INAVTIVE_COLOR) }
-        // 'onValueChange' in props && props?.onValueChange(initialValue == START_X_POS)
+        if ('onValueChange' in props) {
+            props?.onValueChange(initialValue == START_X_POS)
+        }
     }, [])
 
     useEffect(() => {
@@ -55,7 +57,6 @@ const MySwitch = props => {
 MySwitch.defaultProps = {
     value: false,
     disabled: false,
-    onValueChange: 'function'
 }
 
 export default MySwitch;

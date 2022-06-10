@@ -7,10 +7,10 @@ import styles, { width } from './styles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 export default memo(props => {
     const { colors } = useTheme();
-    const textColor = props?.isServed ? colors.lightgray : colors.black;
-    const iconColor = props?.isServed ? colors.lightgray : colors.cerulean;
-    const iconName = props?.isServed ? 'silverware-fork-knife' : 'qrcode';
-    const disabled = props?.isServed || false;
+    const textColor = props?.available ? colors.lightgray : colors.black;
+    const iconColor = props?.available ? colors.lightgray : colors.cerulean;
+    const iconName = props?.available ? 'silverware-fork-knife' : 'qrcode';
+    const disabled = props?.available || false;
     return (
         <View style={styles.cardWrapper(width / props?.numColumns)}>
             <TouchableOpacity
