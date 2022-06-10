@@ -8,7 +8,7 @@ import { CardProfile, CardTransaksi, CardTraffic } from '@Organisms';
 import AkunModals from './AkunModals';
 import { ListTransaksi, ListTraffic } from '@Data';
 import styles from './styles';
-export default memo(({ navigation }) => {
+export default memo(() => {
     const { colors } = useTheme();
     const refAkunModals = useRef(<AkunModals />)
     const _onEditProfilePress = useCallback(() => {
@@ -75,7 +75,7 @@ export default memo(({ navigation }) => {
                     />
                 </View>
             </View>
-            <ExitBar navigation={navigation} />
+            <ExitBar />
             <AkunModals ref={refAkunModals} />
         </View >
     )

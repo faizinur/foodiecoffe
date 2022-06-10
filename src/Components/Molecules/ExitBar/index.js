@@ -1,11 +1,12 @@
-import { View, TouchableOpacity, BackHandler, Alert } from 'react-native';
+import { View, TouchableOpacity, Alert } from 'react-native';
 import React, { memo } from 'react';
 import { log } from '@Utils';
 import { useTheme } from 'react-native-paper';
 import { MyText } from '@Atoms';
 import styles from './styles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-export default memo(({ reset }) => {
+import { reset } from '@RootNavigation';
+export default memo(() => {
     const { colors } = useTheme();
     const _onLogOut = () => {
         log('_onLogOut : ');
@@ -16,7 +17,7 @@ export default memo(({ reset }) => {
                 text: "Batal", onPress: () => log("Cancel Pressed"), style: "cancel"
             },
             {
-                text: "Mau aja", onPress: () => BackHandler.exitApp()//reset('Login')
+                text: "Mau aja", onPress: () => reset('Splash')
             }]
         )
     }
@@ -24,9 +25,9 @@ export default memo(({ reset }) => {
         <TouchableOpacity
             activeOpacity={.8}
             onPress={_onLogOut}
-            style={{ width: '100%', height: 80, backgroundColor: colors.white, paddingHorizontal: '5%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-            <Icon name='location-exit' size={30} color={colors.cerulean} style={{ marginRight: 15 }} />
-            <View style={{ flex: 1 }}>
+            style={styles.exitBarContainer}>
+            <Icon name='location-exit' size={30} color={colors.cerulean} style={styles.iconExit} />
+            <View style={styles.container}>
                 <MyText medium bold left color={colors.black}>Keluar</MyText>
                 <MyText light left >Anda tidak akan dapat menggunakan layanan Foody, kecuali Anda login kembali</MyText>
             </View>
