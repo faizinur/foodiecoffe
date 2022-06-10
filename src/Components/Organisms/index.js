@@ -5,6 +5,7 @@ import CardProfile from './CardProfile';
 import CardTransaksi from './CardTransaksi';
 import CardTraffic from './CardTraffic';
 import CardMenu from './CardMenu';
+import CardCategory from './CardCategory';
 export {
     Forms,
     CardOrder,
@@ -13,4 +14,5 @@ export {
     CardTransaksi,
     CardTraffic,
     CardMenu,
+    CardCategory,
 }

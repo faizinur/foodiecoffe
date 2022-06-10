@@ -18,7 +18,7 @@ export default memo(({ navigation }) => {
         refPagerViewChild.current?.setPage(index);
     }, [])
     const _onFABPress = useCallback(() => {
-        log('_onFABPress Pressed');
+        log('_onFABPress Pressed : ');
         refHomeModals.current?.toggle()
     }, [])
     const _onPressCalendar = useCallback(() => {
@@ -67,7 +67,7 @@ export default memo(({ navigation }) => {
                     </AccordionHistory>
                 </View>
             </PagerView>
-            <HomeModals useRef={refHomeModals} />
+            <HomeModals ref={refHomeModals} />
         </View>
     )
 })

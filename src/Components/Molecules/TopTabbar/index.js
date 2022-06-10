@@ -19,13 +19,13 @@ export default memo((props) => {
         left: withSpring(xPosSlider.value.left, CONSTANT.SPRING_CONFIG),
     }))
     const _onTabPres = useCallback(tabIndex => {
-        xPosSlider.value = { left: tabPosition[tabIndex].position };
-        'onTabChange' in props && props?.onTabChange(tabIndex);
         tabPosition[0].ref.current?.setNativeProps({ style: { fontFamily: tabIndex == 0 ? 'ReadexProBold' : 'ReadexProLight' } })
         tabPosition[1].ref.current?.setNativeProps({ style: { fontFamily: tabIndex == 1 ? 'ReadexProBold' : 'ReadexProLight' } })
+        xPosSlider.value = { left: tabPosition[tabIndex].position };
+        'onTabChange' in props && props?.onTabChange(tabIndex);
     }, []);
     useEffect(() => {
-        tabPosition[0].ref.current?.setNativeProps({ style: { fontFamily: 'ReadexProBold' } })
+        _onTabPres(0)
         return () => { }
     }, [])
     return (

@@ -90,7 +90,14 @@ export default forwardRef((props, ref) => {
                                         style={styles.accordion}
                                         title="Ringkasan Belanja"
                                         expanded={expanded}
-                                        onPress={() => setExpanded(prevState => !prevState)}>
+                                        onPress={() => setExpanded(prevState => !prevState)}
+                                        theme={{
+                                            colors: {
+                                                background: colors.white,
+                                                backdrop: colors.white,
+                                                surface: colors.white,
+                                            }
+                                        }}>
                                         <View style={styles.accordionWrapper}>
                                             <View style={styles.sectionList}>
                                                 <MyText light color={colors.black}>Jumlah Orang</MyText>
