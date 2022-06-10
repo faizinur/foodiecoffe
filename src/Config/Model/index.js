@@ -1,1 +1,5 @@
-console.log('MODEL MELAKUKAN PENGOLAHAN DATA DAN AMBIL DATA ATAU APAPUN ITU')
+import * as RiwayatTransaksi from './RiwayatTransaksi';
+
+export {
+    RiwayatTransaksi,
+}

@@ -18,10 +18,10 @@ export default memo(({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
-                <MyText medium bold left color={colors.black}>List Pesanan</MyText>
+                <MyText medium bold left color={colors.black}>Daftar Transaksi</MyText>
             </View>
             <View style={styles.sectionTitle}>
-                <MyText small color={colors.black}>Daftar Transaksi</MyText>
+                <MyText small color={colors.black}>90 Total Pesanan</MyText>
                 <TouchableOpacity
                     activeOpacity={.8}
                     style={[styles.sectionTitle, styles.btnSection]}>

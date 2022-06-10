@@ -1,4 +1,4 @@
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, FlatList } from 'react-native';
 import React, { useEffect, memo, useRef, useCallback, } from 'react';
 import { log } from '@Utils';
 import { useTheme, FAB } from 'react-native-paper';
@@ -9,8 +9,11 @@ import { CardOrder } from '@Organisms';
 import { TopTabbar, AccordionHistory, EmptyOrderScreen } from '@Molecules';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import HomeModals from './HomeModals'
+import { useRiwayatTransaksi } from '@ViewModel';
 const INITIAL_PAGE = 0;
 export default memo(({ navigation }) => {
+    const [paidOrder, canceledOrder, _getRiwayatTransaksi] = useRiwayatTransaksi();
+    const renderCardOrder = ({ item }) => <CardOrder {...item} />
     const { colors } = useTheme();
     const refPagerViewChild = useRef(<PagerView />);
     const refHomeModals = useRef(<HomeModals />);
@@ -24,8 +27,12 @@ export default memo(({ navigation }) => {
     const _onPressCalendar = useCallback(() => {
         log('_onPressCalendar Pressed')
     }, [])
+    const _onMount = async () => {
+        await _getRiwayatTransaksi()
+    }
     useEffect(() => {
         log('Mount HomeTemp');
+        _onMount()
         return () => {
             log('Unmount HomeTemp')
         }
@@ -59,11 +66,19 @@ export default memo(({ navigation }) => {
                             <MyText light color={colors.black}>28 Apr 2022</MyText>
                         </TouchableOpacity>
                     </View>
-                    <AccordionHistory dataCount={75} title={'pesanan selesai'} leftIcon={'check'} color={colors.emerald}>
-                        <CardOrder orderStatus={true} orderDone={true} />
+                    <AccordionHistory dataCount={paidOrder.length} title={'pesanan selesai'} leftIcon={'check'} color={colors.emerald}>
+                        <FlatList
+                            data={paidOrder}
+                            renderItem={renderCardOrder}
+                            keyExtractor={({ id }) => id}
+                            showsVerticalScrollIndicator={false} />
                     </AccordionHistory>
-                    <AccordionHistory dataCount={15} title={'pesanan batal'} leftIcon={'close'} color={colors.wildWaterMelon}>
-                        <CardOrder orderStatus={false} orderDone={true} />
+                    <AccordionHistory dataCount={canceledOrder.length} title={'pesanan batal'} leftIcon={'close'} color={colors.wildWaterMelon}>
+                        <FlatList
+                            data={canceledOrder}
+                            renderItem={renderCardOrder}
+                            keyExtractor={({ id }) => id}
+                            showsVerticalScrollIndicator={false} />
                     </AccordionHistory>
                 </View>
             </PagerView>

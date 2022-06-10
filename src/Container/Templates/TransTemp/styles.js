@@ -11,7 +11,7 @@ export default StyleSheet.create({
         padding: '5%',
     },
     titleContainer: {
-        height: 60,
+        height: 30,
         width: '100%',
     },
     sectionTitle: {

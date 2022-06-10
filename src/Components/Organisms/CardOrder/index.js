@@ -13,10 +13,10 @@ export default (props) => {
             activeOpacity={.9}
             onPress={props?.onPress}>
             <View style={styles.userInfo}>
-                <Image source={'orderStatus' in props ? (props?.orderStatus ? IC_AVATAR_ORDER_SUCCESS : IC_AVATAR_ORDER_FAIL) : IC_AVATAR_ORDER} />
+                <Image source={'orderStatus' in props ? (props?.orderStatus == 'paid' ? IC_AVATAR_ORDER_SUCCESS : IC_AVATAR_ORDER_FAIL) : IC_AVATAR_ORDER} />
                 <View style={styles.userInfoWrapper}>
                     <View style={styles.userInfoDetail}>
-                        <MyText fontSize={14} lineHeight={18} bold color={colors.black} numberOfLines={1} style={styles.userTextlength}>Didin Ruhiyat</MyText>
+                        <MyText fontSize={14} lineHeight={18} bold color={colors.black} numberOfLines={1} style={styles.userTextlength}>{props?.name}</MyText>
                         <MyText fontSize={10} lineHeight={12} >
                             <Icon name='clock-time-four-outline' /> 15m ago</MyText>
                     </View>
@@ -31,7 +31,7 @@ export default (props) => {
             </View>
             <View style={styles.dashedLine} />
             <View style={styles.listPayment}>
-                <View style={styles.tableNumber(props?.orderDone ? colors.black : colors.cerulean)}>
+                <View style={styles.tableNumber(props?.orderStatus == 'canceled' ? colors.black : colors.cerulean)}>
                     <MyText fontSize={10} lineHeight={12} center color={colors.white} bold numberOfLines={1} style={{ width: '80%' }}>Table 15</MyText>
                 </View>
                 <MyText fontSize={14} lineHeight={18} center bold color={colors.black}>Rp 212.000</MyText>
