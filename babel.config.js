@@ -24,6 +24,8 @@ module.exports = {
           "@Organisms": "./src/Components/Organisms/",
           //config
           "@Config": "./src/Config/",
+          "@Model": "./src/Config/Model",
+          "@ViewModel": "./src/Config/ViewModel",
           "@CustomHooks": "./src/Config/CustomHooks/",
           "@Data": "./src/Config/Data/",
           "@Data": "./src/Config/Data/",

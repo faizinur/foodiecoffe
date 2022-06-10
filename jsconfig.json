@@ -16,6 +16,12 @@
             "@Config": [
                 "./src/Config/*"
             ],
+            "@Model": [
+                "./src/Config/Model*"
+            ],
+            "@ViewModel": [
+                "./src/Config/ViewModel*"
+            ],
             "@CustomHooks": [
                 "./src/Config/CustomHooks/*"
             ],
