@@ -5,6 +5,7 @@ import TopTabbar from './TopTabbar';
 import AccordionHistory from './AccordionHistory';
 import EmptyOrderScreen from './EmptyOrderScreen';
 import ExitBar from './ExitBar';
+import FloatingSwitch from './FloatingSwitch';
 export {
     InputItems,
     TitleBar,
@@ -13,4 +14,5 @@ export {
     AccordionHistory,
     EmptyOrderScreen,
     ExitBar,
+    FloatingSwitch,
 }

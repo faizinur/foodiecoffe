@@ -18,13 +18,19 @@ export default props => {
         </View>
     return (
         <View style={styles.container}>
-            <List.Accordion titleStyle={styles.titleStyle} style={styles.listStyle} left={left} title={props?.title} right={right} theme={{
-                colors: {
-                    background: colors.white,
-                    backdrop: colors.white,
-                    surface: colors.white,
-                }
-            }}>
+            <List.Accordion
+                titleStyle={styles.titleStyle}
+                style={styles.listStyle}
+                left={left}
+                title={props?.title}
+                right={right}
+                theme={{
+                    colors: {
+                        background: colors.white,
+                        backdrop: colors.white,
+                        surface: colors.white,
+                    }
+                }}>
                 {props?.children}
             </List.Accordion>
         </View>

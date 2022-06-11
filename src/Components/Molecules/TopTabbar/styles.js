@@ -7,7 +7,7 @@ export default StyleSheet.create({
     sliderContainer: {
         paddingHorizontal: '5%',
         paddingVertical: 16,
-        height: 100,
+        height: 90,
     },
     sliderWrapper: {
         width: '100%',

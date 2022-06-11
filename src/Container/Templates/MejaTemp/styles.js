@@ -45,7 +45,6 @@ export default StyleSheet.create({
         backgroundColor: colors.white,
         borderTopRightRadius: 12,
         borderTopLeftRadius: 12,
-        paddingTop: 7,
     },
     drawerIndicator: {
         height: 4,

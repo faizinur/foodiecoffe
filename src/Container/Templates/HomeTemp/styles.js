@@ -44,7 +44,11 @@ export default StyleSheet.create({
         borderColor: colors.athensGray,
         borderRadius: 100,
         paddingHorizontal: 15,
-        marginVertical: 5
+        marginVertical: 5,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexDirection: 'row',
+        alignSelf: 'flex-end'
     },
     drawerIndicator: {
         height: 4,
@@ -55,9 +59,29 @@ export default StyleSheet.create({
         marginBottom: 6
     },
     sectionContainer: {
-        // height: 60,
-        width: '100%',
-        paddingHorizontal: '5%',
-        marginVertical: 24,
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        marginBottom: 10
     },
+    contentContainerStyle: {
+        padding: 5,
+        paddingBottom: 120,
+        paddingTop: 10
+    },
+    chipsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    chip: {
+        height: 30,
+        marginHorizontal: 2.5,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    chipText: {
+        fontSize: 12,
+        fontFamily: 'ReadexProMedium'
+    }
 })
