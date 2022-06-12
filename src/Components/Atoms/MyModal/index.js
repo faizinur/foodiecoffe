@@ -27,7 +27,7 @@ export default props => {
     }
     return (
         <Modal
-            animationType="slide"
+            animationType={props?.animationType || 'slide'}
             transparent={true}
             visible={props?.visible || false}
             statusBarTranslucent={props?.statusBarTranslucent}

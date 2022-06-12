@@ -1,5 +1,5 @@
-import { useRiwayatTransaksi } from './UseRiwayatTransaksi';
+import UseHomeVM from './UseHomeVM';
 
 export {
-    useRiwayatTransaksi,
+    UseHomeVM,
 }

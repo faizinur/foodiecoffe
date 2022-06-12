@@ -41,6 +41,7 @@ export default forwardRef((props, ref) => {
     </View>)
     return (
         <MyModal
+            animationType={'fade'}
             visible={modalVisible}
             onRequestClose={_onCloseModal}
             statusBarTranslucent={true}
