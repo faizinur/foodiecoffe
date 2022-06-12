@@ -16,11 +16,12 @@ export default memo(({ navigation }) => {
         error,
         loading,
         orderList,
+        newOrderList,
         activeOrderList,
         _getRiwayatTransaksi,
+        _getNewTransaksi,
         ORDER_TYPES
     } = UseHomeVM();
-    const renderCardOrder = ({ item }) => <CardOrder {...item} />
     const { colors } = useTheme();
     const refPagerViewChild = useRef(<PagerView />);
     const refHomeModals = useRef(<HomeModals />);
@@ -29,9 +30,12 @@ export default memo(({ navigation }) => {
     const _onFABPress = useCallback(() => refHomeModals.current?.toggle(), [])
     const _onPressCalendar = useCallback(() => log('_onPressCalendar Pressed'), [])
     const _getTransaksi = async (transactionType) => await _getRiwayatTransaksi(transactionType)
+    const _getTransaksiNew = async (transactionType) => await _getNewTransaksi(transactionType)
+    const renderCardOrder = ({ item }) => <CardOrder {...item} />
     useEffect(() => {
         log('Mount HomeTemp');
         _getTransaksi()
+        _getTransaksiNew()
         return () => {
             log('Unmount HomeTemp')
         }
@@ -46,7 +50,15 @@ export default memo(({ navigation }) => {
                 scrollEnabled={false}>
                 <View key='0' style={styles.pagerInnerContainer}>
                     <MyText medium bold left color={colors.black}>List Pesanan</MyText>
-                    <EmptyOrderScreen />
+                    <FlatList
+                        contentContainerStyle={styles.contentContainerStyle}
+                        data={loading ? [] : newOrderList}
+                        renderItem={renderCardOrder}
+                        snapToInterval={150}
+                        keyExtractor={({ id }) => id}
+                        showsVerticalScrollIndicator={false}
+                        ListEmptyComponent={() => <EmptyOrderScreen />}
+                    />
                     <FAB
                         theme={styles.fab}
                         style={styles.fabStyles}
@@ -56,10 +68,25 @@ export default memo(({ navigation }) => {
                 </View>
                 <View key='1' style={styles.pagerInnerContainer}>
                     <MyToolBar
+                        tool={[
+                            {
+                                label: 'Selesai',
+                                icon: 'check-bold',
+                                type: ORDER_TYPES[0],
+                                color: colors.emerald
+                            },
+                            {
+                                label: 'Batal',
+                                icon: 'close-thick',
+                                type: ORDER_TYPES[1],
+                                color: colors.wildWaterMelon
+                            },
+                        ]}
                         activeOrderList={activeOrderList}
                         listCount={orderList.length}
                         onPressChips={_getTransaksi}
                         onPressCalendar={_onPressCalendar}
+                        loading={loading}
                     />
                     <FlatList
                         contentContainerStyle={styles.contentContainerStyle}

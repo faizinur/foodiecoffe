@@ -1,16 +1,28 @@
-import { View, TouchableOpacity } from 'react-native';
-import React, { useEffect, memo } from 'react';
+import { View, FlatList } from 'react-native';
+import React, { useEffect, memo, useCallback } from 'react';
 import { log } from '@Utils';
 import { useTheme } from 'react-native-paper';
 import { MyText } from '@Atoms';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { CardOrder } from '@Organisms';
+import { CardOrder, MyToolBar } from '@Organisms';
+import { UseTransaksiVM } from '@ViewModel';
 import styles from './styles';
 export default memo(({ navigation }) => {
-    const { colors } = useTheme();
+    const {
+        error,
+        loading,
+        orderList,
+        activeOrderList,
+        _getDaftarTransaksi,
+        ORDER_TYPES
+    } = UseTransaksiVM();
 
+    const { colors } = useTheme();
+    const _onPressCalendar = useCallback(() => log('_onPressCalendar Pressed'), [])
+    const _getTransaksi = async (transactionType) => await _getDaftarTransaksi(transactionType);
+    const renderCardOrder = ({ item }) => <CardOrder {...item} />
     useEffect(() => {
         log('Mount TransTemp');
+        _getTransaksi()
         return () => {
             log('Unmount TransTemp')
         }
@@ -20,19 +32,37 @@ export default memo(({ navigation }) => {
             <View style={styles.titleContainer}>
                 <MyText medium bold left color={colors.black}>Daftar Transaksi</MyText>
             </View>
-            <View style={styles.sectionTitle}>
-                <MyText small color={colors.black}>90 Total Pesanan</MyText>
-                <TouchableOpacity
-                    activeOpacity={.8}
-                    style={[styles.sectionTitle, styles.btnSection]}>
-                    <MyText light color={colors.black}>Terbayar</MyText>
-                    <Icon name='chevron-down' size={15} />
-                </TouchableOpacity>
-            </View>
+            <MyToolBar
+                tool={[
+                    {
+                        label: 'Di bayar',
+                        icon: 'check-bold',
+                        type: ORDER_TYPES[0],
+                        color: colors.emerald
+                    },
+                    {
+                        label: 'Ngutang',
+                        icon: 'close-thick',
+                        type: ORDER_TYPES[1],
+                        color: colors.wildWaterMelon
+                    },
+                ]}
+                activeOrderList={activeOrderList}
+                listCount={orderList.length}
+                onPressChips={_getTransaksi}
+                onPressCalendar={_onPressCalendar}
+                loading={loading}
+            />
             <View style={styles.content}>
-                <CardOrder orderStatus={true} orderDone={false} />
-                <CardOrder orderStatus={true} orderDone={false} />
-                <CardOrder orderStatus={true} orderDone={false} />
+                <FlatList
+                    contentContainerStyle={styles.contentContainerStyle}
+                    data={loading ? [] : orderList}
+                    renderItem={renderCardOrder}
+                    snapToInterval={150}
+                    keyExtractor={({ id }) => id}
+                    showsVerticalScrollIndicator={false}
+                    ListEmptyComponent={() => <MyText light bold color={colors.black}>{JSON.stringify(error) !== '""' ? error : 'Harap Tunggu...'}</MyText>}
+                />
             </View>
         </View>
     )

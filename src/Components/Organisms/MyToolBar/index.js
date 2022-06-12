@@ -1,41 +1,39 @@
-import { View } from 'react-native';
+import { View, FlatList } from 'react-native';
 import React, { memo, } from 'react';
 import { log } from '@Utils';
 import { useTheme, Chip } from 'react-native-paper';
 import styles from './styles';
 
-export default memo(({ activeOrderList, onPressChips = () => { }, onPressCalendar = () => { }, listCount }) => {
+export default memo(({ activeOrderList, onPressChips = () => { }, onPressCalendar = () => { }, listCount, tool = [], loading = false }) => {
     const { colors } = useTheme();
     return (
         <View style={styles.sectionContainer}>
             <View style={styles.chipsContainer}>
+                <FlatList
+                    data={tool}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    keyExtractor={({ type }) => `chips-${type}`}
+                    renderItem={({ item: { label, icon, type, color } }) =>
+                        <Chip
+                            icon={activeOrderList == type && icon}
+                            mode={'outlined'}
+                            selected={activeOrderList == type}
+                            selectedColor={activeOrderList == type ? colors.white : color}
+                            onPress={() => onPressChips(type)}
+                            style={styles.chip(activeOrderList == type ? color : colors.alabaster)}
+                            textStyle={styles.chipText}>{label} {!loading && activeOrderList == type && `(${listCount})`}
+                        </Chip>}
+                />
                 <Chip
-                    icon={activeOrderList == 'PAID' && 'check-bold'}
+                    icon={'calendar-month'}
                     mode={'outlined'}
-                    selected={activeOrderList == 'PAID'}
-                    selectedColor={activeOrderList == 'PAID' ? colors.white : colors.emerald}
-                    onPress={() => onPressChips('PAID')}
-                    style={styles.chip(activeOrderList == 'PAID' ? colors.emerald : colors.alabaster)}
-                    textStyle={styles.chipText}>Selesai {activeOrderList == 'PAID' && `${listCount}`}
-                </Chip>
-                <Chip
-                    icon={activeOrderList == 'CANCELED' && 'close-thick'}
-                    mode={'outlined'}
-                    selected={activeOrderList == 'CANCELED'}
-                    selectedColor={activeOrderList == 'CANCELED' ? colors.white : colors.wildWaterMelon}
-                    onPress={() => onPressChips('CANCELED')}
-                    style={styles.chip(activeOrderList == 'CANCELED' ? colors.wildWaterMelon : colors.alabaster)}
-                    textStyle={styles.chipText}>Batal {activeOrderList == 'CANCELED' && `${listCount}`}
+                    onPress={onPressCalendar}
+                    style={styles.chipCalendar}
+                    textStyle={styles.chipCalendarText}
+                >28 Apr 2022
                 </Chip>
             </View>
-            <Chip
-                icon={'calendar-month'}
-                mode={'outlined'}
-                onPress={onPressCalendar}
-                style={styles.chipCalendar}
-                textStyle={styles.chipCalendarText}
-            >28 Apr 2022
-            </Chip>
         </View>
     )
 })

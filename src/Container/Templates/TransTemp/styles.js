@@ -31,4 +31,9 @@ export default StyleSheet.create({
     content: {
         flex: 1
     },
+    contentContainerStyle: {
+        padding: 5,
+        paddingBottom: 120,
+        paddingTop: 10
+    },
 })

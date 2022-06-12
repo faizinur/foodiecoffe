@@ -11,6 +11,7 @@ export default StyleSheet.create({
         marginBottom: 10
     },
     chipsContainer: {
+        width: '100%',
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center'

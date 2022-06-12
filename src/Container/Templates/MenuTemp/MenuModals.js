@@ -19,6 +19,14 @@ export default forwardRef((props, ref) => {
     const _onCloseModal = useCallback(() => {
         setModalVisible(prevState => !prevState);
     }, [modalVisible]);
+    const _onCanceled = useCallback(() => {
+        log('_onCanceled : ')
+        setModalVisible(prevState => !prevState);
+    }, [modalVisible])
+    const _onSave = useCallback(() => {
+        setModalVisible(prevState => !prevState);
+        log('_onSave : ')
+    }, [modalVisible])
     return (
         <MyModal
             visible={modalVisible}
@@ -72,9 +80,11 @@ export default forwardRef((props, ref) => {
             <View style={styles.buttonsContainer}>
                 <InputItems.MyButton
                     secondary
+                    onPress={_onCanceled}
                     style={styles.button}
                     label={'Batal'} />
                 <InputItems.MyButton
+                    onPress={_onSave}
                     style={styles.button}
                     label={'Simpan'} />
             </View>

@@ -1,14 +1,15 @@
 import { RiwayatTransaksi } from '@Model';
 const { getRiwayatTransaksi } = RiwayatTransaksi;
 import { log } from '@Utils';
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 let ORDER_LIST = [];
-let FETCHING_RIWAYAT_TRANSAKSI = false;
+let NEW_ORDER_LIST = [];
 export default () => {
     const ORDER_TYPES = ['PAID', 'CANCELED'];
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [orderList, setOrderList] = useState([]);
+    const [newOrderList, setNewOrderList] = useState([]);
     const [activeOrderList, setActiveOrderList] = useState(ORDER_TYPES[0]);
 
     const _getRiwayatTransaksi = async (transactionType = 'PAID') => {
@@ -17,19 +18,37 @@ export default () => {
             return false;
         }
         try {
-            FETCHING_RIWAYAT_TRANSAKSI = true;
             ORDER_LIST = await getRiwayatTransaksi();
             setLoading(true);
-            setActiveOrderList(transactionType)
             setError('')
+            setActiveOrderList(transactionType)
             setTimeout(() => {
                 setOrderList(ORDER_LIST.filter(({ orderStatus }) => orderStatus == transactionType));
                 setLoading(false);
                 ORDER_LIST = [];
-                FETCHING_RIWAYAT_TRANSAKSI = false;
             }, 500)
         } catch (e) {
-            FETCHING_RIWAYAT_TRANSAKSI = false;
+            log(e)
+            setError(e);
+        }
+    }
+
+    const _getNewTransaksi = async () => {
+        if (loading == true) {
+            log('lagi kerja')
+            return false;
+        }
+        try {
+            NEW_ORDER_LIST = await getRiwayatTransaksi();
+            setLoading(true);
+            setError('')
+            setActiveOrderList(ORDER_TYPES[0])
+            setTimeout(() => {
+                setNewOrderList(NEW_ORDER_LIST.filter(({ orderStatus }) => orderStatus == ORDER_TYPES[0]));
+                setLoading(false);
+                NEW_ORDER_LIST = [];
+            }, 4000)
+        } catch (e) {
             log(e)
             setError(e);
         }
@@ -39,8 +58,10 @@ export default () => {
         error,
         loading,
         orderList,
+        newOrderList,
         activeOrderList,
         _getRiwayatTransaksi,
+        _getNewTransaksi,
         ORDER_TYPES,
     }
 }
