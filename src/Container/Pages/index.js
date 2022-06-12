@@ -22,7 +22,7 @@ export default stackProps => (
         ref={navigationRef}
         onReady={() => { log('Root Props : ', stackProps) }}>
         <Stack.Navigator
-            initialRouteName={"Home"}
+            initialRouteName={"Splash"}
             mode={"card"}
             ScreenOptions={{}}>
             <Stack.Screen name="Splash" options={() => (animationSlide)}>

@@ -51,7 +51,7 @@ export default memo(({ navigation }) => {
                 <View key='0' style={styles.pagerInnerContainer}>
                     <MyText medium bold left color={colors.black}>List Pesanan</MyText>
                     <FlatList
-                        contentContainerStyle={styles.contentContainerStyle}
+                        contentContainerStyle={[styles.contentContainerStyle,{flex:1}]}
                         data={loading ? [] : newOrderList}
                         renderItem={renderCardOrder}
                         snapToInterval={150}

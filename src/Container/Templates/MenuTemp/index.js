@@ -1,4 +1,4 @@
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, FlatList } from 'react-native';
 import React, { useEffect, memo, useCallback, useRef } from 'react';
 import { log } from '@Utils';
 import { useTheme } from 'react-native-paper';
@@ -7,8 +7,15 @@ import { CardMenu } from '@Organisms';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from './styles';
 import MenuModals from './MenuModals';
+import { UseProductVM } from '@ViewModel';
 import { MyText } from '@Atoms';
 export default memo(({ navigation }) => {
+    const {
+        error,
+        loading,
+        productList,
+        _getDaftarProduct,
+    } = UseProductVM();
     const { colors } = useTheme();
     const refMenuModals = useRef(<MenuModals />)
     const _onClickSetting = () => {
@@ -26,8 +33,12 @@ export default memo(({ navigation }) => {
         log('_onMenuPress : ')
         refMenuModals.current?.toggle({})
     }, [])
+    const renderCardMenu = ({ item }) => <CardMenu {...item} onPress={_onMenuPress} />
+    const _getProduct = async () => await _getDaftarProduct()
+  
     useEffect(() => {
         log('Mount MenuTemp');
+        _getProduct();
         return () => {
             log('Unmount MenuTemp')
         }
@@ -38,9 +49,18 @@ export default memo(({ navigation }) => {
                 disabledLeft={true}
                 title={'Daftar Menu'}
                 renderRight={() => <MyPressableIcon onClickSearch={_onClickSetting} iconName={'cog'} />} />
-            <View style={{ paddingHorizontal: '5%' }}>
-                <CardMenu onPress={_onMenuPress} />
-            </View>
+            {/* <View style={{  }}> */}
+                <FlatList
+                        style={{paddingHorizontal: '5%', flex:1}}
+                        contentContainerStyle={[styles.contentContainerStyle,{flex:1}]}
+                        data={loading ? [] : productList}
+                        renderItem={renderCardMenu}
+                        snapToInterval={150}
+                        keyExtractor={({ id }) => id}
+                        showsVerticalScrollIndicator={false}
+                        ListEmptyComponent={() => <MyText >Product Kosong</MyText>}
+                    />
+            {/* </View> */}
             <MenuModals ref={refMenuModals} />
         </View>
     )

@@ -74,5 +74,10 @@ export default StyleSheet.create({
     button: {
         flexGrow: 1,
         marginHorizontal: 10
-    }
+    },
+    contentContainerStyle: {
+        padding: 5,
+        paddingBottom: 120,
+        paddingTop: 10
+    },
 })
