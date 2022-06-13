@@ -20,7 +20,6 @@ target 'FoodieCoffie' do
   )
 
 
-  pod 'react-native-camera', :path => '../node_modules/react-native-camera'
 
   target 'FoodieCoffieTests' do
     inherit! :complete

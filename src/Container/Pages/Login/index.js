@@ -1,23 +1,20 @@
-import { View, Text } from 'react-native'
-import React, { memo, useEffect, useCallback } from 'react'
+import React, { memo, useEffect, useState, useCallback } from 'react'
 import { Image } from 'react-native'
-import { useSelector } from 'react-redux'
 import { log } from '@Utils';
 import { MyText, PageWrapper } from '@Atoms';
-import { InputItems } from '@Molecules';
+import { Forms } from '@Organisms'
 import { useTheme } from 'react-native-paper';
 import { IC_HORIZONTAL, ONBOARDINGIMAGE } from '@Atoms/Icons';
+import { INPUT_LIST, FORM_NAME } from './input';
+import { UseAuth } from '@ViewModel';
 export default memo(({ navigation: { navigate, replace } }) => {
+    const { _submitLogin } = UseAuth();
     const { colors } = useTheme()
-    //selector 
-    const userData = useSelector(({ userReducers }) => userReducers);
 
-    const _onLogin = useCallback(() => {
-        replace('Home')
-    }, [])
     const _onClickRegister = useCallback(() => {
         navigate('Register');
     }, [])
+
     useEffect(() => {
         log('Mount Login');
         return () => {
@@ -36,17 +33,19 @@ export default memo(({ navigation: { navigate, replace } }) => {
                 resizeMode={'stretch'}
                 style={{ marginVertical: 6.5 }}
             />
-            <MyText bold large color={colors.black} style={{ marginVertical: 6 }}>Selamat Datang!</MyText>
-            <MyText style={{ marginVertical: 6 }}>Selanjutnya, masukkan Nama Pengguna dan Kata sandimu disini ya.</MyText>
-            <InputItems.MyTextInput
-                placeholder={'Username'} />
-            <InputItems.MyTextInput
-                placeholder={'Password'}
-                secureTextEntry />
-            <InputItems.MyButton
-                label={'masuk'}
-                onPress={_onLogin} />
-            <MyText center style={{ marginTop: 25 }}>Belum punya akun?
+            <MyText left bold large color={colors.black} style={{ marginVertical: 6 }}>Selamat Datang!</MyText>
+            <MyText left style={{ marginVertical: 6 }}>Selanjutnya, masukkan Nama Pengguna dan Kata sandimu disini ya.</MyText>
+            <Forms
+                formname={FORM_NAME}
+                inputList={INPUT_LIST}
+                defaultValue={{
+                    "email": "inurfaizi@gmail.com",
+                    "password": "foodiecoffee123"
+                }}
+                onFormSubmit={_submitLogin}
+                submitLabel={'masuk'}
+            />
+            <MyText center style={{ marginVertical: 25 }}>Belum punya akun?
                 <MyText bold onPress={_onClickRegister}> Daftar</MyText>
             </MyText>
         </PageWrapper>

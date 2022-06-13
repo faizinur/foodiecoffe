@@ -33,7 +33,7 @@ export default forwardRef((props, ref) => {
             <View style={styles.drawerIndicator} />
             <FlatList
                 ListHeaderComponent={<View style={styles.sectionContainer}>
-                    <View style={{ paddingVertical: 15 }}>
+                    <View style={{ paddingVertical: 10 }}>
                         <InputItems.MyTextInput placeholder={'Kamu mau pesan apa?'} />
                     </View>
                     <MyText bold medium color={colors.black} left>Aneka Kuliner</MyText>

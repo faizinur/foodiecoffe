@@ -4,7 +4,5 @@ export { height, width };
 import { THEME } from '@Utils';
 const { colors } = THEME;
 export default StyleSheet.create({
-    rnCamera: {
-        flex: 1,
-    },
+
 })

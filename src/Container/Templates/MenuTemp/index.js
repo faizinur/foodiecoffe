@@ -2,7 +2,7 @@ import { View, TouchableOpacity, FlatList } from 'react-native';
 import React, { useEffect, memo, useCallback, useRef } from 'react';
 import { log } from '@Utils';
 import { useTheme } from 'react-native-paper';
-import { TitleBar } from '@Molecules';
+import { TitleBar, PendingModals } from '@Molecules';
 import { CardMenu } from '@Organisms';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from './styles';
@@ -18,6 +18,7 @@ export default memo(({ navigation }) => {
     } = UseProductVM();
     const { colors } = useTheme();
     const refMenuModals = useRef(<MenuModals />)
+    const refPendingModals = useRef(<PendingModals />)
     const _onClickSetting = () => {
         log('_onClickSetting : ')
     }
@@ -31,11 +32,12 @@ export default memo(({ navigation }) => {
 
     const _onMenuPress = useCallback(() => {
         log('_onMenuPress : ')
-        refMenuModals.current?.toggle({})
+        // refMenuModals.current?.toggle({})
+        refPendingModals.current?.toggle();
     }, [])
     const renderCardMenu = ({ item }) => <CardMenu {...item} onPress={_onMenuPress} />
     const _getProduct = async () => await _getDaftarProduct()
-  
+
     useEffect(() => {
         log('Mount MenuTemp');
         _getProduct();
@@ -49,19 +51,19 @@ export default memo(({ navigation }) => {
                 disabledLeft={true}
                 title={'Daftar Menu'}
                 renderRight={() => <MyPressableIcon onClickSearch={_onClickSetting} iconName={'cog'} />} />
-            {/* <View style={{  }}> */}
+            <View style={{ paddingHorizontal: '5%' }}>
                 <FlatList
-                        style={{paddingHorizontal: '5%', flex:1}}
-                        contentContainerStyle={[styles.contentContainerStyle,{flex:1}]}
-                        data={loading ? [] : productList}
-                        renderItem={renderCardMenu}
-                        snapToInterval={150}
-                        keyExtractor={({ id }) => id}
-                        showsVerticalScrollIndicator={false}
-                        ListEmptyComponent={() => <MyText >Product Kosong</MyText>}
-                    />
-            {/* </View> */}
+                    contentContainerStyle={styles.contentContainerStyle}
+                    data={loading ? [] : productList}
+                    renderItem={renderCardMenu}
+                    snapToInterval={150}
+                    keyExtractor={({ id }) => id}
+                    showsVerticalScrollIndicator={false}
+                    ListEmptyComponent={() => <MyText >Product Kosong</MyText>}
+                />
+            </View>
             <MenuModals ref={refMenuModals} />
+            <PendingModals ref={refPendingModals} />
         </View>
     )
 })

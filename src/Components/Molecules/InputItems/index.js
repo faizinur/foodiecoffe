@@ -2,16 +2,22 @@ import { log } from '@Utils';
 import React, { useState } from 'react';
 import { TextInput, Button, useTheme, RadioButton } from 'react-native-paper';
 import { MyText } from '@Atoms';
-import { View } from 'react-native'
+import { View, TouchableOpacity } from 'react-native'
 const MyTextInput = (props) => {
     const { colors } = useTheme();
     const defaultColor = props.error ? colors.wildWaterMelon : colors.cerulean;
     let keyboardType = 'keyboardType' in props ? props.keyboardType : 'default';
-    const [secureTextEntry, setSecureTextEntry] = useState('secureTextEntry' in props)
+    const [secureTextEntry, setSecureTextEntry] = useState('secureTextEntry' in props);
     let disabled = props.disabled || false;
+    let value = typeof props.value === 'undefined' ? '' : props.value;
     return (
         <View>
             <TextInput
+                {...props.register}
+                onBlur={props.onBlur}
+                onChangeText={props.onChangeText}
+                value={value}
+                key={props.id}
                 disabled={disabled}
                 mode='outlined'
                 activeOutlineColor={defaultColor}
@@ -20,35 +26,54 @@ const MyTextInput = (props) => {
                 selectionColor={colors.cerulean}
                 keyboardType={keyboardType}
                 style={{ backgroundColor: colors.white, marginVertical: 5, fontSize: 14, paddingLeft: keyboardType == 'phone-pad' ? 32 : 0 }}
-                theme={{ colors: { placeholder: colors.lightgray } }}
+                theme={{ colors: { placeholder: colors.lightgray, text: colors.black, } }}
                 secureTextEntry={secureTextEntry}
                 left={keyboardType == 'phone-pad' && <></>}
                 right={'secureTextEntry' in props && <></>}
             />
             {/* //LEFT */}
-            {'secureTextEntry' in props && <View style={{ position: 'absolute', top: 28, right: 35, zIndex: 999999 }}>
+            {('secureTextEntry' in props && JSON.stringify(value) !== '""') && <View style={{ position: 'absolute', top: 28, right: 35, zIndex: 999999 }}>
                 <TextInput.Icon
                     name={secureTextEntry ? 'eye-off' : 'eye'}
                     onPress={() => setSecureTextEntry(prevState => !prevState)}
                     size={20}
-                    color={colors.cerulean}
+                    color={JSON.stringify(value) === '""' ? colors.lightgray : colors.cerulean}
                 />
             </View> ||
-                'dropdown' in props && <View style={{ position: 'absolute', top: 28, right: 35, zIndex: 999999 }}>
+                'dropdown' in props && (
+                    <>
+                        <TouchableOpacity
+                            activeOpacity={.8}
+                            onPress={props.dropdownPress}
+                            style={{ height: 60, width: '100%', position: 'absolute', top: 10, left: 0, borderRadius: 12, justifyContent: 'center', alignItems: 'center' }} >
+                        </TouchableOpacity>
+                        <View style={{ position: 'absolute', top: 28, right: 35, zIndex: 999999 }}>
+                            <TextInput.Icon
+                                onPress={props.dropdownPress}
+                                name={'chevron-down'}
+                                size={24}
+                                color={JSON.stringify(value) === '""' ? colors.lightgray : colors.black}
+                            />
+                        </View>
+                    </>
+                )
+                ||
+                JSON.stringify(value) !== '""' && <View style={{ position: 'absolute', top: 28, right: 35, zIndex: 999999 }}>
                     <TextInput.Icon
-                        name={'chevron-down'}
-                        onPress={props.dropdownPress}
-                        size={24}
-                        color={colors.lightgray}
+                        name={'close-circle'}
+                        onPress={() => props.onResetField(props.name)}
+                        size={20}
+                        color={JSON.stringify(value) === '""' ? colors.lightgray : colors.cerulean}
                     />
                 </View>
+
             }
             {/* //RIGHT */}
             {keyboardType == 'phone-pad' && <View style={{ position: 'absolute', top: 24, left: 15, zIndex: 999999, flexDirection: 'row' }}>
-                <MyText color={colors.lightgray} style={{ marginVertical: 5 }}>+62</MyText>
+                <MyText color={colors.black} style={{ marginVertical: 5 }}>+62</MyText>
                 <View style={{ width: 1.3, height: 24, marginTop: 3, marginLeft: 16, backgroundColor: colors.lightgray }} />
             </View>}
-            {props.error && <MyText small color={colors.wildWaterMelon} style={{ marginBottom: 12 }}>Input Salah</MyText>}
+            {props.error && <MyText small left color={colors.wildWaterMelon} style={{ marginBottom: 12 }}>{props.errorText}</MyText>}
         </View>
     )
 }
@@ -75,27 +100,29 @@ const MyButton = (props) => {
 const MyRadioInput = (props) => {
     const { colors } = useTheme();
     const defaultColor = props.error ? colors.wildWaterMelon : colors.cerulean;
-    const [value, setValue] = useState('')
+    let value = typeof props.value === 'undefined' ? '' : props.value;
     return (
-        <RadioButton.Group onValueChange={newValue => setValue(newValue)} value={value}>
+        <RadioButton.Group onValueChange={props.onChangeText} value={value}>
+            <TextInput {...props.register} onBlur={props.onBlur} value={value} key={props.id} disabled={true} mode='outlined' style={{ display: 'none' }} />
+            <View style={{ height: 5, width: 5, position: 'absolute', top: -1, left: 0, backgroundColor: 'white' }} />
             <View style={{ marginVertical: 12 }}>
                 <MyText left color={colors.black}>{props.placeholder}</MyText>
                 <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
                     {
-                        props.config.data.map(({ code, description }) =>
+                        props?.data.map(({ code, description }) =>
                             <View key={`${code}-${description}`} style={{ flexDirection: 'row', flex: 1 }}>
                                 <RadioButton
                                     value={code}
                                     uncheckedColor={colors.lightgray}
                                     color={defaultColor}
                                 />
-                                <MyText onPress={() => setValue(code)} center color={value == code ? colors.black : colors.lightgray}>{description}</MyText>
+                                <MyText onPress={() => props.onChangeText(code)} center color={value == code ? colors.black : colors.lightgray}>{description}</MyText>
                             </View>
                         )
                     }
                 </View>
             </View>
-            {props.error && <MyText small color={colors.wildWaterMelon} style={{ marginBottom: 12 }}>Input Salah</MyText>}
+            {props.error && <MyText small color={colors.wildWaterMelon} style={{ marginBottom: 12 }}>Input {props.name} Salah</MyText>}
         </RadioButton.Group>
     );
 }

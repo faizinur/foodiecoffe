@@ -49,20 +49,13 @@ export default StyleSheet.create({
     drawerIndicator: {
         height: 4,
         width: 30,
+        marginVertical: 6,
         alignSelf: 'center',
         backgroundColor: colors.athensGray,
         borderRadius: 100,
-        marginBottom: 6
     },
     rnCamera: {
         flex: 1,
-    },
-    drawwerIndicator: {
-        height: 4,
-        width: 30,
-        alignSelf: 'center',
-        backgroundColor: colors.white,
-        borderRadius: 100
     },
     badgeMeja: {
         width: 98,

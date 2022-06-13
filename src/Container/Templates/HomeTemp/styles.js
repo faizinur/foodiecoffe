@@ -37,7 +37,7 @@ export default StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
     },
-   
+
     drawerIndicator: {
         height: 4,
         width: 30,
@@ -46,11 +46,17 @@ export default StyleSheet.create({
         borderRadius: 100,
         marginBottom: 6
     },
-   
+
     contentContainerStyle: {
         padding: 5,
         paddingBottom: 120,
-        paddingTop: 10
+        paddingTop: 10,
+        backgroundColor: colors.white,
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
     },
-   
+
+    sectionContainer: {
+        paddingHorizontal: '5%'
+    }
 })
