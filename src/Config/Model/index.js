@@ -3,6 +3,7 @@ import * as DaftarTransaksi from './DaftarTransaksi';
 import * as DaftarProdct from './DaftarProduct';
 import * as Auth from './Auth';
 import * as Merchant from './Merchant';
+import * as Order from './Order';
 
 export {
     RiwayatTransaksi,
@@ -11,4 +12,5 @@ export {
 
     Auth,
     Merchant,
+    Order,
 }

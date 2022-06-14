@@ -1,5 +1,5 @@
 import { View, FlatList } from 'react-native';
-import React, { useState, useCallback, forwardRef, useImperativeHandle, } from 'react';
+import React, { useState, useCallback, forwardRef, useImperativeHandle, memo } from 'react';
 import { log } from '@Utils';
 import { useTheme, } from 'react-native-paper';
 import { MyText, MyModal } from '@Atoms';
@@ -7,7 +7,7 @@ import { InputItems } from '@Molecules';
 import { CardCategory } from '@Organisms';
 import styles from './styles';
 import { UseMerchant } from '@ViewModel'
-export default forwardRef((props, ref) => {
+export default memo(forwardRef((props, ref) => {
     const {
         _getMerchant,
         merchantList,
@@ -30,6 +30,7 @@ export default forwardRef((props, ref) => {
         log('_onPressCategory : ', merchant)
     }, [])
     const _renderCardCategory = ({ item }) => <CardCategory merchant={item} numColumns={3} onPress={_onPressCategory} />
+    log('NAH KAN HomeTemp DE RELOAD!!>>>>>>')
     return (
         <MyModal
             visible={modalVisible}
@@ -58,4 +59,4 @@ export default forwardRef((props, ref) => {
             />
         </MyModal>
     )
-})
+}))

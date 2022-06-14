@@ -8,7 +8,7 @@ export default () => {
     const ORDER_TYPES = ['PAID', 'CANCELED'];
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const [orderList, setOrderList] = useState([]);
+    const [orderLists, setOrderLists] = useState([]);
     const [newOrderList, setNewOrderList] = useState([]);
     const [activeOrderList, setActiveOrderList] = useState(ORDER_TYPES[0]);
 
@@ -23,7 +23,7 @@ export default () => {
             setError('')
             setActiveOrderList(transactionType)
             setTimeout(() => {
-                setOrderList(ORDER_LIST.filter(({ orderStatus }) => orderStatus == transactionType));
+                setOrderLists(ORDER_LIST.filter(({ orderStatus }) => orderStatus == transactionType));
                 setLoading(false);
                 ORDER_LIST = [];
             }, 500)
@@ -57,7 +57,7 @@ export default () => {
     return {
         error,
         loading,
-        orderList,
+        orderLists,
         newOrderList,
         activeOrderList,
         _getRiwayatTransaksi,

@@ -1,5 +1,5 @@
-import { View, FlatList } from 'react-native';
-import React, { useEffect, memo, useRef, useCallback, } from 'react';
+import { View, FlatList, RefreshControl } from 'react-native';
+import React, { useEffect, memo, useRef, useCallback, useState } from 'react';
 import { log } from '@Utils';
 import { useTheme, FAB } from 'react-native-paper';
 import { MyText } from '@Atoms'
@@ -9,13 +9,19 @@ import { CardOrder } from '@Organisms';
 import { TopTabbar, EmptyOrderScreen } from '@Molecules';
 import { MyToolBar } from '@Organisms';
 import HomeModals from './HomeModals'
-import { UseHomeVM } from '@ViewModel';
+import { UseHomeVM, UseOrder } from '@ViewModel';
 const INITIAL_PAGE = 0;
 export default memo(({ navigation }) => {
     const {
+        _getOrders,
+        orderList,
+        orderLoading,
+        orderError,
+    } = UseOrder()
+    const {
         error,
         loading,
-        orderList,
+        orderLists,
         newOrderList,
         activeOrderList,
         _getRiwayatTransaksi,
@@ -25,6 +31,7 @@ export default memo(({ navigation }) => {
     const { colors } = useTheme();
     const refPagerViewChild = useRef(<PagerView />);
     const refHomeModals = useRef(<HomeModals />);
+    const [refreshingOrder, setRefreshingOrder] = useState(false);
 
     const _onTabChange = useCallback((index) => refPagerViewChild.current?.setPage(index), [])
     const _onFABPress = useCallback(() => refHomeModals.current?.toggle(), [])
@@ -51,6 +58,14 @@ export default memo(({ navigation }) => {
                 <View key='0' style={styles.pagerInnerContainer}>
                     <MyText medium bold left color={colors.black}>List Pesanan</MyText>
                     <FlatList
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={refreshingOrder}
+                                onRefresh={() => {
+                                    setRefreshingOrder(true);
+                                    setTimeout(() => setRefreshingOrder(false), 3000)
+                                }}
+                            />}
                         contentContainerStyle={styles.contentContainerStyle}
                         data={loading ? [] : newOrderList}
                         renderItem={renderCardOrder}
@@ -83,14 +98,14 @@ export default memo(({ navigation }) => {
                             },
                         ]}
                         activeOrderList={activeOrderList}
-                        listCount={orderList.length}
+                        listCount={orderLists.length}
                         onPressChips={_getTransaksi}
                         onPressCalendar={_onPressCalendar}
                         loading={loading}
                     />
                     <FlatList
                         contentContainerStyle={styles.contentContainerStyle}
-                        data={loading ? [] : orderList}
+                        data={loading ? [] : orderLists}
                         renderItem={renderCardOrder}
                         snapToInterval={150}
                         keyExtractor={({ id }) => id}
