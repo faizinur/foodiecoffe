@@ -22,7 +22,7 @@ export default props => {
         setTimeout(() => { 'onRequestClose' in props && props.onRequestClose() }, 400)
     }
     const _onShowModal = () => {
-        log('_onShowModal :')
+        if ('onShow' in props) props.onShow()
         setTimeout(() => { _setBackdrop() }, 100);
     }
     return (

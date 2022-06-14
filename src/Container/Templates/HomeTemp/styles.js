@@ -49,8 +49,7 @@ export default StyleSheet.create({
 
     contentContainerStyle: {
         padding: 5,
-        paddingBottom: 120,
-        paddingTop: 10,
+        flex: 1,
         backgroundColor: colors.white,
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,

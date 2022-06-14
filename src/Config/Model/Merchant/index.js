@@ -1,8 +1,8 @@
-import { log, POST } from '@Utils';
+import { log, GET } from '@Utils';
 
-const authUser = async userData => {
+const getMerchantCategory = async () => {
     try {
-        let loginData = await POST('/auth/login', userData)
+        let loginData = await GET('A1778G/category/all')
         return {
             status: 'SUCCESS',
             message: 'API SUCCESS!',
@@ -16,15 +16,7 @@ const authUser = async userData => {
         }
     }
 };
-const registerUser = data => {
-    return {
-        status: "success",
-        message: "Berhasil",
-        data,
-    }
-};
 
 export {
-    authUser,
-    registerUser,
+    getMerchantCategory
 }

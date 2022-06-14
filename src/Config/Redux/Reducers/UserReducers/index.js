@@ -1,9 +1,23 @@
 import { SET_USER } from '../../Actions/types'
 
 const initialState = {
-    email: '',
-    username: '',
-    password: '',
+    user: {
+        id: "-",
+        name: "-",
+        username: "-",
+        image: {
+            title: "-",
+            name: "-",
+            url: "-",
+        },
+        email: "-",
+        role: "-",
+        merchantId: "-",
+    },
+    token: {
+        access_token: "-",
+        refresh_token: "-",
+    }
 }
 
 export default userReducers = (state = initialState, { type, payload }) => {

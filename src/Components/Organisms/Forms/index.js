@@ -5,7 +5,7 @@ import { MyText } from '@Atoms';
 import { log, CONSTANT } from '@Utils';
 import { InputItems, DropdownModal } from '@Molecules';
 
-export default forwardRef(({ formname = 'myFieldArray', inputList, defaultValue = {}, onFormSubmit, renderButton = undefined, autoClear = false, containerStyle = {}, submitLabel = 'default label' }, ref) => {
+export default forwardRef(({ formname = 'myFieldArray', inputList, defaultValue = {}, onFormSubmit, renderButton = undefined, autoClear = false, containerStyle = {}, submitLabel = 'default label', loading = false }, ref) => {
     const refDropdownModal = useRef(<DropdownModal />)
 
     //Forms
@@ -123,6 +123,7 @@ export default forwardRef(({ formname = 'myFieldArray', inputList, defaultValue 
             ))}
             {fields.length > 0 && (
                 renderButton === undefined ? <InputItems.MyButton
+                    loading={loading}
                     label={submitLabel}
                     onPress={handleSubmit(_onSubmit)}
                 /> : renderButton(handleSubmit(_onSubmit))

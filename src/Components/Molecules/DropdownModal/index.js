@@ -41,20 +41,20 @@ export default forwardRef((props, ref) => {
         setSelectedList(code)
         props?.onSelectList(inputName, code)
         setAnimationType('fade')
-        setModalVisible(prevState => !prevState);
         drawerHeight.value = {
             height: height / 2,
             paddingTop: 24
         }
+        setModalVisible(prevState => !prevState);
     }, [modalVisible, animationType, inputName]);
 
     const _onCloseModal = useCallback(() => {
         setAnimationType('fade')
-        setModalVisible(prevState => !prevState);
         drawerHeight.value = {
             height: height / 2,
             paddingTop: 24
         }
+        setModalVisible(prevState => !prevState);
     }, [modalVisible, animationType]);
     return (
         <MyModal

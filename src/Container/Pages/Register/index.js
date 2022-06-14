@@ -8,8 +8,8 @@ import { INPUT_LIST, FORM_NAME } from './input';
 import { log } from '@Utils'
 import { UseAuth } from '@ViewModel';
 export default ({ navigation: { replace, goBack } }) => {
-    const { colors } = useTheme();
     const { _submitRegister } = UseAuth();
+    const { colors } = useTheme();
     useEffect(() => {
         log('Mount Register');
         return () => {

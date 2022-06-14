@@ -1,27 +1,76 @@
+import { log } from '@Utils';
+
 import axios from 'axios';
 
+const controller = new AbortController();
+
+const CancelToken = axios.CancelToken;
+const cancelToken = CancelToken.source();
+
+// // cancel the request (the message parameter is optional)
+// cancelToken.cancel('Operation canceled by the user.');
+// // OR
+// controller.abort(); // the message parameter is not supported
+
 const baseURL = 'http://beta-api.foodie.coffee/';
-const _transformRequest = (data) => {
-    return JSON.stringify(params);
-};
-const POST = async (...params) => {
-    let [url, data] = params;
+const myAxiosInstance = axios.create({
+    baseURL,
+    timeout: 3000,
+    headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+        "Access-Control-Allow-Origin": true
+    },
+    timeoutErrorMessage: 'requestnya melewati batas ya...',
+    cancelToken: cancelToken.token,
+    signal: controller.signal,
+    // transformRequest: [(data, headers) => {
+    //     // Do whatever you want to transform the data
+    //     log('select token before send', data)
+    //     return data;
+    // }],
+    // transformResponse: [(data) => {
+    //     // Do whatever you want to transform the data
+    //     log('Rubah Struktur Data')
+    //     return data;
+    // }],
+    // onDownloadProgress: (progressEvent) => { log('onDownloadProgress : ', progressEvent)},
+    // onUploadProgress: (progressEvent) => {log('onUploadProgress : ', progressEvent)},
+});
+
+const POST = async (url = '', data = {}) => {
+    log(`POST TO ${baseURL}${url}`)
+    if (url == '' || (url == '' && data == {})) return Promise.reject()
     return new Promise((resolve, reject) => {
-        fetch(baseURL + url, {
-            method: 'POST',
-            body: _transformRequest(data),
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-            },
-        })
-            .then((response) => response.json())
-            .then((responseJson) => {
-                resolve(JSON.parse(responseJson));
+        // const myForms = new FormData();
+        // myForms.append('adsad', 0);
+
+        myAxiosInstance.post(url, data)
+            .then(({ data, status, statusText, headers, config }) => {
+                if ([200, 202].includes(status)) {
+                    resolve(data)
+                } else {
+                    reject({ status })
+                }
+            }).catch(err => {
+                reject(err)
             })
-            .catch(err => {
-                log(url, `error ${err}`);
-                reject(err);
-            });
     })
 };
-export { POST };
+const GET = async (url = '', data = {}) => {
+    log(`GET TO ${baseURL}${url}`)
+    if (url == '' || (url == '' && data == {})) return Promise.reject()
+    return new Promise((resolve, reject) => {
+
+        myAxiosInstance.get(url, data)
+            .then(({ data, status, statusText, headers, config }) => {
+                if ([200, 202].includes(status)) {
+                    resolve(data)
+                } else {
+                    reject({ status })
+                }
+            }).catch(err => {
+                reject(err)
+            })
+    })
+};
+export { POST, GET, cancelToken, controller };
