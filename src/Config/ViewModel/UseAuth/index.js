@@ -1,9 +1,9 @@
 import { Auth } from '@Model';
 import { useState, useCallback } from 'react';
-import { log } from '@Utils';
 import { useDispatch } from 'react-redux';
 import { setUser } from '@Actions';
 import { reset } from '@RootNavigation';
+import { log, MyRealm } from '@Utils';
 export default () => {
     const { authUser } = Auth;
     const [authError, setAuthError] = useState('');
@@ -19,13 +19,14 @@ export default () => {
             if (user.id === '' && token.access_token === '') throw 'Login FAILED.'
             dispatch(setUser({ user, token }));
             setLoading(false)
+            await MyRealm.insertData({ key: 'userData', value: JSON.stringify({ user, token }) })
             reset('Home');
         } catch (err) {
+            log('err : ', err)
             setAuthError(`error Auth ${err}`)
             setLoading(false)
         }
     }, [])
-
 
     const _submitRegister = useCallback(async userData => {
         try {

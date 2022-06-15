@@ -7,7 +7,7 @@ import { InputItems } from '@Molecules';
 import { CardCategory } from '@Organisms';
 import styles from './styles';
 import { UseMerchant } from '@ViewModel'
-export default memo(forwardRef((props, ref) => {
+export default memo(forwardRef(({ navigation: { navigate } }, ref) => {
     const {
         _getMerchant,
         merchantList,
@@ -27,8 +27,9 @@ export default memo(forwardRef((props, ref) => {
         setModalVisible(prevState => !prevState);
     }, [modalVisible]);
     const _onPressCategory = useCallback(merchant => {
-        log('_onPressCategory : ', merchant)
-    }, [])
+        setModalVisible(prevState => !prevState);
+        navigate('ProductsList', merchant)
+    }, [modalVisible])
     const _renderCardCategory = ({ item }) => <CardCategory merchant={item} numColumns={3} onPress={_onPressCategory} />
     log('NAH KAN HomeTemp DE RELOAD!!>>>>>>')
     return (

@@ -5,27 +5,27 @@ export default () => {
     const { getOrders } = Order;
     const [orderList, setOrderList] = useState([])
     const [orderError, setOrderError] = useState('');
-    const [orderLoading, setOrderLoading] = useState(false);
+    const [refreshingOrder, setRefreshingOrder] = useState(false);
 
     const _getOrders = useCallback(async () => {
         try {
-            setOrderLoading(true)
+            setRefreshingOrder(true)
             setOrderError('')
             const { status, data, message } = await getOrders();
             if (status != 'SUCCESS') throw message;
             setOrderList(data)
-            setOrderLoading(false)
+            setRefreshingOrder(false)
         } catch (err) {
             setOrderError(`error Merchant ${err}`)
-            setOrderLoading(false)
+            setRefreshingOrder(false)
         }
     }, [])
 
     return {
         _getOrders,
         orderList,
-        orderLoading,
+        refreshingOrder,
+        setRefreshingOrder,
         orderError,
     }
 }
-

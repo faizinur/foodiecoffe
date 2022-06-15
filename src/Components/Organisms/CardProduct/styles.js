@@ -5,8 +5,7 @@ import { THEME } from '@Utils';
 const { colors } = THEME;
 export default StyleSheet.create({
     cardContainer: {
-        width: '99%',
-        alignSelf: 'center',
+        width: '100%',
         height: 150,
         marginVertical: 8,
         borderRadius: 16,

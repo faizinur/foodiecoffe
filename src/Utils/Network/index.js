@@ -1,5 +1,5 @@
-import { log } from '@Utils';
-
+import React from 'react';
+import { log, MyRealm } from '@Utils';
 import axios from 'axios';
 
 const controller = new AbortController();
@@ -59,18 +59,25 @@ const POST = async (url = '', data = {}) => {
 const GET = async (url = '', data = {}) => {
     log(`GET TO ${baseURL}${url}`)
     if (url == '' || (url == '' && data == {})) return Promise.reject()
+
+    let Authorization = '';
+    let select = await MyRealm.selectData();
+    if (select.length > 0) {
+        Authorization = `Bearer ${JSON.parse(select[0]?.value)?.token?.access_token}`;
+    }
     return new Promise((resolve, reject) => {
 
-        myAxiosInstance.get(url, data)
-            .then(({ data, status, statusText, headers, config }) => {
-                if ([200, 202].includes(status)) {
-                    resolve(data)
-                } else {
-                    reject({ status })
-                }
-            }).catch(err => {
-                reject(err)
-            })
+        myAxiosInstance.get(url, {
+            headers: { Authorization, }
+        }).then(({ data, status, statusText, headers, config }) => {
+            if ([200, 202].includes(status)) {
+                resolve(data)
+            } else {
+                reject({ status })
+            }
+        }).catch(err => {
+            reject(err)
+        })
     })
 };
 export { POST, GET, cancelToken, controller };

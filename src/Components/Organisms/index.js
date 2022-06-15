@@ -7,6 +7,7 @@ import CardTraffic from './CardTraffic';
 import CardMenu from './CardMenu';
 import CardCategory from './CardCategory';
 import MyToolBar from './MyToolBar';
+import CardProduct from './CardProduct';
 export {
     Forms,
     CardOrder,
@@ -17,4 +18,5 @@ export {
     CardMenu,
     CardCategory,
     MyToolBar,
+    CardProduct,
 }
