@@ -100,7 +100,7 @@ const MyButton = (props) => {
             onPress={btnLoading != true && props.onPress}
             style={[styles.button(borderWidth), props?.style]}
             contentStyle={[styles.buttonContent(backgroundColor), props?.contentStyle]}
-            labelStyle={styles.buttonLabel(labelColor)}
+            labelStyle={[styles.buttonLabel(labelColor), props?.labelStyle]}
             mode="contained"
         >{btnLoading != true ? (props?.label || 'label') : ''}</Button>
     )

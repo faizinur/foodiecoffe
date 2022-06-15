@@ -85,6 +85,7 @@ export default memo(({ navigation }) => {
                                 ListEmptyComponent={orderList.length > 0 ? <MyText>tunggu</MyText> : <EmptyOrderScreen />}
                             />
                             <FAB
+                                disabled={refreshingOrder}
                                 theme={styles.fab}
                                 style={styles.fabStyles}
                                 color={colors.white}
