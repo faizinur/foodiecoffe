@@ -4,7 +4,7 @@ import { log, CONSTANT } from '@Utils';
 import { useTheme, } from 'react-native-paper';
 import { MyText, MyModal } from '@Atoms';
 import { InputItems } from '@Molecules';
-import { IC_PRODUCT_BIG } from '@Atoms/Icons';
+import { IC_PAYMENT_FAILED, IC_PAYMENT_SUCCESS, IC_PAYMENT_INFO } from '@Atoms/Icons';
 import styles, { width, height } from './styles';
 import Animated, {
     useSharedValue,
@@ -15,10 +15,17 @@ export default forwardRef((props, ref) => {
     const { colors } = useTheme();
     const [modalVisible, setModalVisible] = useState(false);
     const [animationType, setAnimationType] = useState('slide');
-    const [confirmed, setConfirmed] = useState(false);
+
+    const [imageSource, setImageSource] = useState(IC_PAYMENT_INFO);
+    const [textTitle, setTextTitle] = useState('Lanjut Pembayaran?');
+    const [textDescription, setTextDescription] = useState('Jangan lupa pastikan kembali pesanan kamu');
+
+    const DOWN_SIZE = height * .6;
+    const UP_SIZE = height * .9;
+
     const imageSize = useSharedValue({
-        width: '80%',
-        height: '70%',
+        width: '100%',
+        height: '50%',
     })
     const imageSizeStyle = useAnimatedStyle(() => ({
         width: withSpring(imageSize.value.width, CONSTANT.SPRING_CONFIG),
@@ -26,11 +33,9 @@ export default forwardRef((props, ref) => {
     }))
     const drawerHeight = useSharedValue({
         height: height / 2,
-        paddingTop: 24
     })
     const drawerHeightStyle = useAnimatedStyle(() => ({
         height: withSpring(drawerHeight.value.height, CONSTANT.SPRING_CONFIG),
-        paddingTop: withSpring(drawerHeight.value.paddingTop, CONSTANT.SPRING_CONFIG),
     }))
     useImperativeHandle(ref, () => ({
         toggle,
@@ -41,29 +46,39 @@ export default forwardRef((props, ref) => {
     }, [modalVisible])
     const _onCloseModal = useCallback(() => {
         setAnimationType('fade')
+        setImageSource(IC_PAYMENT_INFO)
+        setTextTitle('Lanjut Pembayaran?')
+        setTextDescription('Jangan lupa pastikan kembali pesanan kamu')
         setModalVisible(prevState => !prevState);
         drawerHeight.value = {
             height: height / 2,
-            paddingTop: 24
         }
         imageSize.value = {
             width: '80%',
             height: '70%',
         }
-        setConfirmed(false);
-    }, [modalVisible, animationType, confirmed]);
+    }, [modalVisible, animationType, imageSource, textTitle, textDescription]);
     const _onclick = useCallback(() => {
         log('_onclick : ');
+        const result = ['SUCCESS', 'FAILED'];
+        if (result[Math.round(Math.random() * 1)] == 'SUCCESS') {
+            setImageSource(IC_PAYMENT_SUCCESS)
+            setTextTitle('Pembayaran berhasil')
+            setTextDescription('Selamat pembayaranmu berhasil di lakukan, silahkan order kembali')
+        } else {
+            setImageSource(IC_PAYMENT_FAILED)
+            setTextTitle('Oops, Terjadi Kesalahan')
+            setTextDescription('Maaf terjadi kesalahan, cek kembali koneksi intenet kamu')
+        }
+
         drawerHeight.value = {
-            height: height - StatusBar.currentHeight,
-            paddingTop: 100,
+            height: drawerHeight.value.height > DOWN_SIZE ? DOWN_SIZE : UP_SIZE,
         }
         imageSize.value = {
-            height: 30,
-            width: 30,
+            width: imageSize.value.width == '30%' ? '100%' : '30%',
+            height: imageSize.value.height == '40%' ? '50%' : '40%',
         }
-        setConfirmed(true);
-    }, [confirmed])
+    }, [drawerHeight, imageSize, imageSource, textTitle, textDescription])
     return (
         <MyModal
             visible={modalVisible}
@@ -71,22 +86,21 @@ export default forwardRef((props, ref) => {
             onRequestClose={_onCloseModal}
             statusBarTranslucent={true}
             contentContainerStyle={{ flex: 1, justifyContent: 'flex-end' }}>
-            <Animated.View style={[drawerHeightStyle, { width: width, backgroundColor: colors.white, borderTopLeftRadius: 16, borderTopRightRadius: 16 }]}>
-                <View style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Animated.Image source={IC_PRODUCT_BIG} style={[imageSizeStyle, { alignSelf: 'center', borderRadius: 25 }]} />
-                    {confirmed == false &&
-                        <>
-                            <MyText large bold color={colors.black} style={{ marginVertical: 4 }}>Perubahan Disimpan</MyText>
-                            <MyText style={{ marginVertical: 4 }}>Selamat, perbahan menu berhasil disimpan</MyText>
-                        </>}
+            <Animated.View style={[drawerHeightStyle, { minHeight: DOWN_SIZE, maxHeight: UP_SIZE, width: '100%', backgroundColor: colors.white, borderTopLeftRadius: 16, borderTopRightRadius: 16, paddingHorizontal: '5%', paddingBottom: 60, paddingTop: '5%' }]}>
+                <View style={{ flex: 1 }} />
+                <View style={{ width: '100%', height: DOWN_SIZE * .6 }}>
+                    <Animated.Image source={imageSource} style={[imageSizeStyle, { alignSelf: 'center', borderRadius: 25 }]} />
+
+                    <MyText large bold color={colors.black} style={{ marginVertical: 4 }}>{textTitle}</MyText>
+                    <MyText style={{ marginVertical: 4 }}>{textDescription}</MyText>
                 </View>
-                {confirmed == false &&
-                    <View style={{ width, padding: 12 }}>
-                        <InputItems.MyButton
-                            onPress={_onclick}
-                            style={styles.button}
-                            label={'Oke, Sip'} />
-                    </View>}
+                <View style={{ flex: 1 }} />
+                <View style={{ width, padding: 12, position: 'absolute', bottom: 0, left: 0 }}>
+                    <InputItems.MyButton
+                        onPress={_onclick}
+                        style={styles.button}
+                        label={'Oke, Sip'} />
+                </View>
             </Animated.View>
         </MyModal>
     )

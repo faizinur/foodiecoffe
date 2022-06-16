@@ -38,7 +38,7 @@ export default memo((props) => {
                         activeOpacity={.8}
                         onPress={() => _onTabPres(index)}
                         style={styles.tabItem}>
-                        <MyText ref={ref} center>{title}</MyText>
+                        <MyText ref={ref} center>{title}{`${props.badgeCounts[index] > 0 ? `(${props.badgeCounts[index]})` : ``}`}</MyText>
                     </TouchableOpacity>
                 )}
             </View>

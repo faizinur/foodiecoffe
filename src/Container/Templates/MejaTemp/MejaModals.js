@@ -10,15 +10,14 @@ export default forwardRef((props, ref) => {
     const { colors } = useTheme();
     const [isSwitch, setIsSwitch] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
-    const [meja, setMeja] = useState({});
     useImperativeHandle(ref, () => ({
         toggle,
     }));
     const toggle = useCallback((meja) => {
         log('_onPressMeja : ')
-        setMeja(meja)
+
         setModalVisible(prevState => !prevState);
-    }, [modalVisible, meja])
+    }, [modalVisible])
     const _onPerbaharuiPress = useCallback(() => {
         log('_onPerbaharuiPress  :')
     }, []);

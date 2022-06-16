@@ -5,32 +5,42 @@ import { useTheme } from 'react-native-paper';
 import { UseKeyboard } from '@CustomHooks';
 import {
     IC_HOME,
+    IC_HOME_FILL,
     IC_TRANSAKSI,
+    IC_TRANSAKSI_FILL,
     IC_MENU,
+    IC_MENU_FILL,
     IC_MEJA,
-    IC_AKUN
+    IC_MEJA_FILL,
+    IC_AKUN,
+    IC_AKUN_FILL,
 } from '@Atoms/Icons';
 import styles from './styles';
 import { MyText } from '@Atoms';
 const navMenu = [
     {
         icon: IC_HOME,
+        iconActive: IC_HOME_FILL,
         title: 'Home',
     },
     {
         icon: IC_TRANSAKSI,
+        iconActive: IC_TRANSAKSI_FILL,
         title: 'Transaksi',
     },
     {
         icon: IC_MENU,
+        iconActive: IC_MENU_FILL,
         title: 'Menu',
     },
     {
         icon: IC_MEJA,
+        iconActive: IC_MEJA_FILL,
         title: 'Meja',
     },
     {
         icon: IC_AKUN,
+        iconActive: IC_AKUN_FILL,
         title: 'Akun',
     },
 ]
@@ -72,16 +82,13 @@ export default memo(({ onChange, navigation: { navigate } }) => {
     })
     return (
         <Animated.View style={[styles.navbarContainer, yPosNavbarStyle]}>
-            {navMenu.map(({ icon, title }, index) =>
+            {navMenu.map(({ icon, iconActive, title }, index) =>
                 <TouchableOpacity
                     activeOpacity={.8}
                     onPress={() => onMenuPress(title, index)}
                     key={`${title}-${UUID()}`}
                     style={styles.navItem}>
-                    <Image source={icon}
-                        style={styles.icon}
-                        tintColor={activeMenu == title ? colors.cerulean : colors.jumbo}
-                    />
+                    <Image source={activeMenu == title ? iconActive : icon} style={styles.icon} />
                     <MyText center light color={activeMenu == title ? colors.cerulean : colors.jumbo}
                         style={styles.title(activeMenu == title ? '700' : '400')}>{title}</MyText>
                 </TouchableOpacity>)}

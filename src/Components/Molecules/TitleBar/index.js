@@ -8,7 +8,6 @@ const { width } = Dimensions.get('screen');
 import { back } from '@RootNavigation';
 import { log } from '@Utils'
 export default memo(props => {
-    log(props.disabledLeft)
     const { colors } = useTheme()
     return (<View style={{ width, backgroundColor: colors.white, height: 60, flexDirection: 'row', }}>
         {

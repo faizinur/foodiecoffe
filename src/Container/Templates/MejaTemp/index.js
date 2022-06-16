@@ -1,3 +1,4 @@
+import { UseTable } from '@ViewModel';
 import { View, TouchableOpacity, FlatList } from 'react-native';
 import React, { useEffect, memo, useRef, useCallback, useState } from 'react';
 import { log } from '@Utils';
@@ -8,14 +9,13 @@ import { CardMeja } from '@Organisms';
 import styles from './styles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MejaModals from './MejaModals';
-import { ListMeja as DataMeja } from '@Data';
 let searchState = false;
 export default memo(({ navigation }) => {
+    const { _getTables, tableList, tableError, refreshingTable, selectedTable, setSelectedTable, setFilteredTables, filteredTables, } = UseTable();
     const { colors } = useTheme();
     const refTextinput = useRef(<View />)
     const refTextTitle = useRef(<View />)
     const refMejaModals = useRef(<MejaModals />)
-    const [listMeja, setListMeja] = useState([]);
     const _onClickSearch = () => {
         searchState = !searchState;
         Promise.all([
@@ -24,8 +24,11 @@ export default memo(({ navigation }) => {
         ])
     }
     const _onSubmitEditing = useCallback(({ nativeEvent: { text } }) => {
-        alert(`CARI ::: ${text}`)
-    }, [])
+        // if (text.length < 2) return false;
+        let filtered = tableList.filter(({ number }) => (number == selectedTable.number));
+        log(filtered)
+        setFilteredTables(filtered)
+    }, [tableList, filteredTables, selectedTable])
     const _onClickSetting = () => {
         log('_onClickSetting : ')
     }
@@ -37,12 +40,16 @@ export default memo(({ navigation }) => {
     </TouchableOpacity>)
 
     const _onPressMeja = useCallback((props) => {
-        refMejaModals.current?.toggle(props)
+        setSelectedTable(props)
     }, [])
+    const _onPressQR = props => {
+        setSelectedTable(props)
+        refMejaModals.current?.toggle(props.qr)
+    }
     const _onMout = useCallback(() => {
         log('_onMout MejaTemp');
-        setListMeja(DataMeja.sort((prev, next) => prev.available != false));
-    }, [listMeja])
+        _getTables()
+    }, [])
     useEffect(() => {
         log('Mount MejaTemp');
         _onMout();
@@ -66,17 +73,18 @@ export default memo(({ navigation }) => {
                 </>}
                 renderRight={() => <MyPressableIcon onClickSearch={_onClickSetting} iconName={'cog'} />}
             />
+            <MyText left> filteredTables FILTER TABLE ERRO! {JSON.stringify(filteredTables)}</MyText>
             <FlatList
                 style={styles.flatList}
                 ListHeaderComponent={
-                    (listMeja.length > 0 && <View style={styles.sectionContainer}>
+                    (tableList.length > 0 && <View style={styles.sectionContainer}>
                         <MyText bold medium color={colors.black} left>Cek Mejamu disini</MyText>
                         <MyText left>Yuk, pilih lokasi mejamu sebelum penuh</MyText>
                     </View>
                     )}
                 contentContainerStyle={styles.flatListContent}
-                data={listMeja}
-                renderItem={({ item }) => <CardMeja {...item} numColumns={2} onPress={_onPressMeja} />}
+                data={tableList}
+                renderItem={({ item }) => <CardMeja {...item} numColumns={2} onPress={_onPressMeja} _onPressQR={_onPressQR} selectedTable={selectedTable} />}
                 snapToInterval={130}
                 keyExtractor={({ id }) => id}
                 numColumns={2}

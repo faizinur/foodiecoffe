@@ -10,15 +10,15 @@ export default StyleSheet.create({
         alignItems: 'center',
         marginVertical: 4
     }),
-    container: {
+    container: backgroundColor => ({
         height: 121,
         width: 156,
-        backgroundColor: colors.white,
+        backgroundColor,
         borderWidth: 1,
         borderColor: colors.lightgray,
         borderRadius: 12,
         padding: 12,
-    },
+    }),
     qrWrapper: {
         flex: 2,
         flexDirection: 'row',

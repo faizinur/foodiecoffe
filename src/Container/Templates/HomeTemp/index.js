@@ -43,13 +43,9 @@ export default memo(({ navigation }) => {
         refHomeModals.current?.toggle()
         , [])
     const _onPressCalendar = useCallback(() => log('_onPressCalendar Pressed'), [])
-    // const _getTransaksi = async (transactionType) => await _getRiwayatTransaksi(transactionType)
-    // const _getTransaksiNew = async (transactionType) => await _getNewTransaksi(transactionType)
     const _renderCardOrder = ({ item }) => <CardOrder {...item} onPress={() => log('adbjsadjk')} />
     useEffect(() => {
         log('Mount HomeTemp');
-        // _getTransaksi()
-        // _getTransaksiNew()
         _getOrders()
         return () => {
             log('Unmount HomeTemp')
@@ -57,7 +53,7 @@ export default memo(({ navigation }) => {
     }, [])
     return (
         <View style={styles.container}>
-            <TopTabbar onTabChange={_onTabChange} />
+            <TopTabbar onTabChange={_onTabChange} badgeCounts={[orderList.length,]} />
             <PagerView
                 ref={refPagerViewChild}
                 style={styles.pagerContainer}
@@ -95,23 +91,24 @@ export default memo(({ navigation }) => {
                         || <MyText>upss error...</MyText>}
                 </View>
                 <View key='1' style={styles.pagerInnerContainer}>
-                    {/* <MyToolBar
+                    <MyToolBar
                         tool={TOOL}
-                        activeOrderList={activeOrderList}
-                        listCount={orderLists.length}
-                        // onPressChips={_getTransaksi}
+                        activeOrderList={ORDER_TYPES[0]}
+                        listCount={0}
+                        onPressChips={() => log('chips press')}
                         onPressCalendar={_onPressCalendar}
-                        loading={loading}
+                        loading={false}
                     />
                     <FlatList
                         contentContainerStyle={styles.contentContainerStyle}
-                        data={loading ? [] : orderLists}
+                        data={[]}
                         renderItem={_renderCardOrder}
                         snapToInterval={150}
                         keyExtractor={({ id }) => id}
                         showsVerticalScrollIndicator={false}
-                        ListEmptyComponent={() => <MyText light bold color={colors.black}>{JSON.stringify(error) !== '""' ? error : 'Harap Tunggu...'}</MyText>}
-                    /> */}
+                        // ListEmptyComponent={() => <MyText light bold color={colors.black}>{JSON.stringify(error) !== '""' ? error : 'Harap Tunggu...'}</MyText>}
+                        ListEmptyComponent={() => <MyText light bold color={colors.black}>ups, tidak ada data transaksi disini</MyText>}
+                    />
                 </View>
             </PagerView>
             <HomeModals ref={refHomeModals} navigation={navigation} />

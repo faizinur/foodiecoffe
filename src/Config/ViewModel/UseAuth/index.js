@@ -5,7 +5,7 @@ import { setUser } from '@Actions';
 import { reset } from '@RootNavigation';
 import { log, MyRealm } from '@Utils';
 export default () => {
-    const { authUser } = Auth;
+    const { authUser, refreshToken } = Auth;
     const [authError, setAuthError] = useState('');
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
@@ -41,11 +41,32 @@ export default () => {
         }
     }, [])
 
+    const _getUserData = useCallback(async () => {
+        try {
+            let data = await MyRealm.selectData()
+            if (data.length == 0) throw ('Data Tidak ditemukan');
+            return Promise.resolve(data.length > 0 ? JSON.parse(data[0].value) : {});
+        } catch (err) {
+            return Promise.reject(err);
+        }
+    }, [])
+
+    const _refreshToken = useCallback(async () => {
+        try {
+            let token = await refreshToken()
+            return Promise.resolve(token)
+        } catch (err) {
+            return Promise.reject(err);
+        }
+    }, [])
+
     return {
         _submitLogin,
         _submitRegister,
         loading,
         authError,
+        _getUserData,
+        _refreshToken,
     }
 }
 

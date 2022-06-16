@@ -30,7 +30,7 @@ const insertData = payload => {
                 }
                 realm.create("APP_CONFIG", { ...payload, _id: new UUID().toHexString() });
             });
-            realm.close();
+            //realm.close();
             resolve(true)
         } catch (e) {
             reject(e)
@@ -43,15 +43,45 @@ const selectData = () => {
         try {
             let selectedData = '';
             const realm = await Realm.open(dbOptions);
-            selectedData = JSON.parse(JSON.stringify(realm.objects("APP_CONFIG")));
-            realm.close();
+            realm.write(() => {
+                selectedData = JSON.parse(JSON.stringify(realm.objects("APP_CONFIG")));
+            });
+            //realm.close();
             resolve(selectedData);
         } catch (error) {
+            reject(error);
+        }
+    })
+}
+
+const deleteData = (key) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let selectedData = '';
+            const realm = await Realm.open(dbOptions);
+            realm.write(() => {
+                selectedData = realm.objects("APP_CONFIG").filtered(`key == '${key}'`);
+                realm.delete(selectedData);
+                selectedData = null;
+            })
+            //realm.close();
+            resolve(selectedData);
+        } catch (e) {
             reject(e);
         }
     })
 }
+
+const closeConnection = () => {
+    try {
+        Realm.close()
+    } catch (e) {
+        log('closeConnection ERR : ', e)
+    }
+}
 export {
     insertData,
     selectData,
+    deleteData,
+    closeConnection,
 }

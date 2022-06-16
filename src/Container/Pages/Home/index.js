@@ -10,6 +10,10 @@ const INITIAL_PAGE = 0;
 export default props => {
     const refPagerView = useRef(<PagerView />);
     const { colors } = useTheme()
+    setTimeout(() => {
+        log('INI DI SLIDE KE 3')
+        _onNavbarChange(3)
+    }, 2000)
     const _onNavbarChange = (index) => refPagerView.current?.setPageWithoutAnimation(index)
     return (
         <>

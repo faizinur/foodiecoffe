@@ -5,6 +5,7 @@ import UseAuth from './UseAuth';
 import UseMerchant from './UseMerchant';
 import UseOrder from './UseOrder';
 import UseMenu from './UseOrder';
+import UseTable from './UseTable';
 
 export {
     UseHomeVM,
@@ -14,4 +15,5 @@ export {
     UseMerchant,
     UseOrder,
     UseMenu,
+    UseTable,
 }

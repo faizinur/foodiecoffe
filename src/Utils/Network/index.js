@@ -66,7 +66,6 @@ const GET = async (url = '', data = {}) => {
         Authorization = `Bearer ${JSON.parse(select[0]?.value)?.token?.access_token}`;
     }
     return new Promise((resolve, reject) => {
-
         myAxiosInstance.get(url, {
             headers: { Authorization, }
         }).then(({ data, status, statusText, headers, config }) => {

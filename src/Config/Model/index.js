@@ -5,6 +5,7 @@ import * as Auth from './Auth';
 import * as Merchant from './Merchant';
 import * as Order from './Order';
 import * as Menu from './Menu';
+import * as Table from './Table';
 
 export {
     RiwayatTransaksi,
@@ -15,4 +16,5 @@ export {
     Merchant,
     Order,
     Menu,
+    Table,
 }
