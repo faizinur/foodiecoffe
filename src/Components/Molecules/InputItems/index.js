@@ -138,6 +138,7 @@ const MyRadioInput = (props) => {
 
 const MyTitleBarInput = (props) => {
     const { colors } = useTheme();
+    const disabled = props?.disabled || false;
     return <TextInput
         mode='outlined'
         style={styles.titleBarinput}
@@ -152,6 +153,8 @@ const MyTitleBarInput = (props) => {
         returnKeyLabel='Ayo Cari!'
         dense={true}
         {...props}
+        disabled={disabled}
+        onPress={disabled == false && props?.onPress}
     />
 }
 

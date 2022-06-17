@@ -88,7 +88,7 @@ export default forwardRef((props, ref) => {
                 </View>
                 <InputItems.MyButton
                     disabled={!(floor != null || seat > 0)}
-                    onPress={(floor != null || seat > 0) && _applyFilter}
+                    onPress={_applyFilter}
                     style={{ width: '100%', marginVertical: 15 }}
                     label={'Terapkan Filter'}
                     labelStyle={{ fontSize: 16 }} />
