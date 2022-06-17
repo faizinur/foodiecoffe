@@ -1,6 +1,6 @@
 import { UseTable } from '@ViewModel';
 import { View, TouchableOpacity, FlatList } from 'react-native';
-import React, { useEffect, memo, useRef, useCallback, useState } from 'react';
+import React, { useEffect, memo, useRef } from 'react';
 import { log } from '@Utils';
 import { useTheme } from 'react-native-paper';
 import { MyText } from '@Atoms';
@@ -23,7 +23,6 @@ export default memo(({ navigation }) => {
         _onChangeText,
         searchValue,
         _getQR,
-        _filterTable,
     } = UseTable();
     const { colors } = useTheme();
     const refTextinputContainer = useRef(<View />)
@@ -47,22 +46,16 @@ export default memo(({ navigation }) => {
         <Icon name={props.iconName} size={26} color={colors.black} />
     </TouchableOpacity>)
 
-    const _onPressMeja = useCallback((props) => {
-        setSelectedTable(props)
-    }, [])
     const _onPressQR = async props => {
         setSelectedTable(props)
         let qr = await _getQR(props);
         refMejaModals.current?.toggle(qr)
     }
-    const _onMout = useCallback(() => {
-        log('_onMout MejaTemp');
-        _getTables()
-    }, [])
-    const _renderCardMeja = ({ item }) => <CardMeja {...item} numColumns={2} onPress={_onPressMeja} _onPressQR={_onPressQR} selectedTable={selectedTable} />
+
+    const _renderCardMeja = ({ item }) => <CardMeja {...item} numColumns={2} onPress={setSelectedTable} _onPressQR={_onPressQR} selectedTable={selectedTable} />
     useEffect(() => {
         log('Mount MejaTemp');
-        _onMout();
+        _getTables();
         return () => {
             log('Unmount MejaTemp')
         }
@@ -73,7 +66,7 @@ export default memo(({ navigation }) => {
                 disabledLeft={true}
                 renderTitle={() => <>
                     <View ref={refTextinputContainer} style={styles.renderTitleWrappwe('none')}>
-                        <InputItems.MyTitleBarInput value={searchValue} onChangeText={_onChangeText} onSubmitEditing={_searchTable} />
+                        <InputItems.MyTitleBarInput value={searchValue} onChangeText={_onChangeText} onSubmitEditing={({ nativeEvent: { text } }) => _searchTable(({ number }) => number.toLowerCase().includes(text.toLowerCase()))} />
                         <MyPressableIcon onClickSearch={_onClickSearch} iconName={'close'} />
                     </View>
                     <View ref={refTextTitleContainer} style={styles.renderTitleWrappwe('flex')}>
@@ -104,7 +97,7 @@ export default memo(({ navigation }) => {
                 nestedScrollEnabled={true}
             />
             <MejaModals ref={refMejaModals} />
-            <MejaFilterModal ref={refMejaFilterModal} onApplyFilter={_filterTable} onReset={_clearFiltered} />
+            <MejaFilterModal ref={refMejaFilterModal} onApplyFilter={(_floor, _seat) => _searchTable(({ floor, seat }) => parseInt(floor) == parseInt(_floor) && parseInt(seat) < parseInt(_seat))} onReset={_clearFiltered} />
         </View >
     )
 })

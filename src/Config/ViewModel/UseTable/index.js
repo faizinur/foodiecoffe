@@ -42,11 +42,10 @@ export default () => {
         setSearchValue(text)
     }, [searchValue])
 
-    const _searcTable = useCallback(({ nativeEvent: { text } }) => {
-        if (text.length < 2) return false;
+    const _searcTable = useCallback(fnFilter => {
         try {
             setSelectedTable({});
-            tmpTable = [...tableList].filter(({ number }) => number.toLowerCase().includes(searchValue.toLowerCase()));
+            tmpTable = [...tableList].filter();
             if (tmpTable.length == 0) throw (`MEJA ${searchValue} TIDAK DITEMUKAN`)
             setFilteredTables(tmpTable)
             tmpTable = [];
@@ -55,19 +54,6 @@ export default () => {
         }
 
     }, [tableList, filteredTables, selectedTable, searchValue])
-
-
-    const _filterTable = useCallback((_floor, _seat) => {
-        try {
-            setSelectedTable({});
-            tmpTable = [...tableList].filter(({ floor, seat }) => parseInt(floor) == parseInt(_floor) && parseInt(seat) < parseInt(_seat));
-            if (tmpTable.length == 0) throw (`MEJA ${searchValue} TIDAK DITEMUKAN`)
-            setFilteredTables(tmpTable)
-            tmpTable = [];
-        } catch (err) {
-            log('_searchTable : ', err)
-        }
-    }, [tableList, filteredTables, selectedTable])
 
     const _clearFiltered = useCallback(() => {
         try {
@@ -92,6 +78,5 @@ export default () => {
         searchValue,
         _onChangeText,
         _getQR,
-        _filterTable,
     }
 }
