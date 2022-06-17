@@ -27,8 +27,7 @@ export default memo(forwardRef(({ navigation: { navigate } }, ref) => {
             <View style={{ width: '100%', position: 'absolute', bottom: 0, left: 0, backgroundColor: colors.white, paddingHorizontal: '5%', paddingTop: '5%', borderTopLeftRadius: 15, borderTopRightRadius: 15, }}>
                 <ScrollView
                     style={{ maxHeight: height * .755, minHeight: 180 }}
-                    showsVerticalScrollIndicator={false}
-                >
+                    showsVerticalScrollIndicator={false}>
                     <MyText left bold medium color={colors.black}>Filter menu</MyText>
                     <MyText left bold medium color={colors.black}>Filter menu</MyText>
                     <MyText left bold medium color={colors.black}>Filter menu</MyText>

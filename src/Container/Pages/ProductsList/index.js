@@ -67,7 +67,7 @@ export default memo(({ navigation, route: { params } }) => {
                         justifyContent: 'center',
                         alignItems: 'center',
                     }}>
-                    <Icon name={'filter'} size={26} color={colors.black} />
+                    <Icon name={'filter-outline'} size={26} color={colors.black} />
                 </TouchableOpacity>}
             />
             <View style={{ backgroundColor: colors.white, flex: 1 }}>

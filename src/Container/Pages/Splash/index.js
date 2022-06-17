@@ -17,9 +17,9 @@ export default memo(({ navigation: { replace } }) => {
             // let newToken = await _refreshToken()
             // log('data udah ada', newToken)
             dispatch(setUser(userData));
-            replace('Home')
+            setTimeout(() => replace('Home'), 1500)
         } catch (e) {
-            replace('Login')
+            setTimeout(() => replace('Login'), 1500)
         }
     }, [])
     useEffect(() => {

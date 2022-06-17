@@ -50,7 +50,7 @@ export default memo(({ navigation }) => {
             <TitleBar
                 disabledLeft={true}
                 title={'Daftar Menu'}
-                renderRight={() => <MyPressableIcon onClickSearch={_onClickSetting} iconName={'cog'} />} />
+                renderRight={() => <MyPressableIcon onClickSearch={_onClickSetting} iconName={'filter-outline'} />} />
             <View style={{ paddingHorizontal: '5%' }}>
                 <FlatList
                     contentContainerStyle={styles.contentContainerStyle}

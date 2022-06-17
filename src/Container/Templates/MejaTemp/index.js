@@ -17,12 +17,13 @@ export default memo(({ navigation }) => {
         tableList,
         selectedTable,
         setSelectedTable,
-        _seacrhTable,
+        _searchTable,
         filteredTables,
         _clearFiltered,
         _onChangeText,
         searchValue,
         _getQR,
+        _filterTable,
     } = UseTable();
     const { colors } = useTheme();
     const refTextinputContainer = useRef(<View />)
@@ -58,6 +59,7 @@ export default memo(({ navigation }) => {
         log('_onMout MejaTemp');
         _getTables()
     }, [])
+    const _renderCardMeja = ({ item }) => <CardMeja {...item} numColumns={2} onPress={_onPressMeja} _onPressQR={_onPressQR} selectedTable={selectedTable} />
     useEffect(() => {
         log('Mount MejaTemp');
         _onMout();
@@ -71,7 +73,7 @@ export default memo(({ navigation }) => {
                 disabledLeft={true}
                 renderTitle={() => <>
                     <View ref={refTextinputContainer} style={styles.renderTitleWrappwe('none')}>
-                        <InputItems.MyTitleBarInput value={searchValue} onChangeText={_onChangeText} onSubmitEditing={_seacrhTable} />
+                        <InputItems.MyTitleBarInput value={searchValue} onChangeText={_onChangeText} onSubmitEditing={_searchTable} />
                         <MyPressableIcon onClickSearch={_onClickSearch} iconName={'close'} />
                     </View>
                     <View ref={refTextTitleContainer} style={styles.renderTitleWrappwe('flex')}>
@@ -79,7 +81,7 @@ export default memo(({ navigation }) => {
                         <MyPressableIcon onClickSearch={_onClickSearch} iconName={'search-web'} />
                     </View>
                 </>}
-                renderRight={() => <MyPressableIcon onClickSearch={_onClickSetting} iconName={'cog'} />}
+                renderRight={() => <MyPressableIcon onClickSearch={_onClickSetting} iconName={'filter-outline'} />}
             />
             <FlatList
                 style={styles.flatList}
@@ -91,7 +93,7 @@ export default memo(({ navigation }) => {
                     )}
                 contentContainerStyle={styles.flatListContent}
                 data={filteredTables.length > 0 ? filteredTables : tableList}
-                renderItem={({ item }) => <CardMeja {...item} numColumns={2} onPress={_onPressMeja} _onPressQR={_onPressQR} selectedTable={selectedTable} />}
+                renderItem={_renderCardMeja}
                 snapToInterval={130}
                 keyExtractor={({ id }) => id}
                 numColumns={2}
@@ -102,7 +104,7 @@ export default memo(({ navigation }) => {
                 nestedScrollEnabled={true}
             />
             <MejaModals ref={refMejaModals} />
-            <MejaFilterModal ref={refMejaFilterModal} />
+            <MejaFilterModal ref={refMejaFilterModal} onApplyFilter={_filterTable} onReset={_clearFiltered} />
         </View >
     )
 })

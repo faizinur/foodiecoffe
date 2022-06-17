@@ -12,6 +12,8 @@ export default StyleSheet.create({
         backgroundColor: colors.white,
         flexDirection: 'row',
         borderRadius: 10,
+        borderTopWidth: 1,
+        borderTopColor: colors.athensGray,
         justifyContent: 'center',
         alignItems: 'center',
         shadowColor: "#000",
