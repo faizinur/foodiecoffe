@@ -4,7 +4,6 @@ import UseProductVM from './UseProductVM';
 import UseAuth from './UseAuth';
 import UseMerchant from './UseMerchant';
 import UseOrder from './UseOrder';
-import UseMenu from './UseOrder';
 import UseTable from './UseTable';
 
 export {
@@ -14,6 +13,5 @@ export {
     UseAuth,
     UseMerchant,
     UseOrder,
-    UseMenu,
     UseTable,
 }

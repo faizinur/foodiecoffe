@@ -42,6 +42,7 @@ export default memo(() => {
                             refresh_token: "-",
                         }
                     }));
+                    await MyRealm.closeConnection()
                     reset('Splash')
                 }
             }]

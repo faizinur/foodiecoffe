@@ -45,7 +45,7 @@ export default () => {
         try {
             let data = await MyRealm.selectData()
             if (data.length == 0) throw ('Data Tidak ditemukan');
-            return Promise.resolve(data.length > 0 ? JSON.parse(data[0].value) : {});
+            return Promise.resolve(JSON.parse(data[0].value));
         } catch (err) {
             return Promise.reject(err);
         }

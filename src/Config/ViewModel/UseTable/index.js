@@ -1,11 +1,13 @@
 import { Table } from '@Model';
 import { useState, useCallback } from 'react';
 import { log } from '@Utils';
+let tmpTable = []
 export default () => {
-    const { getTables } = Table;
+    const { getTables, getQR } = Table;
     const [tableList, setTableList] = useState([])
     const [filteredTables, setFilteredTables] = useState([])
     const [selectedTable, setSelectedTable] = useState({})
+    const [searchValue, setSearchValue] = useState('');
     const [tableError, setTableError] = useState('');
     const [refreshingTable, setRefreshingTable] = useState(false);
 
@@ -23,8 +25,47 @@ export default () => {
             setTableError(`error Table ${err}`)
             setRefreshingTable(false)
         }
-    }, [])
+    }, []);
 
+    const _getQR = useCallback(async ({ merchantId, qr: { name } }) => {
+        try {
+            let { data, status } = await getQR(merchantId, name)
+            if (status != 'SUCCESS') throw ('_getQR VM ERROR')
+            return data;
+        } catch (err) {
+            log(err)
+            return err;
+        }
+    }, []);
+
+    const _onChangeText = useCallback(text => {
+        setSearchValue(text)
+    }, [searchValue])
+
+    const _seacrhTable = useCallback(({ nativeEvent: { text } }) => {
+        if (text.length < 2) return false;
+        try {
+            setSelectedTable({});
+            tmpTable = [...tableList].filter(({ number }) => number.toLowerCase().includes(searchValue.toLowerCase()));
+            if (tmpTable.length == 0) throw (`MEJA ${searchValue} TIDAK DITEMUKAN`)
+            setFilteredTables(tmpTable)
+            tmpTable = [];
+        } catch (err) {
+            log('_filterTable : ', err)
+        }
+
+    }, [tableList, filteredTables, selectedTable, searchValue])
+
+    const _clearFiltered = useCallback(() => {
+        try {
+            tmpTable = [];
+            setFilteredTables([])
+            setSelectedTable({})
+            setSearchValue('')
+        } catch (err) {
+
+        }
+    }, [filteredTables, selectedTable, searchValue])
     return {
         _getTables,
         tableList,
@@ -32,7 +73,11 @@ export default () => {
         refreshingTable,
         selectedTable,
         setSelectedTable,
-        setFilteredTables,
+        _seacrhTable,
         filteredTables,
+        _clearFiltered,
+        searchValue,
+        _onChangeText,
+        _getQR,
     }
 }

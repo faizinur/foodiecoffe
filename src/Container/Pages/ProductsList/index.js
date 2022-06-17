@@ -6,7 +6,6 @@ import { TitleBar, InputItems } from '@Molecules';
 import { MyText } from '@Atoms';
 import { CardProduct } from '@Organisms';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { UseMenu } from '@ViewModel'
 import Animated, {
     useSharedValue,
     useAnimatedStyle,
@@ -15,8 +14,10 @@ import Animated, {
 import ModalProductList from './ModalProductList';
 import ModalFilterProduct from './ModalFilterProduct';
 import styles from './styles';
+import { UseMerchant } from '@ViewModel'
+
 export default memo(({ navigation, route: { params } }) => {
-    const { _getMenu, menuList, menuError, menuLoading } = UseMenu()
+    const { _getCategoryList, categoryList } = UseMerchant()
     const { colors } = useTheme();
     const refModalProductList = useRef(<ModalProductList />)
     const refModalFilterProduct = useRef(<ModalFilterProduct />)
@@ -47,6 +48,7 @@ export default memo(({ navigation, route: { params } }) => {
 
     useEffect(() => {
         log('Mount ProductsList');
+        _getCategoryList(params);
         return () => {
             log('Unmount ProductsList')
         }
@@ -70,7 +72,7 @@ export default memo(({ navigation, route: { params } }) => {
             />
             <View style={{ backgroundColor: colors.white, flex: 1 }}>
                 <FlatList
-                    data={[0, 1, 2, 3, 4, 5, 6]}
+                    data={categoryList}
                     renderItem={() => <CardProduct
                         onAdd={() => _flipNavBar(true)}
                         onRemove={() => _flipNavBar(false)}

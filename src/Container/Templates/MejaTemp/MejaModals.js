@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { View, Image } from 'react-native';
 import React, { useState, useCallback, forwardRef, useImperativeHandle, useRef } from 'react';
 import { log } from '@Utils';
 import { useTheme, List } from 'react-native-paper';
@@ -10,14 +10,15 @@ export default forwardRef((props, ref) => {
     const { colors } = useTheme();
     const [isSwitch, setIsSwitch] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
+    const [QR_IMG, setQR_IMG] = useState('');
     useImperativeHandle(ref, () => ({
         toggle,
     }));
-    const toggle = useCallback((meja) => {
+    const toggle = useCallback((qr) => {
         log('_onPressMeja : ')
-
+        setQR_IMG(qr)
         setModalVisible(prevState => !prevState);
-    }, [modalVisible])
+    }, [modalVisible, QR_IMG])
     const _onPerbaharuiPress = useCallback(() => {
         log('_onPerbaharuiPress  :')
     }, []);
@@ -29,15 +30,16 @@ export default forwardRef((props, ref) => {
             log('barcodes : ', barcodes);
         }
     }, [])
-    const FloatingQRMarker = () => (<View style={styles.qrWrapper}>
+    const FloatingQRMarker = useCallback(() => (<View style={styles.qrWrapper}>
         <View style={styles.qrMarker}>
-            <Icon name={'qrcode'} size={180} color={'rgba(0,0,0,.15)'} />
+            {/* <Icon name={'qrcode'} size={180} color={'rgba(0,0,0,.15)'} /> */}
+            <Image source={{ uri: QR_IMG }} style={{ height: 30, width: 30 }} />
         </View>
         <View style={styles.qrMarkerTopRight} />
         <View style={styles.qrMarkerTopLeft} />
         <View style={styles.qrMarkerBottomRight} />
         <View style={styles.qrMarkerBottomLeft} />
-    </View>)
+    </View>), [QR_IMG])
     return (
         <MyModal
             animationType={'fade'}

@@ -51,9 +51,9 @@ import Animated, {
 } from 'react-native-reanimated';
 
 
-export default memo(({ onChange, navigation: { navigate } }) => {
+export default memo(({ onChange, navigation: { navigate }, INITIAL_PAGE = null }) => {
     const { colors } = useTheme();
-    const [activeMenu, setActiveMenu] = useState('Home')
+    const [activeMenu, setActiveMenu] = useState(INITIAL_PAGE == null ? 'Home' : navMenu[INITIAL_PAGE].title)
     const onMenuPress = useCallback((title, index) => {
         if (index == 4) {
             navigate('Akun')
@@ -74,10 +74,8 @@ export default memo(({ onChange, navigation: { navigate } }) => {
         yPosNavbar.value = { bottom, opacity };
     }, [])
     useEffect(() => {
-        log('Mount Navbar')
         isKeyBoardOpen ? _animateNavbar(-66, 0) : _animateNavbar(0, 1)
         return () => {
-            log('Unmount Navbar')
         }
     })
     return (

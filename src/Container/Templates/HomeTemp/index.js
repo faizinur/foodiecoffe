@@ -61,34 +61,32 @@ export default memo(({ navigation }) => {
                 scrollEnabled={false}>
                 <View key='0' style={{ flex: 1, paddingHorizontal: '5%', paddingBottom: 60 }}>
                     {orderError == '' &&
-                        <>
-                            <FlatList
-                                ListHeaderComponent={<MyText medium bold left color={colors.black}>List Pesanan</MyText>}
-                                refreshControl={
-                                    <RefreshControl
-                                        refreshing={refreshingOrder}
-                                        onRefresh={() => {
-                                            _getOrders();
-                                            setRefreshingOrder(true);
-                                            setTimeout(() => setRefreshingOrder(false), 3000);
-                                        }}
-                                    />}
-                                data={refreshingOrder ? [] : orderList}
-                                renderItem={_renderCardOrder}
-                                snapToInterval={150}
-                                keyExtractor={({ id }) => id}
-                                showsVerticalScrollIndicator={false}
-                                ListEmptyComponent={orderList.length > 0 ? <MyText>tunggu</MyText> : <EmptyOrderScreen />}
-                            />
-                            <FAB
-                                disabled={refreshingOrder}
-                                theme={styles.fab}
-                                style={styles.fabStyles}
-                                color={colors.white}
-                                icon="plus"
-                                onPress={_onFABPress} />
-                        </>
+                        <FlatList
+                            ListHeaderComponent={<MyText medium bold left color={colors.black}>List Pesanan</MyText>}
+                            refreshControl={
+                                <RefreshControl
+                                    refreshing={refreshingOrder}
+                                    onRefresh={() => {
+                                        _getOrders();
+                                        setRefreshingOrder(true);
+                                        setTimeout(() => setRefreshingOrder(false), 3000);
+                                    }}
+                                />}
+                            data={refreshingOrder ? [] : orderList}
+                            renderItem={_renderCardOrder}
+                            snapToInterval={150}
+                            keyExtractor={({ id }) => id}
+                            showsVerticalScrollIndicator={false}
+                            ListEmptyComponent={orderList.length > 0 ? <MyText>tunggu</MyText> : <EmptyOrderScreen />}
+                        />
                         || <MyText>upss error...</MyText>}
+                    <FAB
+                        disabled={refreshingOrder}
+                        theme={styles.fab}
+                        style={styles.fabStyles}
+                        color={colors.white}
+                        icon="plus"
+                        onPress={_onFABPress} />
                 </View>
                 <View key='1' style={styles.pagerInnerContainer}>
                     <MyToolBar

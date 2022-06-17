@@ -9,28 +9,35 @@ import { CardMeja } from '@Organisms';
 import styles from './styles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MejaModals from './MejaModals';
+import MejaFilterModal from './MejaFilterModal';
 let searchState = false;
 export default memo(({ navigation }) => {
-    const { _getTables, tableList, tableError, refreshingTable, selectedTable, setSelectedTable, setFilteredTables, filteredTables, } = UseTable();
+    const {
+        _getTables,
+        tableList,
+        selectedTable,
+        setSelectedTable,
+        _seacrhTable,
+        filteredTables,
+        _clearFiltered,
+        _onChangeText,
+        searchValue,
+        _getQR,
+    } = UseTable();
     const { colors } = useTheme();
-    const refTextinput = useRef(<View />)
-    const refTextTitle = useRef(<View />)
+    const refTextinputContainer = useRef(<View />)
+    const refTextTitleContainer = useRef(<View />)
     const refMejaModals = useRef(<MejaModals />)
+    const refMejaFilterModal = useRef(<MejaFilterModal />)
     const _onClickSearch = () => {
+        if (searchState) _clearFiltered()
         searchState = !searchState;
-        Promise.all([
-            refTextinput.current?.setNativeProps({ style: { display: searchState == true ? 'flex' : 'none' } }),
-            refTextTitle.current?.setNativeProps({ style: { display: searchState == true ? 'none' : 'flex' } })
-        ])
+        refTextinputContainer.current?.setNativeProps({ style: { display: searchState == true ? 'flex' : 'none' } })
+        refTextTitleContainer.current?.setNativeProps({ style: { display: searchState == true ? 'none' : 'flex' } })
     }
-    const _onSubmitEditing = useCallback(({ nativeEvent: { text } }) => {
-        // if (text.length < 2) return false;
-        let filtered = tableList.filter(({ number }) => (number == selectedTable.number));
-        log(filtered)
-        setFilteredTables(filtered)
-    }, [tableList, filteredTables, selectedTable])
     const _onClickSetting = () => {
         log('_onClickSetting : ')
+        refMejaFilterModal.current?.toggle()
     }
     const MyPressableIcon = (props) => (<TouchableOpacity
         activeOpacity={.8}
@@ -42,9 +49,10 @@ export default memo(({ navigation }) => {
     const _onPressMeja = useCallback((props) => {
         setSelectedTable(props)
     }, [])
-    const _onPressQR = props => {
+    const _onPressQR = async props => {
         setSelectedTable(props)
-        refMejaModals.current?.toggle(props.qr)
+        let qr = await _getQR(props);
+        refMejaModals.current?.toggle(qr)
     }
     const _onMout = useCallback(() => {
         log('_onMout MejaTemp');
@@ -56,24 +64,23 @@ export default memo(({ navigation }) => {
         return () => {
             log('Unmount MejaTemp')
         }
-    }, [])
+    }, [filteredTables])
     return (
         <View style={styles.pages}>
             <TitleBar
                 disabledLeft={true}
                 renderTitle={() => <>
-                    <View ref={refTextinput} style={styles.renderTitleWrappwe('none')}>
-                        <InputItems.MyTitleBarInput onSubmitEditing={_onSubmitEditing} />
+                    <View ref={refTextinputContainer} style={styles.renderTitleWrappwe('none')}>
+                        <InputItems.MyTitleBarInput value={searchValue} onChangeText={_onChangeText} onSubmitEditing={_seacrhTable} />
                         <MyPressableIcon onClickSearch={_onClickSearch} iconName={'close'} />
                     </View>
-                    <View ref={refTextTitle} style={styles.renderTitleWrappwe('flex')}>
+                    <View ref={refTextTitleContainer} style={styles.renderTitleWrappwe('flex')}>
                         <MyText center color={colors.black} style={{ textTransform: 'capitalize' }}>pilih meja</MyText>
                         <MyPressableIcon onClickSearch={_onClickSearch} iconName={'search-web'} />
                     </View>
                 </>}
                 renderRight={() => <MyPressableIcon onClickSearch={_onClickSetting} iconName={'cog'} />}
             />
-            <MyText left> filteredTables FILTER TABLE ERRO! {JSON.stringify(filteredTables)}</MyText>
             <FlatList
                 style={styles.flatList}
                 ListHeaderComponent={
@@ -83,7 +90,7 @@ export default memo(({ navigation }) => {
                     </View>
                     )}
                 contentContainerStyle={styles.flatListContent}
-                data={tableList}
+                data={filteredTables.length > 0 ? filteredTables : tableList}
                 renderItem={({ item }) => <CardMeja {...item} numColumns={2} onPress={_onPressMeja} _onPressQR={_onPressQR} selectedTable={selectedTable} />}
                 snapToInterval={130}
                 keyExtractor={({ id }) => id}
@@ -95,6 +102,7 @@ export default memo(({ navigation }) => {
                 nestedScrollEnabled={true}
             />
             <MejaModals ref={refMejaModals} />
+            <MejaFilterModal ref={refMejaFilterModal} />
         </View >
     )
 })

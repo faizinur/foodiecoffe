@@ -151,6 +151,7 @@ const MyTitleBarInput = (props) => {
         returnKeyType='search'
         returnKeyLabel='Ayo Cari!'
         dense={true}
+        {...props}
     />
 }
 

@@ -52,6 +52,7 @@ const POST = async (url = '', data = {}) => {
                     reject({ status })
                 }
             }).catch(err => {
+                log(`ERROR POST ${url}`)
                 reject(err)
             })
     })
@@ -75,8 +76,38 @@ const GET = async (url = '', data = {}) => {
                 reject({ status })
             }
         }).catch(err => {
+            log(`ERROR GET ${url}`)
             reject(err)
         })
     })
 };
-export { POST, GET, cancelToken, controller };
+const GET_PICTURE = async (url = '', data = {}, config = {}) => {
+    log(`GET TO ${baseURL}${url}`)
+    if (url == '' || (url == '' && data == {})) return Promise.reject()
+
+    let Authorization = '';
+    let select = await MyRealm.selectData();
+    if (select.length > 0) {
+        Authorization = `Bearer ${JSON.parse(select[0]?.value)?.token?.access_token}`;
+    }
+    return new Promise((resolve, reject) => {
+        myAxiosInstance.get(url, {
+            headers: {
+                Authorization,
+                ...config,
+            }
+        }).then(({ data, status, statusText, headers, config }) => {
+            if ([200, 202].includes(status)) {
+                resolve(data)
+            } else {
+                reject({ status })
+            }
+        }).catch(err => {
+            log(`ERROR GET ${url}`)
+            reject(err)
+        })
+    })
+};
+
+
+export { POST, GET, GET_PICTURE, cancelToken, controller };
