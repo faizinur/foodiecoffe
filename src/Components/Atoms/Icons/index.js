@@ -24,6 +24,8 @@ const IC_CATEGORY = require('../../../Assets/Images/ic_category.png');
 const IC_PAYMENT_INFO = require('../../../Assets/Images/ic_payment_info.png');
 const IC_PAYMENT_SUCCESS = require('../../../Assets/Images/ic_payment_success.png');
 const IC_PAYMENT_FAILED = require('../../../Assets/Images/ic_payment_failed.png');
+const IC_ACCEPT = require('../../../Assets/Images/ic_accept.png');
+const IC_REJECT = require('../../../Assets/Images/ic_reject.png');
 
 export {
     IC_SPLASH,
@@ -52,4 +54,6 @@ export {
     IC_PAYMENT_INFO,
     IC_PAYMENT_SUCCESS,
     IC_PAYMENT_FAILED,
+    IC_ACCEPT,
+    IC_REJECT,
 }

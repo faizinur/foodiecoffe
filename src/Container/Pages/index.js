@@ -10,6 +10,7 @@ import Home from "./Home";
 import Register from "./Register";
 import Akun from "./Akun";
 import ProductsList from './ProductsList';
+import ConfirmOrder from './ConfirmOrder';
 
 const Stack = createNativeStackNavigator();
 
@@ -44,6 +45,9 @@ export default stackProps => (
             <Stack.Screen name="ProductsList" options={() => (animationSlide)}>
                 {props => <ProductsList  {...props} {...stackProps} />}
             </Stack.Screen>
+            <Stack.Screen name="ConfirmOrder" options={() => (animationSlide)}>
+                {props => <ConfirmOrder  {...props} {...stackProps} />}
+            </Stack.Screen>
         </Stack.Navigator>
     </NavigationContainer>
 )
@@ -54,4 +58,5 @@ export {
     Register,
     Akun,
     ProductsList,
+    ConfirmOrder,
 }

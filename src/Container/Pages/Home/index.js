@@ -4,7 +4,7 @@ import { Navbar } from '@Molecules';
 import { PagerView } from 'react-native-pager-view';
 import { HomeTemp, TransTemp, MenuTemp, MejaTemp } from '@Templates';
 import styles from './styles';
-const INITIAL_PAGE = 3;
+const INITIAL_PAGE = 1;
 export default props => {
     const refPagerView = useRef(<PagerView />);
     const { colors } = useTheme()

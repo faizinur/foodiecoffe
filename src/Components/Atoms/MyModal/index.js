@@ -18,6 +18,7 @@ export default props => {
 
     }
     const _onRequestClose = () => {
+        if ('disableBack' in props && props?.disableBack == true) return false;
         _setBackdrop()
         setTimeout(() => { 'onRequestClose' in props && props.onRequestClose() }, 400)
     }

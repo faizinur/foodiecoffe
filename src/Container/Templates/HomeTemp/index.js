@@ -60,7 +60,8 @@ export default memo(({ navigation }) => {
                 initialPage={INITIAL_PAGE}
                 scrollEnabled={false}>
                 <View key='0' style={{ flex: 1, paddingHorizontal: '5%', paddingBottom: 60 }}>
-                    {orderError == '' &&
+                    <MyText onPress={() => navigation.navigate('ConfirmOrder', {})}>bypass to connfirm</MyText>
+                    {/* {orderError == '' &&
                         <FlatList
                             ListHeaderComponent={<MyText medium bold left color={colors.black}>List Pesanan</MyText>}
                             refreshControl={
@@ -79,7 +80,7 @@ export default memo(({ navigation }) => {
                             showsVerticalScrollIndicator={false}
                             ListEmptyComponent={orderList.length > 0 ? <MyText>tunggu</MyText> : <EmptyOrderScreen />}
                         />
-                        || <MyText>upss error...</MyText>}
+                        || <MyText>upss error...</MyText>} */}
                     <FAB
                         disabled={refreshingOrder}
                         theme={styles.fab}
