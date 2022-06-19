@@ -9,9 +9,15 @@ import { CardOrder } from '@Organisms';
 import { TopTabbar, EmptyOrderScreen } from '@Molecules';
 import { MyToolBar } from '@Organisms';
 import HomeModals from './HomeModals'
-import { UseOrder } from '@ViewModel';
+import { UseOrder, UseMerchant } from '@ViewModel';
 const INITIAL_PAGE = 0;
 export default memo(({ navigation }) => {
+    const {
+        _getMerchant,
+        merchantList,
+        loading,
+        merchantError,
+    } = UseMerchant()
     const {
         _getOrders,
         orderList,
@@ -43,10 +49,11 @@ export default memo(({ navigation }) => {
         refHomeModals.current?.toggle()
         , [])
     const _onPressCalendar = useCallback(() => log('_onPressCalendar Pressed'), [])
-    const _renderCardOrder = ({ item }) => <CardOrder {...item} onPress={() => navigation.navigate('ConfirmOrder', item)} />
+    const _renderCardOrder = useCallback(({ item }) => <CardOrder order={item} onPress={() => navigation.navigate('ConfirmOrder', { order: { ...item } })} />, []);
     useEffect(() => {
         log('Mount HomeTemp');
         _getOrders()
+        _getMerchant()
         return () => {
             log('Unmount HomeTemp')
         }
@@ -110,7 +117,14 @@ export default memo(({ navigation }) => {
                     />
                 </View>
             </PagerView>
-            <HomeModals ref={refHomeModals} navigation={navigation} />
+            <HomeModals
+                ref={refHomeModals}
+                navigation={navigation}
+                getMerchant={_getMerchant}
+                merchantList={merchantList}
+                loading={loading}
+                merchantError={merchantError}
+            />
         </View>
     )
 })

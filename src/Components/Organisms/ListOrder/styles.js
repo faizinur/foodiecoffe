@@ -30,7 +30,8 @@ export default StyleSheet.create({
         alignItems: 'center',
     },
     notes: {
-        width: '100%'
+        width: '100%',
+        marginBottom:5,
     },
     orderTable: {
         width: 31,

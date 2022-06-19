@@ -5,6 +5,7 @@
 //     restSpeedThreshold: 0.1, //0.001
 //     stiffness: 800, //120
 // }
+const BASE_URL = 'http://beta-api.foodie.coffee/';
 
 const SPRING_CONFIG = {
     damping: 15,
@@ -26,4 +27,5 @@ const ZOOM_IN = {
 export {
     SPRING_CONFIG,
     ZOOM_IN,
+    BASE_URL,
 }

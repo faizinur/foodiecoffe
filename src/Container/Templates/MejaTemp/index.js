@@ -1,7 +1,7 @@
 import { UseTable } from '@ViewModel';
 import { View, TouchableOpacity, FlatList } from 'react-native';
 import React, { useEffect, memo, useRef } from 'react';
-import { log } from '@Utils';
+import { log, CONSTANT } from '@Utils';
 import { useTheme } from 'react-native-paper';
 import { MyText } from '@Atoms';
 import { TitleBar, InputItems } from '@Molecules';
@@ -10,8 +10,11 @@ import styles from './styles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MejaModals from './MejaModals';
 import MejaFilterModal from './MejaFilterModal';
+import { UseAuth } from '@ViewModel';
 let searchState = false;
+const { BASE_URL } = CONSTANT;
 export default memo(({ navigation }) => {
+    const { _getUserData } = UseAuth();
     const {
         _getTables,
         tableList,
@@ -22,7 +25,6 @@ export default memo(({ navigation }) => {
         _clearFiltered,
         _onChangeText,
         searchValue,
-        _getQR,
     } = UseTable();
     const { colors } = useTheme();
     const refTextinputContainer = useRef(<View />)
@@ -47,13 +49,13 @@ export default memo(({ navigation }) => {
     </TouchableOpacity>)
 
     const _onPressQR = async props => {
-        //lnagsung parrsing url saja
+        const { user: { merchantId } } = await _getUserData()
+        const qrURI = `${BASE_URL}${merchantId || 'B1778H'}/qr/${props.qr.name}`;
         setSelectedTable(props)
-        let qr = await _getQR(props);
-        refMejaModals.current?.toggle(qr)
+        refMejaModals.current?.toggle(qrURI)
     }
 
-    const _renderCardMeja = ({ item }) => <CardMeja {...item} numColumns={2} onPress={setSelectedTable} _onPressQR={_onPressQR} selectedTable={selectedTable} />
+    const _renderCardMeja = ({ item }) => <CardMeja seat={item} numColumns={2} onPress={setSelectedTable} _onPressQR={_onPressQR} selectedTable={selectedTable} />
     useEffect(() => {
         log('Mount MejaTemp');
         _getTables();

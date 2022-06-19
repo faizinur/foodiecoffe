@@ -20,6 +20,7 @@ const IC_ICON_TRANSAKSI = require('../../../Assets/Images/ic_icon_transaksi.png'
 const IC_TRAFFIC_GRAPH = require('../../../Assets/Images/ic_taffic_graph.png');
 const IC_PRODUCT = require('../../../Assets/Images/ic_product.png');
 const IC_PRODUCT_BIG = require('../../../Assets/Images/ic_product_big.png');
+const IC_PRODUCT_DETAIL = require('../../../Assets/Images/ic_product_detail.png');
 const IC_CATEGORY = require('../../../Assets/Images/ic_category.png');
 const IC_PAYMENT_INFO = require('../../../Assets/Images/ic_payment_info.png');
 const IC_PAYMENT_SUCCESS = require('../../../Assets/Images/ic_payment_success.png');
@@ -56,4 +57,5 @@ export {
     IC_PAYMENT_FAILED,
     IC_ACCEPT,
     IC_REJECT,
+    IC_PRODUCT_DETAIL,
 }

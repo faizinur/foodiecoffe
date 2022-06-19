@@ -17,28 +17,28 @@ export default memo(({ navigation: { goBack }, route: { params } }) => {
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 style={{ backgroundColor: colors.white, flex: 1, paddingHorizontal: '5%' }}>
-                <ListCustomer {...params} />
-                <ListOrder list={[params.items]} />
+                <ListCustomer {...params?.order} />
+                <ListOrder orders={params?.order?.items} />
                 <View style={{ marginVertical: 16 }}>
                     <MyText left bold color={colors.black}>Ringkasan Pembayaran</MyText>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', height: 30 }}>
                         <MyText center left light color={colors.black}>Total Harga</MyText>
                         <MyText center right bold color={colors.black}>
                             {/* <MyText center right strikeThrough>Rp 224.000</MyText> */}
-                            Rp.{params.subTotal}</MyText>
+                            Rp.{params?.order?.subTotal}</MyText>
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', height: 30 }}>
                         <MyText center left light color={colors.black}>PPN</MyText>
-                        <MyText center right bold color={params.ppn > 0 ? colors.black : colors.athensGray}>{params.ppn}</MyText>
+                        <MyText center right bold color={params?.order?.ppn > 0 ? colors.black : colors.athensGray}>{params?.order?.ppn}</MyText>
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', height: 30 }}>
                         <MyText center left light color={colors.black}>Diskon</MyText>
-                        <MyText center right bold color={params.ppn > 0 ? colors.black : colors.athensGray}>{params.discount}</MyText>
+                        <MyText center right bold color={params?.order?.ppn > 0 ? colors.black : colors.athensGray}>{params?.order?.discount}</MyText>
                     </View>
                     <View style={{ width: '100%', borderTopColor: colors.athensGray, borderTopWidth: 1, borderStyle: 'dashed', marginVertical: 6 }} />
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', height: 30 }}>
                         <MyText center left light bold color={colors.black}>Total Pembayaran</MyText>
-                        <MyText center right bold color={colors.black}>Rp.{params.subTotal}</MyText>
+                        <MyText center right bold color={colors.black}>Rp.{params?.order?.subTotal}</MyText>
                     </View>
                 </View>
             </ScrollView>

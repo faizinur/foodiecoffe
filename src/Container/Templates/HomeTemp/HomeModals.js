@@ -7,13 +7,7 @@ import { InputItems } from '@Molecules';
 import { CardCategory } from '@Organisms';
 import styles from './styles';
 import { UseMerchant } from '@ViewModel'
-export default memo(forwardRef(({ navigation: { navigate } }, ref) => {
-    const {
-        _getMerchant,
-        merchantList,
-        loading,
-        merchantError,
-    } = UseMerchant()
+export default memo(forwardRef(({ navigation: { navigate }, getMerchant, merchantList, loading, merchantError }, ref) => {
     const { colors } = useTheme();
     const [modalVisible, setModalVisible] = useState(false);
     useImperativeHandle(ref, () => ({
@@ -37,7 +31,6 @@ export default memo(forwardRef(({ navigation: { navigate } }, ref) => {
             visible={modalVisible}
             onRequestClose={_onCloseModal}
             statusBarTranslucent={true}
-            onShow={_getMerchant}
             contentContainerStyle={styles.contentContainerStyle}>
             <View style={styles.drawerIndicator} />
             <View style={styles.sectionContainer}>

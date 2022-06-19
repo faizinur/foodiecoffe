@@ -17,7 +17,7 @@ export default forwardRef((props, ref) => {
     }));
     const toggle = useCallback((qr) => {
         log('_onPressMeja : ')
-        setQR_IMG(qr)
+        setQR_IMG({ uri: qr })
         setModalVisible(prevState => !prevState);
     }, [modalVisible, QR_IMG])
     const _onPerbaharuiPress = useCallback(() => {
@@ -34,7 +34,7 @@ export default forwardRef((props, ref) => {
     const FloatingQRMarker = useCallback(() => (<View style={styles.qrWrapper}>
         <View style={styles.qrMarker}>
             {/* <Icon name={'qrcode'} size={180} color={'rgba(0,0,0,.15)'} /> */}
-            <Image source={IC_AVATAR_ORDER_SUCCESS} style={{ height: 130, width: 130 }} />
+            <Image source={QR_IMG} style={{ height: '100%', width: '100%' }} />
         </View>
         <View style={styles.qrMarkerTopRight} />
         <View style={styles.qrMarkerTopLeft} />

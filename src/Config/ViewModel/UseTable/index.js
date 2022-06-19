@@ -3,7 +3,7 @@ import { useState, useCallback } from 'react';
 import { log } from '@Utils';
 let tmpTable = []
 export default () => {
-    const { getTables, getQR } = Table;
+    const { getTables } = Table;
     const [tableList, setTableList] = useState([])
     const [filteredTables, setFilteredTables] = useState([])
     const [selectedTable, setSelectedTable] = useState({})
@@ -24,17 +24,6 @@ export default () => {
             log(err)
             setTableError(`error Table ${err}`)
             setRefreshingTable(false)
-        }
-    }, []);
-
-    const _getQR = useCallback(async ({ merchantId, qr: { name } }) => {
-        try {
-            let { data, status } = await getQR(merchantId, name)
-            if (status != 'SUCCESS') throw ('_getQR VM ERROR')
-            return data;
-        } catch (err) {
-            log(err)
-            return err;
         }
     }, []);
 
@@ -77,6 +66,5 @@ export default () => {
         _clearFiltered,
         searchValue,
         _onChangeText,
-        _getQR,
     }
 }

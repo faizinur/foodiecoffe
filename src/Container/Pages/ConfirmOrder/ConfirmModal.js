@@ -108,7 +108,7 @@ export default forwardRef((props, ref) => {
                         loading={loading}
                         onPress={_onclick}
                         style={styles.button}
-                        label={'Oke, Lanjutkan'} />
+                        label={'Oke'} />
                 </View>
                 <View style={{ flex: 1 }} />
             </Animated.View>

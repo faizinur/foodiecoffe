@@ -24,7 +24,6 @@ export default () => {
 
     const _getCategoryList = useCallback(async (params) => {
         try {
-            log('_getCategoryList : ', params)
             const { status, data, message } = await getCategoryList();
             if (status != 'SUCCESS') throw message;
             setcategoryList(data)

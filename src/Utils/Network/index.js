@@ -1,5 +1,6 @@
 import React from 'react';
 import { log, MyRealm } from '@Utils';
+import {BASE_URL} from '../CONSTANT'
 import axios from 'axios';
 
 const controller = new AbortController();
@@ -12,9 +13,8 @@ const cancelToken = CancelToken.source();
 // // OR
 // controller.abort(); // the message parameter is not supported
 
-const baseURL = 'http://beta-api.foodie.coffee/';
 const myAxiosInstance = axios.create({
-    baseURL,
+    baseURL : BASE_URL,
     timeout: 3000,
     headers: {
         'Content-type': 'application/json; charset=UTF-8',
@@ -38,7 +38,7 @@ const myAxiosInstance = axios.create({
 });
 
 const POST = async (url = '', data = {}) => {
-    log(`POST TO ${baseURL}${url}`)
+    log(`POST TO ${BASE_URL}${url}`)
     if (url == '' || (url == '' && data == {})) return Promise.reject()
     return new Promise((resolve, reject) => {
         // const myForms = new FormData();
@@ -58,7 +58,7 @@ const POST = async (url = '', data = {}) => {
     })
 };
 const GET = async (url = '', data = {}) => {
-    log(`GET TO ${baseURL}${url}`)
+    log(`GET TO ${BASE_URL}${url}`)
     if (url == '' || (url == '' && data == {})) return Promise.reject()
 
     let Authorization = '';
@@ -82,7 +82,7 @@ const GET = async (url = '', data = {}) => {
     })
 };
 const GET_PICTURE = async (url = '', data = {}, config = {}) => {
-    log(`GET TO ${baseURL}${url}`)
+    log(`GET TO ${BASE_URL}${url}`)
     if (url == '' || (url == '' && data == {})) return Promise.reject('incomplete GET params')
 
     try {

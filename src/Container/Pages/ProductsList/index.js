@@ -13,27 +13,33 @@ import Animated, {
 } from 'react-native-reanimated';
 import ModalProductList from './ModalProductList';
 import ModalFilterProduct from './ModalFilterProduct';
+import ModalDetailProduct from './ModalDetailProduct';
 import styles from './styles';
-import { UseMerchant } from '@ViewModel'
+import { UseMerchant } from '@ViewModel';
 
 export default memo(({ navigation, route: { params } }) => {
     const { _getCategoryList, categoryList } = UseMerchant()
     const { colors } = useTheme();
     const refModalProductList = useRef(<ModalProductList />)
     const refModalFilterProduct = useRef(<ModalFilterProduct />)
-    const navBarPosY = useSharedValue({ bottom: 0 })
+    const refModalDetailProduct = useRef(<ModalDetailProduct />)
+    const navBarPosY = useSharedValue({ bottom: -80 })
     const navBarPosYStyle = useAnimatedStyle(() => ({
         bottom: withSpring(navBarPosY.value.bottom, CONSTANT.SPRING_CONFIG),
     }))
-    const footerHeight = useSharedValue({ height: 80 })
+    const footerHeight = useSharedValue({ height: 0 })
     const footerHeightStyle = useAnimatedStyle(() => ({
         height: withSpring(footerHeight.value.height, CONSTANT.SPRING_CONFIG),
     }))
 
-    const _flipNavBar = (shown = true) => {
-        footerHeight.value = { height: (!shown ? 80 : 0) }
-        navBarPosY.value = { bottom: (!shown ? 0 : -80) }
+    const _onChangeBucket = () => refModalDetailProduct?.current?.toggle('CHANGE');
+
+    const _onBucketChanged = () => {
+        footerHeight.value = { height: footerHeight.value == 0 ? 80 : 0 }
+        navBarPosY.value = { bottom: navBarPosY.value.bottom == 0 ? -80 : 0 }
     }
+
+    const _onDetailBucketPress = () => refModalDetailProduct?.current?.toggle('DETAIL');
 
     const _onPesanPress = () => {
         log('_onPesanPress : ')
@@ -43,8 +49,12 @@ export default memo(({ navigation, route: { params } }) => {
     const _onPressFilter = () => {
         log('_onPressFilter : ')
         refModalFilterProduct?.current?.toggle()
-
     }
+
+    const _filterProduct = (sortType, discount) => {
+        log('_filterProduct : ', sortType, discount)
+    }
+
 
     useEffect(() => {
         log('Mount ProductsList');
@@ -53,6 +63,7 @@ export default memo(({ navigation, route: { params } }) => {
             log('Unmount ProductsList')
         }
     }, [])
+
     return (
         <View style={styles.container}>
             <TitleBar
@@ -74,8 +85,8 @@ export default memo(({ navigation, route: { params } }) => {
                 <FlatList
                     data={categoryList}
                     renderItem={() => <CardProduct
-                        onAdd={() => _flipNavBar(true)}
-                        onRemove={() => _flipNavBar(false)}
+                        onAdd={_onChangeBucket}
+                        onRemove={_onChangeBucket}
                     />}
                     snapToInterval={150}
                     keyExtractor={(data) => data}
@@ -89,7 +100,7 @@ export default memo(({ navigation, route: { params } }) => {
                         <MyText left light>1 Pesanan</MyText>
                         <MyText left medium color={colors.black} style={{ width: 90 }} numberOfLines={1}>Rp80.0090</MyText>
                     </View>
-                    <Icon name={'chevron-up'} size={30} style={{ alignSelf: 'center' }} color={colors.black} />
+                    <Icon name={'chevron-up'} size={30} style={{ alignSelf: 'center' }} color={colors.black} onPress={_onDetailBucketPress} />
                 </View>
                 <View>
                     <InputItems.MyButton
@@ -100,7 +111,8 @@ export default memo(({ navigation, route: { params } }) => {
                 </View>
             </Animated.View>
             <ModalProductList ref={refModalProductList} navigation={navigation} />
-            <ModalFilterProduct ref={refModalFilterProduct} navigation={navigation} />
+            <ModalFilterProduct ref={refModalFilterProduct} onApplyFilter={_filterProduct} />
+            <ModalDetailProduct ref={refModalDetailProduct} onChangeBucket={_onBucketChanged} />
         </View >
     )
 })

@@ -15,5 +15,5 @@ export {
     cancelToken,
     signal,
     MyRealm,
-    DateDiff,
+    DateDiff
 }

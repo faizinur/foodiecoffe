@@ -18,26 +18,6 @@ const getTables = async (merchantId = 'B1778H') => {
     }
 };
 
-const getQR = async (merchantId = 'B1778H', qrName) => {
-    try {
-        let qrImage = await GET(`${merchantId}/qr/${qrName}`, {})
-        // log('INI QR IMAGE ', typeof qrImage)
-        return {
-            status: 'SUCCESS',
-            message: 'API SUCCESS!',
-            data: qrImage,
-        }
-    } catch (e) {
-        return {
-            status: "FAILED",
-            message: `MODEL TABLE ${e}`,
-            data: null,
-        }
-    }
-};
-
-
 export {
-    getTables,
-    getQR,
+    getTables
 }
