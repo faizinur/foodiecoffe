@@ -8,7 +8,8 @@ import CardMenu from './CardMenu';
 import CardCategory from './CardCategory';
 import MyToolBar from './MyToolBar';
 import CardProduct from './CardProduct';
-import CardCustomer from './CardCustomer';
+import ListCustomer from './ListCustomer';
+import ListOrder from './ListOrder';
 export {
     Forms,
     CardOrder,
@@ -20,5 +21,6 @@ export {
     CardCategory,
     MyToolBar,
     CardProduct,
-    CardCustomer,
+    ListCustomer,
+    ListOrder,
 }

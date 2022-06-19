@@ -6,47 +6,39 @@ import { TitleBar, InputItems } from '@Molecules';
 import { MyText } from '@Atoms';
 import ConfirmModal from './ConfirmModal';
 import styles from './styles';
-import { CardCustomer } from '@Organisms';
+import { ListCustomer, ListOrder } from '@Organisms';
 
 export default memo(({ navigation: { goBack }, route: { params } }) => {
     const { colors } = useTheme();
     const refConfirmModal = useRef(<ConfirmModal />)
-    useEffect(() => {
-        log('Mount ConfirmOrder');
-        return () => {
-            log('Unmount ConfirmOrder')
-        }
-    }, [])
     return (
         <View style={styles.container}>
             <TitleBar title={'Konfirmasi Terima'} />
             <ScrollView
                 showsVerticalScrollIndicator={false}
-                style={{ backgroundColor: colors.white, flex: 1 }}>
-                <CardCustomer />
-                <View style={{ padding: 15 }}>
-                    <MyText>Accordeon Transaksi</MyText>
-                    <MyText left bold>Ringkasan Pembayaran</MyText>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <MyText left >Total Harga</MyText>
-                        <MyText right> Rp 199 </MyText>
+                style={{ backgroundColor: colors.white, flex: 1, paddingHorizontal: '5%' }}>
+                <ListCustomer {...params} />
+                <ListOrder list={[params.items]} />
+                <View style={{ marginVertical: 16 }}>
+                    <MyText left bold color={colors.black}>Ringkasan Pembayaran</MyText>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', height: 30 }}>
+                        <MyText center left light color={colors.black}>Total Harga</MyText>
+                        <MyText center right bold color={colors.black}>
+                            {/* <MyText center right strikeThrough>Rp 224.000</MyText> */}
+                            Rp.{params.subTotal}</MyText>
                     </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <MyText left >TPPN</MyText>
-                        <MyText right> Rp 199 </MyText>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', height: 30 }}>
+                        <MyText center left light color={colors.black}>PPN</MyText>
+                        <MyText center right bold color={params.ppn > 0 ? colors.black : colors.athensGray}>{params.ppn}</MyText>
                     </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <MyText left >Total Harga</MyText>
-                        <MyText right> Rp 199 </MyText>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', height: 30 }}>
+                        <MyText center left light color={colors.black}>Diskon</MyText>
+                        <MyText center right bold color={params.ppn > 0 ? colors.black : colors.athensGray}>{params.discount}</MyText>
                     </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <MyText left >FIskon x1</MyText>
-                        <MyText right> Rp 199 </MyText>
-                    </View>
-                    <View style={{ width: '100%', borderTopColor: colors.athensGray, borderTopWidth: 1 }} />
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <MyText left >Total Pemayran</MyText>
-                        <MyText right> Rp 199 </MyText>
+                    <View style={{ width: '100%', borderTopColor: colors.athensGray, borderTopWidth: 1, borderStyle: 'dashed', marginVertical: 6 }} />
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', height: 30 }}>
+                        <MyText center left light bold color={colors.black}>Total Pembayaran</MyText>
+                        <MyText center right bold color={colors.black}>Rp.{params.subTotal}</MyText>
                     </View>
                 </View>
             </ScrollView>

@@ -11,16 +11,16 @@ import Animated, {
     useAnimatedStyle,
     withSpring,
 } from 'react-native-reanimated';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 let modalType = '';
 export default forwardRef((props, ref) => {
     const { colors } = useTheme();
     const [modalVisible, setModalVisible] = useState(false);
     const [animationType, setAnimationType] = useState('slide');
-
     const [imageSource, setImageSource] = useState(null);
     const [textTitle, setTextTitle] = useState('');
     const [textDescription, setTextDescription] = useState('');
-
     const [loading, setLoading] = useState(false);
 
 
@@ -31,19 +31,20 @@ export default forwardRef((props, ref) => {
         width: '100%',
         height: '50%',
     })
+
     const imageSizeStyle = useAnimatedStyle(() => ({
         width: withSpring(imageSize.value.width, CONSTANT.SPRING_CONFIG),
         height: withSpring(imageSize.value.height, CONSTANT.SPRING_CONFIG),
     }))
+
     const drawerHeight = useSharedValue({
         height: height / 2,
     })
+
     const drawerHeightStyle = useAnimatedStyle(() => ({
         height: withSpring(drawerHeight.value.height, CONSTANT.SPRING_CONFIG),
     }))
-    useImperativeHandle(ref, () => ({
-        toggle,
-    }));
+
     const toggle = useCallback((type = 'accept') => {
         log('_toggle : ')
         modalType = type;
@@ -52,17 +53,14 @@ export default forwardRef((props, ref) => {
         setTextDescription(modalType == 'accept' ? 'Jangan lupa pastikan kembali pesanannya' : 'Kamu yakin ingin menolak orderan ini?');
         setModalVisible(prevState => !prevState);
     }, [modalVisible, imageSource, textTitle, textDescription])
+
     const _onCloseModal = useCallback(() => {
         setAnimationType('fade')
         setModalVisible(prevState => !prevState);
-        drawerHeight.value = {
-            height: DOWN_SIZE,
-        }
-        imageSize.value = {
-            width: '100%',
-            height: '50%',
-        }
+        drawerHeight.value = { height: DOWN_SIZE }
+        imageSize.value = { width: '100%', height: '50%' }
     }, [modalVisible, animationType]);
+
     const _onclick = useCallback(() => {
         log('_onclick : ');
         if (drawerHeight.value.height == UP_SIZE) {
@@ -71,13 +69,8 @@ export default forwardRef((props, ref) => {
             setImageSource(null)
             setTextTitle('')
             setTextDescription('')
-            drawerHeight.value = {
-                height: DOWN_SIZE,
-            }
-            imageSize.value = {
-                width: '100%',
-                height: '50%',
-            }
+            drawerHeight.value = { height: DOWN_SIZE }
+            imageSize.value = { width: '100%', height: '50%' }
             props?.onConfirm()
             return false;
         }
@@ -86,19 +79,19 @@ export default forwardRef((props, ref) => {
             setTextTitle(modalType == 'accept' ? 'Orderan Di Terima' : 'Orderan Di Tolak');
             setTextDescription(modalType == 'accept' ? 'Selamat oreran berhasil di lakukan' : 'Selamat oreran berhasil di tolak');
 
-            drawerHeight.value = {
-                height: UP_SIZE,
-            }
-            imageSize.value = {
-                width: '30%',
-                height: '40%',
-            }
+            drawerHeight.value = { height: UP_SIZE }
+            imageSize.value = { width: '30%', height: '40%' }
             setLoading(false);
         }, 1500)
     }, [drawerHeight, imageSize, imageSource, textTitle, textDescription, loading])
+
+    useImperativeHandle(ref, () => ({
+        toggle,
+    }));
+
     return (
         <MyModal
-            disableBack={true}
+            disableBack={false}
             visible={modalVisible}
             animationType={animationType}
             onRequestClose={_onCloseModal}

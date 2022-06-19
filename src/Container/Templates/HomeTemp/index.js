@@ -43,7 +43,7 @@ export default memo(({ navigation }) => {
         refHomeModals.current?.toggle()
         , [])
     const _onPressCalendar = useCallback(() => log('_onPressCalendar Pressed'), [])
-    const _renderCardOrder = ({ item }) => <CardOrder {...item} onPress={() => log('adbjsadjk')} />
+    const _renderCardOrder = ({ item }) => <CardOrder {...item} onPress={() => navigation.navigate('ConfirmOrder', item)} />
     useEffect(() => {
         log('Mount HomeTemp');
         _getOrders()
@@ -60,8 +60,7 @@ export default memo(({ navigation }) => {
                 initialPage={INITIAL_PAGE}
                 scrollEnabled={false}>
                 <View key='0' style={{ flex: 1, paddingHorizontal: '5%', paddingBottom: 60 }}>
-                    <MyText onPress={() => navigation.navigate('ConfirmOrder', {})}>bypass to connfirm</MyText>
-                    {/* {orderError == '' &&
+                    {orderError == '' &&
                         <FlatList
                             ListHeaderComponent={<MyText medium bold left color={colors.black}>List Pesanan</MyText>}
                             refreshControl={
@@ -78,9 +77,10 @@ export default memo(({ navigation }) => {
                             snapToInterval={150}
                             keyExtractor={({ id }) => id}
                             showsVerticalScrollIndicator={false}
-                            ListEmptyComponent={orderList.length > 0 ? <MyText>tunggu</MyText> : <EmptyOrderScreen />}
+                            ListFooterComponent={<View style={{ height: 100 }} />}
+                            ListEmptyComponent={orderList.length > 0 ? <MyText light bold color={colors.black}>tunggu</MyText> : <EmptyOrderScreen />}
                         />
-                        || <MyText>upss error...</MyText>} */}
+                        || <MyText light bold style={{ textAlign: 'center' }} color={colors.black}>upss kita ada kendala nih... {`\n\n`}{orderError}</MyText>}
                     <FAB
                         disabled={refreshingOrder}
                         theme={styles.fab}

@@ -16,6 +16,7 @@ export default forwardRef((props, ref) => {
         fontSize: 'large' in props ? 24 : ('medium' in props ? 16 : ('light' in props ? 12 : props?.fontSize)),
         lineHeight: 'large' in props ? 30 : ('medium' in props ? 22 : ('small' in props ? 20 : props?.lineHeight)),
         alignSelf: 'center' in props ? 'center' : ('right' in props ? 'flex-end' : ('left' in props ? 'flex-start' : 'center')),
+        textDecorationLine: 'strikeThrough' in props ? 'line-through' : ('underline' in props ? 'underline' : 'none'),
         // marginVertical: props.marginVertical ?? 6,
         ...props?.style
     }

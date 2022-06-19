@@ -5,6 +5,7 @@ import { MyText } from '@Atoms'
 import { useTheme } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from './styles'
+import { log, DateDiff } from '@Utils'
 export default (props) => {
     const { colors } = useTheme()
     return (
@@ -13,28 +14,28 @@ export default (props) => {
             activeOpacity={.9}
             onPress={props?.onPress}>
             <View style={styles.userInfo}>
-                <Image source={'orderStatus' in props ? (props?.orderStatus == 'PAID' ? IC_AVATAR_ORDER_SUCCESS : IC_AVATAR_ORDER_FAIL) : IC_AVATAR_ORDER} />
+                <Image source={IC_AVATAR_ORDER_SUCCESS} />
                 <View style={styles.userInfoWrapper}>
                     <View style={styles.userInfoDetail}>
                         <MyText fontSize={14} lineHeight={18} bold color={colors.black} numberOfLines={1} style={styles.userTextlength}>{props?.name || 'Anonim'}</MyText>
                         <MyText fontSize={10} lineHeight={12}>
-                            <Icon name='clock-time-four-outline' /> 15m ago</MyText>
+                            <Icon name='clock-time-four-outline' /> {DateDiff(props?.createdAt)}</MyText>
                     </View>
-                    <MyText left fontSize={14} lineHeight={18} numberOfLines={1} style={styles.userTextlength}>INV • 20220325/040303</MyText>
+                    <MyText left light fontSize={14} lineHeight={18} numberOfLines={1} style={styles.userTextlength}>{props?.invoice}</MyText>
                 </View>
             </View>
             <View style={styles.listOrder}>
-                <MyText fontSize={12} lineHeight={15} bold numberOfLines={1} color={colors.black} center style={{ width: '85%' }}> • Luxury Fun Set Meat Lover Kebab Luxury Fun Luxury Fun Set Meat Lover Kebab Luxury Fun</MyText>
+                <MyText fontSize={12} lineHeight={15} bold numberOfLines={1} color={colors.valencia} center style={{ width: '85%' }}> • items tidak bisa di loop</MyText>
                 <View style={styles.orderCount}>
-                    <MyText fontSize={12} lineHeight={14} center color={colors.cerulean} bold>+3</MyText>
+                    <MyText fontSize={12} lineHeight={14} center color={colors.cerulean} bold>+{props?.items?.length}</MyText>
                 </View>
             </View>
             <View style={styles.dashedLine} />
             <View style={styles.listPayment}>
-                <View style={styles.tableNumber(props?.orderStatus == 'CANCELED' ? colors.black : colors.cerulean)}>
-                    <MyText fontSize={10} lineHeight={12} center color={colors.white} bold numberOfLines={1} style={{ width: '80%' }}>Table 15</MyText>
+                <View style={styles.tableNumber(colors.cerulean)}>
+                    <MyText fontSize={10} lineHeight={12} center color={colors.white} bold numberOfLines={1} style={{ width: '80%' }}>Table {props?.tableNumber}</MyText>
                 </View>
-                <MyText fontSize={14} lineHeight={18} center bold color={colors.black}>Rp 212.000</MyText>
+                <MyText fontSize={14} lineHeight={18} center bold color={colors.black}>Rp{props?.total}</MyText>
             </View>
         </TouchableOpacity>
     )

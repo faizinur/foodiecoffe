@@ -66,7 +66,8 @@ export default StyleSheet.create({
         flexDirection: 'row',
     },
     tableNumber: (backgroundColor) => ({
-        width: 55,
+        minWidth: 80,
+        paddingHorizontal: 5,
         height: 21,
         borderRadius: 6,
         backgroundColor,
