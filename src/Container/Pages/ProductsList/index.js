@@ -41,8 +41,8 @@ export default memo(({ navigation, route: { params } }) => {
 
     const _onDetailBucketPress = () => refModalDetailProduct?.current?.toggle('DETAIL');
 
-    const _onPesanPress = () => {
-        log('_onPesanPress : ')
+    const _onAddNotes = (props) => {
+        log('_onPesanPress : ', props)
         refModalProductList?.current?.toggle()
     }
 
@@ -55,6 +55,7 @@ export default memo(({ navigation, route: { params } }) => {
         log('_filterProduct : ', sortType, discount)
     }
 
+    const _renderCardProduct = useCallback(({ item }) => <CardProduct onAdd={_onChangeBucket} onRemove={_onChangeBucket} addNotes={() => _onAddNotes(item)} />, [])
 
     useEffect(() => {
         log('Mount ProductsList');
@@ -84,10 +85,7 @@ export default memo(({ navigation, route: { params } }) => {
             <View style={{ backgroundColor: colors.white, flex: 1 }}>
                 <FlatList
                     data={categoryList}
-                    renderItem={() => <CardProduct
-                        onAdd={_onChangeBucket}
-                        onRemove={_onChangeBucket}
-                    />}
+                    renderItem={_renderCardProduct}
                     snapToInterval={150}
                     keyExtractor={(data) => data}
                     showsVerticalScrollIndicator={false}
@@ -104,7 +102,6 @@ export default memo(({ navigation, route: { params } }) => {
                 </View>
                 <View>
                     <InputItems.MyButton
-                        onPress={_onPesanPress}
                         style={styles.button}
                         label={'pesan'}
                         labelStyle={{ fontSize: 16 }} />

@@ -93,7 +93,7 @@ export default forwardRef((props, ref) => {
                             <InputItems.MyButton
                                 onPress={_onClickPesan}
                                 style={[styles.button, { width: '40%', marginVertical: 15 }]}
-                                label={'Pesan'}
+                                label={'Tambahkan'}
                                 labelStyle={{ fontSize: 16 }} />
                         </View>
                     </>

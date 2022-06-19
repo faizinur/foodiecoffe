@@ -48,11 +48,9 @@ export default memo(forwardRef((props, ref) => {
                         <RadioButton.Item label="Paling mahal" value="EXPENSIVE" labelStyle={{ marginHorizontal: -17 }} color={colors.cerulean} />
                     </RadioButton.Group>
                     <MyText left bold color={colors.black} style={{ marginVertical: 12 }}>Diskon</MyText>
-                    <View>
-                        <View style={{ flexDirection: 'row', marginBottom: 50 }}>
-                            <Chip onPress={() => setDicount(prevState => (prevState == 'FOOD' ? null : 'FOOD'))} selected={discount == 'FOOD'} selectedColor={discount == 'FOOD' ? colors.cerulean : colors.jumbo} style={{ marginHorizontal: 5, borderWidth: 1, backgroundColor: colors.white, borderColor: discount == 'FOOD' ? colors.cerulean : colors.jumbo }}>Diskon makanan</Chip>
-                            <Chip onPress={() => setDicount(prevState => (prevState == 'FREE_SHIPPING' ? null : 'FREE_SHIPPING'))} selected={discount == 'FREE_SHIPPING'} selectedColor={discount == 'FREE_SHIPPING' ? colors.cerulean : colors.jumbo} style={{ marginHorizontal: 5, borderWidth: 1, backgroundColor: colors.white, borderColor: discount == 'FREE_SHIPPING' ? colors.cerulean : colors.jumbo }}>Gratis Ongkir</Chip>
-                        </View>
+                    <View style={{ flexDirection: 'row', marginBottom: 50 }}>
+                        <Chip onPress={() => setDicount(prevState => (prevState == 'FOOD' ? null : 'FOOD'))} selected={discount == 'FOOD'} selectedColor={discount == 'FOOD' ? colors.cerulean : colors.jumbo} style={{ marginHorizontal: 5, borderWidth: 1, backgroundColor: colors.white, borderColor: discount == 'FOOD' ? colors.cerulean : colors.jumbo }}>Diskon makanan</Chip>
+                        <Chip onPress={() => setDicount(prevState => (prevState == 'FREE_SHIPPING' ? null : 'FREE_SHIPPING'))} selected={discount == 'FREE_SHIPPING'} selectedColor={discount == 'FREE_SHIPPING' ? colors.cerulean : colors.jumbo} style={{ marginHorizontal: 5, borderWidth: 1, backgroundColor: colors.white, borderColor: discount == 'FREE_SHIPPING' ? colors.cerulean : colors.jumbo }}>Gratis Ongkir</Chip>
                     </View>
                 </ScrollView>
                 <View style={{ width: '100%', height: 85, alignItems: 'center', backgroundColor: colors.white, borderTopWidth: 1, borderTopColor: colors.athensGray }}>

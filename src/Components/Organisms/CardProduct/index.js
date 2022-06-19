@@ -1,7 +1,7 @@
 import { View, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { MyText } from '@Atoms'
-import { useTheme } from 'react-native-paper'
+import { useTheme, Chip } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { IC_PRODUCT } from '@Atoms/Icons';
 
@@ -16,14 +16,17 @@ export default (props) => {
                 <View style={{ flex: 1, paddingHorizontal: 15, height: 80 }}>
                     <MyText left bold color={colors.black}>Cappuccino Venti</MyText>
                     <MyText left light color={colors.black}>Rp.245.900</MyText>
-                    <View style={{ justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', width: 80, height: 40, }}>
-                        <TouchableOpacity activeOpacuty={.9} onPress={props?.onAdd} style={{ width: 24, height: 24, borderRadius: 12, borderWidth: 1, borderColor: colors.wildWaterMelon, justifyContent: 'center', alignItems: 'center' }}>
-                            <Icon name={'minus'} size={20} color={colors.wildWaterMelon} />
-                        </TouchableOpacity>
-                        <MyText left light color={colors.black} center>0</MyText>
-                        <TouchableOpacity activeOpacuty={.9} onPress={props?.onRemove} style={{ width: 24, height: 24, borderRadius: 12, borderWidth: 1, borderColor: colors.wildWaterMelon, justifyContent: 'center', alignItems: 'center' }}>
-                            <Icon name={'plus'} size={20} color={colors.wildWaterMelon} />
-                        </TouchableOpacity>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <View style={{ justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', width: 80, height: 40, }}>
+                            <TouchableOpacity activeOpacuty={.9} onPress={props?.onAdd} style={{ width: 24, height: 24, borderRadius: 12, borderWidth: 1, borderColor: colors.wildWaterMelon, justifyContent: 'center', alignItems: 'center' }}>
+                                <Icon name={'minus'} size={20} color={colors.wildWaterMelon} />
+                            </TouchableOpacity>
+                            <MyText left light color={colors.black} center>0</MyText>
+                            <TouchableOpacity activeOpacuty={.9} onPress={props?.onRemove} style={{ width: 24, height: 24, borderRadius: 12, borderWidth: 1, borderColor: colors.wildWaterMelon, justifyContent: 'center', alignItems: 'center' }}>
+                                <Icon name={'plus'} size={20} color={colors.wildWaterMelon} />
+                            </TouchableOpacity>
+                        </View>
+                        <Chip icon="pencil" onPress={props?.addNotes} mode={'outlined'} style={{ width: 100, height: 33 }}>Catatan</Chip>
                     </View>
                 </View>
             </View>
