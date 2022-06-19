@@ -55,17 +55,21 @@ export default forwardRef((props, ref) => {
                 <MyText bold color={isSwitch ? colors.black : colors.lightgray}>04</MyText>
             </View>
             <FloatingQRMarker />
-            <View style={[styles.cardSummary, { flexDirection: 'row' }]}>
-                <View style={styles.orderDetailContainer}>
-                    <Icon name={'account-group'} size={20} color={isSwitch ? colors.cerulean : colors.lightgray} />
-                    <MyText bold light color={isSwitch ? colors.black : colors.lightgray}>5 Orang</MyText>
+            <View style={styles.cardSummary}>
+                <MyText left medium bold color={colors.black} style={{ marginBottom: 15 }}>Ringkasan Belanja</MyText>
+                <View style={styles.sectionList}>
+                    <MyText light color={colors.black}>Jumlah Orang</MyText>
+                    <MyText bold light color={colors.black}>5 Orang</MyText>
                 </View>
-                <View style={styles.orderDetailContainer}>
-                    <Icon name={'map-marker'} size={20} color={isSwitch ? colors.cerulean : colors.lightgray} />
-                    <MyText bold light color={isSwitch ? colors.black : colors.lightgray}>Lantai 2</MyText>
+                <View style={styles.sectionList}>
+                    <MyText light color={colors.black}>Lokasi </MyText>
+                    <MyText bold light color={colors.black}>Lantai 2</MyText>
                 </View>
-                <View style={styles.orderDetailContainer}>
-                    <MyText light bold color={isSwitch ? colors.emerald : colors.lightgray}>{isSwitch ? 'Terisi' : 'Ditempati'} </MyText>
+                <View style={styles.dashed} />
+                <View style={styles.sectionList}>
+                    <MyText light>Status :: <MyText bold color={isSwitch ? colors.emerald : colors.black}>
+                        {isSwitch ? 'Terisi' : 'Ditempati'} </MyText>::
+                    </MyText>
                     <MySwitch color={colors.emerald} value={isSwitch} onValueChange={setIsSwitch} />
                 </View>
             </View>
@@ -76,36 +80,3 @@ export default forwardRef((props, ref) => {
     )
 })
 
-{/* <View style={styles.cardSummary}>
-                <List.Accordion
-                    titleStyle={{ color: colors.black }}
-                    style={styles.accordion}
-                    title="Ringkasan Belanja"
-                    expanded={expanded}
-                    onPress={() => setExpanded(prevState => !prevState)}
-                    theme={{
-                        colors: {
-                            background: colors.white,
-                            backdrop: colors.white,
-                            surface: colors.white,
-                        }
-                    }}> 
-                <View style={styles.accordionWrapper}>
-                    <View style={styles.sectionList}>
-                        <MyText light color={colors.black}>Jumlah Orang</MyText>
-                        <MyText bold light color={colors.black}>5 Orang</MyText>
-                    </View>
-                    <View style={styles.sectionList}>
-                        <MyText light color={colors.black}>Lokasi </MyText>
-                        <MyText bold light color={colors.black}>Lantai 2</MyText>
-                    </View>
-                    <View style={styles.dashed} />
-                    <View style={styles.sectionList}>
-                        <MyText light>Status :: <MyText bold color={isSwitch ? colors.emerald : colors.black}>
-                            {isSwitch ? 'Terisi' : 'Ditempati'} </MyText>::
-                        </MyText>
-                        <MySwitch color={colors.emerald} value={isSwitch} onValueChange={setIsSwitch} />
-                        </View>
-                    </View> 
-                </List.Accordion>
-            </View> */}

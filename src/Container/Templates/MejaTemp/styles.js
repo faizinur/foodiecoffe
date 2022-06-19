@@ -146,7 +146,7 @@ export default StyleSheet.create({
         width: '90%',
         marginHorizontal: '5%',
         backgroundColor: colors.white,
-        padding: 1,
+        padding: 17,
         borderRadius: 16,
         borderWidth: 1,
         borderColor: colors.athensGray,
@@ -160,13 +160,7 @@ export default StyleSheet.create({
 
         elevation: 1,
     },
-    accordion: {
-        backgroundColor: colors.white,
-        borderRadius: 16
-    },
-    accordionWrapper: {
-        padding: 16
-    },
+
     sectionList: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -186,10 +180,4 @@ export default StyleSheet.create({
         paddingHorizontal: '5%',
         justifyContent: 'center',
     },
-    orderDetailContainer: {
-        height: 80,
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    }
 })
