@@ -6,6 +6,7 @@ import { MyText, MySwitch, MyModal } from '@Atoms';
 import { InputItems } from '@Molecules';
 import styles from './styles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { IC_AVATAR_ORDER_SUCCESS } from '@Atoms/Icons'
 export default forwardRef((props, ref) => {
     const { colors } = useTheme();
     const [isSwitch, setIsSwitch] = useState(false);
@@ -33,7 +34,7 @@ export default forwardRef((props, ref) => {
     const FloatingQRMarker = useCallback(() => (<View style={styles.qrWrapper}>
         <View style={styles.qrMarker}>
             {/* <Icon name={'qrcode'} size={180} color={'rgba(0,0,0,.15)'} /> */}
-            <Image source={{ uri: QR_IMG }} style={{ height: 30, width: 30 }} />
+            <Image source={IC_AVATAR_ORDER_SUCCESS} style={{ height: 130, width: 130 }} />
         </View>
         <View style={styles.qrMarkerTopRight} />
         <View style={styles.qrMarkerTopLeft} />

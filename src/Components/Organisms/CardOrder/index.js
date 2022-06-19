@@ -1,6 +1,6 @@
 import { View, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { IC_AVATAR_ORDER, IC_AVATAR_ORDER_SUCCESS, IC_AVATAR_ORDER_FAIL } from '@Atoms/Icons'
+import { IC_AVATAR_ORDER_SUCCESS } from '@Atoms/Icons'
 import { MyText } from '@Atoms'
 import { useTheme } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
