@@ -47,6 +47,7 @@ export default memo(({ navigation }) => {
     </TouchableOpacity>)
 
     const _onPressQR = async props => {
+        //lnagsung parrsing url saja
         setSelectedTable(props)
         let qr = await _getQR(props);
         refMejaModals.current?.toggle(qr)
