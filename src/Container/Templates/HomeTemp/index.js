@@ -49,7 +49,7 @@ export default memo(({ navigation }) => {
         refHomeModals.current?.toggle()
         , [])
     const _onPressCalendar = useCallback(() => log('_onPressCalendar Pressed'), [])
-    const _renderCardOrder = useCallback(({ item }) => <CardOrder order={item} onPress={() => navigation.navigate('ConfirmOrder', { order: { ...item } })} />, []);
+    const _renderCardOrder = useCallback(({ item }) => <CardOrder order={item} onPress={() => navigation.navigate('DetailOrder', { order: { ...item } })} />, []);
     useEffect(() => {
         log('Mount HomeTemp');
         _getOrders()
