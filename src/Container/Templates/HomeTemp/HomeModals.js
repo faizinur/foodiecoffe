@@ -10,6 +10,7 @@ import { UseMerchant } from '@ViewModel'
 export default memo(forwardRef(({ navigation: { navigate }, getMerchant, merchantList, loading, merchantError }, ref) => {
     const { colors } = useTheme();
     const [modalVisible, setModalVisible] = useState(false);
+    const [text, setText] = useState('');
     useImperativeHandle(ref, () => ({
         toggle,
     }));
@@ -35,7 +36,7 @@ export default memo(forwardRef(({ navigation: { navigate }, getMerchant, merchan
             <View style={styles.drawerIndicator} />
             <View style={styles.sectionContainer}>
                 <View style={{ paddingVertical: 10 }}>
-                    <InputItems.MyTextInput placeholder={'Kamu mau pesan apa?'} />
+                    <InputItems.MyTextInput placeholder={'Kamu mau pesan apa?'} value={text} onChangeText={setText} returnKeyType='search' onResetField={() => setText('')} />
                 </View>
                 <MyText bold medium color={colors.black} left>Aneka Kuliner</MyText>
                 <MyText left>Yuk cari makanan atau minuman buat hari ini</MyText>

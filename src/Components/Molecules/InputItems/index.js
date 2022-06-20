@@ -19,6 +19,7 @@ const MyTextInput = (props) => {
     const [secureTextEntry, setSecureTextEntry] = useState('secureTextEntry' in props);
     let disabled = props.disabled || false;
     let value = typeof props.value === 'undefined' ? '' : props.value;
+    let returnKeyType = props.returnKeyType || null;
 
     // RIGHT BUTTON
     const PasswordRightIcon = () => (<View style={styles.rightIconContainer}>
@@ -57,6 +58,7 @@ const MyTextInput = (props) => {
             <TextInput
                 {...props.register}
                 onBlur={props.onBlur}
+                returnKeyType={returnKeyType}
                 onChangeText={props.onChangeText}
                 value={value}
                 key={props.id}
