@@ -31,15 +31,21 @@ export default () => {
         setSearchValue(text)
     }, [searchValue])
 
-    const _searcTable = useCallback(fnFilter => {
+    const _searchTable = useCallback(async (fnFilter) => {
+        if (typeof fnFilter != 'function') throw (`Error Params`)
         try {
             setSelectedTable({});
-            tmpTable = [...tableList].filter();
-            if (tmpTable.length == 0) throw (`MEJA ${searchValue} TIDAK DITEMUKAN`)
+            setTableError('')
+            tmpTable = [...tableList].filter(fnFilter);
+            if (tmpTable.length == 0) {
+                setTableError('MEJA_NOT_FOUND')
+                return false;
+            }
             setFilteredTables(tmpTable)
             tmpTable = [];
         } catch (err) {
             log('_searchTable : ', err)
+            setTableError(err)
         }
 
     }, [tableList, filteredTables, selectedTable, searchValue])
@@ -61,7 +67,7 @@ export default () => {
         refreshingTable,
         selectedTable,
         setSelectedTable,
-        _searcTable,
+        _searchTable,
         filteredTables,
         _clearFiltered,
         searchValue,

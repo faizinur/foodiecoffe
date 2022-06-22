@@ -13,6 +13,8 @@ export default StyleSheet.create({
         height: 60,
         width: '100%',
         paddingHorizontal: '5%',
+        marginTop: 15,
+        marginBottom: 25
     },
     renderTitleWrappwe: (display) => ({
         flex: 1,

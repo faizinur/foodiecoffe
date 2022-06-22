@@ -4,7 +4,7 @@ import React, { useEffect, memo, useRef } from 'react';
 import { log, CONSTANT } from '@Utils';
 import { useTheme } from 'react-native-paper';
 import { MyText } from '@Atoms';
-import { TitleBar, InputItems } from '@Molecules';
+import { TitleBar, InputItems, EmptySearchResult } from '@Molecules';
 import { CardMeja } from '@Organisms';
 import styles from './styles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -25,6 +25,7 @@ export default memo(({ navigation }) => {
         _clearFiltered,
         _onChangeText,
         searchValue,
+        tableError,
     } = UseTable();
     const { colors } = useTheme();
     const refTextinputContainer = useRef(<View />)
@@ -69,7 +70,11 @@ export default memo(({ navigation }) => {
                 disabledLeft={true}
                 renderTitle={() => <>
                     <View ref={refTextinputContainer} style={styles.renderTitleWrappwe('none')}>
-                        <InputItems.MyTitleBarInput value={searchValue} onChangeText={_onChangeText} onSubmitEditing={({ nativeEvent: { text } }) => _searchTable(({ number }) => number.toLowerCase().includes(text.toLowerCase()))} />
+                        <InputItems.MyTitleBarInput
+                            value={searchValue}
+                            onChangeText={_onChangeText}
+                            onSubmitEditing={({ nativeEvent: { text } }) => _searchTable(({ number }) => number.toLowerCase().includes(text.toLowerCase()))}
+                        />
                         <MyPressableIcon onClickSearch={_onClickSearch} iconName={'close'} />
                     </View>
                     <View ref={refTextTitleContainer} style={styles.renderTitleWrappwe('flex')}>
@@ -79,28 +84,35 @@ export default memo(({ navigation }) => {
                 </>}
                 renderRight={() => <MyPressableIcon onClickSearch={_onClickSetting} iconName={'filter-outline'} />}
             />
-            <FlatList
-                style={styles.flatList}
-                ListHeaderComponent={
-                    (tableList.length > 0 && <View style={styles.sectionContainer}>
-                        <MyText bold medium black left>Cek Mejamu disini</MyText>
-                        <MyText left>Yuk, pilih lokasi mejamu sebelum penuh</MyText>
-                    </View>
-                    )}
-                contentContainerStyle={styles.flatListContent}
-                data={filteredTables.length > 0 ? filteredTables : tableList}
-                renderItem={_renderCardMeja}
-                snapToInterval={130}
-                keyExtractor={({ id }) => id}
-                numColumns={2}
-                ListEmptyComponent={<MyText large bold black>Oops, Meja Penuh nih...!</MyText>}
-                ListFooterComponent={<View style={styles.separator} />}
-                showsHorizontalScrollIndicator={false}
-                showsVerticalScrollIndicator={false}
-                nestedScrollEnabled={true}
-            />
+            {tableError != 'MEJA_NOT_FOUND' &&
+                <FlatList
+                    style={styles.flatList}
+                    ListHeaderComponent={
+                        (tableList.length > 0 && <View style={styles.sectionContainer}>
+                            <MyText bold medium black left>Cek Mejamu disini</MyText>
+                            <MyText left>Yuk, pilih lokasi mejamu sebelum penuh</MyText>
+                        </View>
+                        )}
+                    contentContainerStyle={styles.flatListContent}
+                    data={filteredTables.length > 0 ? filteredTables : tableList}
+                    renderItem={_renderCardMeja}
+                    snapToInterval={130}
+                    keyExtractor={({ id }) => id}
+                    numColumns={2}
+                    ListEmptyComponent={<MyText large bold black>Oops, Meja Penuh nih...!</MyText>}
+                    ListFooterComponent={<View style={styles.separator} />}
+                    showsHorizontalScrollIndicator={false}
+                    showsVerticalScrollIndicator={false}
+                    nestedScrollEnabled={true}
+                />
+                ||
+                <EmptySearchResult title={'Oops,'} subTitle={'Meja yang kamu cari sepertinya tidak tersedia'} />
+            }
             <MejaModals ref={refMejaModals} />
-            <MejaFilterModal ref={refMejaFilterModal} onApplyFilter={(_floor, _seat) => _searchTable(({ floor, seat }) => parseInt(floor) == parseInt(_floor) && parseInt(seat) < parseInt(_seat))} onReset={_clearFiltered} />
+            <MejaFilterModal
+                ref={refMejaFilterModal}
+                onApplyFilter={(_floor, _seat) => _searchTable(({ floor, seat }) => parseInt(_floor) == parseInt(floor) && parseInt(_seat) < parseInt(seat))}
+                onReset={_clearFiltered} />
         </View >
     )
 })

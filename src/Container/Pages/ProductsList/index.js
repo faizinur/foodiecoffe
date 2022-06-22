@@ -16,6 +16,7 @@ import ModalFilterProduct from './ModalFilterProduct';
 import ModalDetailProduct from './ModalDetailProduct';
 import styles from './styles';
 import { UseMerchant } from '@ViewModel';
+import { PageWrapper } from '@Atoms';
 
 export default memo(({ navigation, route: { params } }) => {
     const { _getCategoryList, categoryList } = UseMerchant()

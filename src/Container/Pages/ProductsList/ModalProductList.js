@@ -2,7 +2,7 @@ import { View, ScrollView } from 'react-native';
 import React, { useState, useCallback, forwardRef, useImperativeHandle, memo } from 'react';
 import { log } from '@Utils';
 import { useTheme } from 'react-native-paper';
-import { MyText, MyModal } from '@Atoms';
+import { MyText, MyModal, PageWrapper } from '@Atoms';
 import { Forms } from '@Organisms';
 import { INPUT_LIST, FORM_NAME } from './input';
 import styles, { height } from './styles';
@@ -38,6 +38,7 @@ export default memo(forwardRef((props, ref) => {
                         onFormSubmit={(data) => log(data)}
                         submitLabel={'Simpan'}
                     />
+                    <View style={{ width: '100%', height: 300 }} />
                 </ScrollView>
             </View>
         </MyModal>

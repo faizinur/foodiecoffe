@@ -145,10 +145,10 @@ const MyTitleBarInput = (props) => {
         activeOutlineColor={colors.white}
         outlineColor={colors.white}
         selectionColor={colors.cerulean}
-        placeholderTextColor={colors.cerulean}
+        placeholderTextColor={colors.jumbo}
         theme={{ colors: { text: colors.cerulean } }}
         onSubmitEditing={props.onSubmitEditing}
-        placeholder="Search"
+        placeholder="Cari nomor meja"
         returnKeyType='search'
         returnKeyLabel='Ayo Cari!'
         dense={true}
