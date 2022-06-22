@@ -9,6 +9,7 @@ import { IC_PRODUCT_BIG } from '@Atoms/Icons';
 export default forwardRef((props, ref) => {
     const { colors } = useTheme();
     const [modalVisible, setModalVisible] = useState(false);
+    const [loading, setLoading] = useState(false)
     useImperativeHandle(ref, () => ({
         toggle,
     }));
@@ -24,9 +25,13 @@ export default forwardRef((props, ref) => {
         setModalVisible(prevState => !prevState);
     }, [modalVisible])
     const _onSave = useCallback(() => {
-        setModalVisible(prevState => !prevState);
-        log('_onSave : ')
-    }, [modalVisible])
+        setLoading(true)
+        setTimeout(() => {
+            setLoading(false)
+            setModalVisible(prevState => !prevState);
+            props?.onSave()
+        }, 1500)
+    }, [modalVisible, loading])
     return (
         <MyModal
             visible={modalVisible}
@@ -84,6 +89,7 @@ export default forwardRef((props, ref) => {
                     style={styles.button}
                     label={'Batal'} />
                 <InputItems.MyButton
+                    loading={loading}
                     onPress={_onSave}
                     style={styles.button}
                     label={'Simpan'} />

@@ -31,7 +31,7 @@ const INPUT_LIST = [
     },
     {
         name: 'Extra',
-        value: '',
+        value: '[]',
         type: 'listCheck',
         inputProps: {
             label: 'Level Es',

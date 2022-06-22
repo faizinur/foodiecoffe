@@ -80,4 +80,8 @@ export default StyleSheet.create({
         paddingBottom: 120,
         paddingTop: 10
     },
+    filterContainerStyle: {
+        flex: 1,
+        justifyContent: 'flex-end'
+    },
 })

@@ -1,6 +1,6 @@
 import { log } from '@Utils';
-import React, { useState } from 'react';
-import { TextInput, Button, useTheme, RadioButton } from 'react-native-paper';
+import React, { useState, useCallback } from 'react';
+import { TextInput, Button, useTheme, RadioButton, Checkbox } from 'react-native-paper';
 import { MyText } from '@Atoms';
 import { View, TouchableOpacity } from 'react-native'
 import styles from './styles';
@@ -119,18 +119,16 @@ const MyRadioInput = (props) => {
             <View style={styles.switchWrapper}>
                 <MyText left black>{props.placeholder}</MyText>
                 <View style={styles.switchContainer}>
-                    {
-                        props?.data.map(({ code, description }) =>
-                            <View key={`${code}-${description}`} style={styles.switchInnerContainer}>
-                                <RadioButton
-                                    value={code}
-                                    uncheckedColor={colors.lightgray}
-                                    color={defaultColor}
-                                />
-                                <MyText onPress={() => props.onChangeText(code)} center color={value == code ? colors.black : colors.lightgray}>{description}</MyText>
-                            </View>
-                        )
-                    }
+                    {props?.data.map(({ code, description }) =>
+                        <View key={`${code}-${description}`} style={styles.switchInnerContainer}>
+                            <RadioButton
+                                value={code}
+                                uncheckedColor={colors.lightgray}
+                                color={defaultColor}
+                            />
+                            <MyText onPress={() => props.onChangeText(code)} center color={value == code ? colors.black : colors.lightgray}>{description}</MyText>
+                        </View>
+                    )}
                 </View>
             </View>
             {props.error && <MyText small color={colors.wildWaterMelon}>Input {props.name} Salah</MyText>}
@@ -164,18 +162,22 @@ const MyListRadio = props => {
     const { colors } = useTheme();
     const defaultColor = props.error ? colors.wildWaterMelon : colors.cerulean;
     let value = typeof props.value === 'undefined' ? '' : props.value;
-    return <View style={{ marginBottom: 60 }}>
+    return <View style={{ marginBottom: 30 }}>
         <RadioButton.Group onValueChange={props.onChangeText} value={value}>
             <TextInput {...props.register} onBlur={props.onBlur} value={value} key={props.id} disabled={true} mode='outlined' style={{ display: 'none' }} />
             <View style={styles.hiddenInputPatch} />
             <MyText left black bold>{props.label}</MyText>
             <MyText left >{props.placeholder}</MyText>
             {props?.data.map(({ code, description }) =>
-                <TouchableOpacity key={`${code}-${description}`} onPress={() => props.onChangeText(code)} style={{ flex: 1, justifyContent: 'space-between', marginVertical: 13, flexDirection: 'row', borderBottomColor: colors.athensGray, borderBottomWidth: 1 }}>
+                <TouchableOpacity activeOpacity={.8} key={`${code}-${description}`} onPress={() => props.onChangeText(code)}
+                    style={{ flex: 1, justifyContent: 'space-between', marginVertical: 13, flexDirection: 'row', borderBottomColor: colors.athensGray, borderBottomWidth: 1 }}>
                     <MyText black>{code}</MyText>
                     <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
                         <MyText black>{description}</MyText>
-                        <RadioButton value={code} />
+                        <RadioButton
+                            value={code}
+                            uncheckedColor={colors.lightgray}
+                            color={defaultColor} />
                     </View>
                 </TouchableOpacity>
             )}
@@ -184,14 +186,72 @@ const MyListRadio = props => {
 }
 const MyListCheck = props => {
     const { colors } = useTheme();
-    return <View>
-        <MyText>MyListRadio</MyText>
+    const defaultColor = props.error ? colors.wildWaterMelon : colors.cerulean;
+    let value = typeof props.value === 'undefined' ? '[]' : props.value;
+    let [selected, setSelected] = useState(JSON.parse(value));
+    const onPressCheckBox = useCallback(code => {
+
+        let tmpSelected = selected.includes(code) ? [...selected].filter(val => val != code) : [...selected, code]
+        setSelected(tmpSelected);
+        log(JSON.stringify(tmpSelected))
+        props.onChangeText(JSON.stringify(tmpSelected));
+    }, [selected]);
+    return <View style={{ marginBottom: 30 }}>
+        <RadioButton.Group onValueChange={props.onChangeText} value={value}>
+            <TextInput {...props.register} onBlur={props.onBlur} value={value} key={props.id} disabled={true} mode='outlined' style={{ display: 'none' }} />
+            <View style={styles.hiddenInputPatch} />
+            <MyText left black bold>{props.label}</MyText>
+            <MyText left >{props.placeholder}</MyText>
+            {props?.data.map(({ code, description }) =>
+                <TouchableOpacity activeOpacity={.8} key={`${code}-${description}`} onPress={() => onPressCheckBox(code)}
+                    style={{ flex: 1, justifyContent: 'space-between', marginVertical: 13, flexDirection: 'row', borderBottomColor: colors.athensGray, borderBottomWidth: 1 }}>
+                    <MyText black>{code}</MyText>
+                    <Checkbox.Item
+                        label={description}
+                        status={selected.includes(code) == true ? 'checked' : 'unchecked'}
+                        uncheckedColor={colors.lightgray}
+                        color={defaultColor}
+                        style={{ marginHorizontal: -15 }} />
+                </TouchableOpacity>
+            )}
+        </RadioButton.Group>
     </View>
 }
 const MyTextArea = props => {
     const { colors } = useTheme();
-    return <View>
-        <MyText>MyListRadio</MyText>
+    // color
+    const defaultColor = props.error ? colors.wildWaterMelon : colors.cerulean;
+    const defaultPlaceholderColor = props.error ? colors.wildWaterMelon : colors.lightgray;
+    const defaultTextColor = props.error ? colors.wildWaterMelon : colors.black;
+
+    // color
+    const placeholder = props.placeholder || 'placeholder'
+    let disabled = props.disabled || false;
+    let value = typeof props.value === 'undefined' ? '' : props.value;
+
+    return <View style={{ marginBottom: 30 }}>
+        <MyText left black bold>{props?.label}</MyText>
+        <TextInput
+            {...props.register}
+            onBlur={props.onBlur}
+            onChangeText={props.onChangeText}
+            value={value}
+            key={props.id}
+            disabled={disabled}
+            mode='outlined'
+            activeOutlineColor={defaultColor}
+            outlineColor={defaultPlaceholderColor}
+            placeholder={placeholder}
+            selectionColor={colors.cerulean}
+            keyboardType={'default'}
+            numberOfLines={6}
+            multiline={true}
+            style={styles.textInput(0)}
+            theme={{ colors: { placeholder: defaultPlaceholderColor, text: defaultTextColor, } }}
+        />
+        <View style={{ position: 'absolute', bottom: -6, right: 10 }}>
+            <MyText style={{ backgroundColor: colors.white }}>{`${value?.length}/${props?.maxLength}`}</MyText>
+        </View>
     </View>
 }
 

@@ -7,6 +7,7 @@ import { CardMenu } from '@Organisms';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from './styles';
 import MenuModals from './MenuModals';
+import MenuModalSuccess from './MenuModalSuccess';
 import { UseProductVM } from '@ViewModel';
 import { MyText } from '@Atoms';
 export default memo(({ navigation }) => {
@@ -18,6 +19,7 @@ export default memo(({ navigation }) => {
     } = UseProductVM();
     const { colors } = useTheme();
     const refMenuModals = useRef(<MenuModals />)
+    const refMenuModalSuccess = useRef(<MenuModalSuccess />)
     const _onClickSetting = () => {
         log('_onClickSetting : ')
     }
@@ -35,7 +37,10 @@ export default memo(({ navigation }) => {
     }, [])
     const renderCardMenu = ({ item }) => <CardMenu {...item} onPress={_onMenuPress} />
     const _getProduct = async () => await _getDaftarProduct()
-
+    const _onSave = () => {
+        log(' _onSave')
+        refMenuModalSuccess.current?.toggle()
+    }
     useEffect(() => {
         log('Mount MenuTemp');
         _getProduct();
@@ -60,7 +65,8 @@ export default memo(({ navigation }) => {
                     ListEmptyComponent={() => <MyText >Product Kosong</MyText>}
                 />
             </View>
-            <MenuModals ref={refMenuModals} />
+            <MenuModals ref={refMenuModals} onSave={_onSave} />
+            <MenuModalSuccess ref={refMenuModalSuccess} />
         </View>
     )
 })
