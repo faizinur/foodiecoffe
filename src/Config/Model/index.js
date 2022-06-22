@@ -1,5 +1,5 @@
 import * as RiwayatTransaksi from './RiwayatTransaksi';
-import * as DaftarTransaksi from './DaftarTransaksi';
+import * as Transaksi from './Transaksi';
 import * as DaftarProdct from './DaftarProduct';
 import * as Auth from './Auth';
 import * as Merchant from './Merchant';
@@ -8,9 +8,9 @@ import * as Table from './Table';
 
 export {
     RiwayatTransaksi,
-    DaftarTransaksi,
     DaftarProdct,
 
+    Transaksi,
     Auth,
     Merchant,
     Order,

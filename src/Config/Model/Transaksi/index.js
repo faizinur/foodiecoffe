@@ -1,6 +1,6 @@
 import { log, GET } from '@Utils';
 
-const getOrders = async () => {
+const getDaftarTransaksi = async () => {
     try {
         let orderData = await GET('order/all')
         return {
@@ -12,12 +12,12 @@ const getOrders = async () => {
         log(e)
         return {
             status: "FAILED",
-            message: `MODEL ORDER ${e}`,
+            message: `MODEL DAFTAR TRANSAKSI ${e}`,
             data: null,
         }
     }
 };
 
 export {
-    getOrders
+    getDaftarTransaksi
 }

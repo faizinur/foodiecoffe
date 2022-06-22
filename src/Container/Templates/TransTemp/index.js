@@ -4,21 +4,21 @@ import { log } from '@Utils';
 import { useTheme } from 'react-native-paper';
 import { MyText } from '@Atoms';
 import { CardOrder, MyToolBar } from '@Organisms';
-import { UseTransaksiVM } from '@ViewModel';
+import { UseTransaksi } from '@ViewModel';
 import styles from './styles';
 export default memo(({ navigation }) => {
     const {
-        error,
+        errorTransaksi,
         loading,
-        orderList,
-        activeOrderList,
-        _getDaftarTransaksi,
+        transactionList,
+        activeTransationList,
+        _getTransaksiList,
         ORDER_TYPES
-    } = UseTransaksiVM();
+    } = UseTransaksi();
 
     const { colors } = useTheme();
     const _onPressCalendar = useCallback(() => log('_onPressCalendar Pressed'), [])
-    const _getTransaksi = async (transactionType) => await _getDaftarTransaksi(transactionType);
+    const _getTransaksi = async (transactionType) => await _getTransaksiList(transactionType);
     const renderCardOrder = ({ item }) => <CardOrder {...item} />
     useEffect(() => {
         log('Mount TransTemp');
@@ -47,8 +47,8 @@ export default memo(({ navigation }) => {
                         color: colors.wildWaterMelon
                     },
                 ]}
-                activeOrderList={activeOrderList}
-                listCount={orderList.length}
+                activeOrderList={activeTransationList}
+                listCount={transactionList.length}
                 onPressChips={_getTransaksi}
                 onPressCalendar={_onPressCalendar}
                 loading={loading}
@@ -56,12 +56,12 @@ export default memo(({ navigation }) => {
             <View style={styles.content}>
                 <FlatList
                     contentContainerStyle={styles.contentContainerStyle}
-                    data={loading ? [] : orderList}
+                    data={loading ? [] : transactionList}
                     renderItem={renderCardOrder}
                     snapToInterval={150}
                     keyExtractor={({ id }) => id}
                     showsVerticalScrollIndicator={false}
-                    ListEmptyComponent={() => <MyText light bold black>{JSON.stringify(error) !== '""' ? error : 'Harap Tunggu...'}</MyText>}
+                    ListEmptyComponent={() => <MyText light bold black>{JSON.stringify(errorTransaksi) !== '""' ? errorTransaksi : 'Harap Tunggu...'}</MyText>}
                 />
             </View>
         </View>
