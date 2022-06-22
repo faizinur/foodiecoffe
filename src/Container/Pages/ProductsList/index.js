@@ -79,7 +79,7 @@ export default memo(({ navigation, route: { params } }) => {
                         justifyContent: 'center',
                         alignItems: 'center',
                     }}>
-                    <Icon name={'filter-outline'} size={26} color={colors.black} />
+                    <Icon name={'filter-outline'} size={26} black />
                 </TouchableOpacity>}
             />
             <View style={{ backgroundColor: colors.white, flex: 1 }}>
@@ -96,9 +96,9 @@ export default memo(({ navigation, route: { params } }) => {
                 <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
                     <View>
                         <MyText left light>1 Pesanan</MyText>
-                        <MyText left medium color={colors.black} style={{ width: 90 }} numberOfLines={1}>Rp80.0090</MyText>
+                        <MyText left medium black style={{ width: 90 }} numberOfLines={1}>Rp80.0090</MyText>
                     </View>
-                    <Icon name={'chevron-up'} size={30} style={{ alignSelf: 'center' }} color={colors.black} onPress={_onDetailBucketPress} />
+                    <Icon name={'chevron-up'} size={30} style={{ alignSelf: 'center' }} black onPress={_onDetailBucketPress} />
                 </View>
                 <View>
                     <InputItems.MyButton

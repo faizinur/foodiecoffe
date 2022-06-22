@@ -55,7 +55,7 @@ export default memo(() => {
             style={styles.exitBarContainer}>
             <Icon name='location-exit' size={30} color={colors.cerulean} style={styles.iconExit} />
             <View style={styles.container}>
-                <MyText medium bold left color={colors.black}>Keluar</MyText>
+                <MyText medium bold left black>Keluar</MyText>
                 <MyText light left >Anda tidak akan dapat menggunakan layanan Foody, kecuali Anda login kembali</MyText>
             </View>
         </TouchableOpacity>

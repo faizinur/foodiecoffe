@@ -1,16 +1,18 @@
-import { View, FlatList } from 'react-native';
+import { View, FlatList, Image } from 'react-native';
 import React, { useState, useCallback, forwardRef, useImperativeHandle, memo } from 'react';
 import { log } from '@Utils';
-import { useTheme, } from 'react-native-paper';
+import { useTheme, TextInput, Searchbar } from 'react-native-paper';
 import { MyText, MyModal } from '@Atoms';
+import { IC_PRODUCT_NOT_FOUND } from '@Atoms/Icons';
 import { InputItems } from '@Molecules';
 import { CardCategory } from '@Organisms';
+import { EmptySearchResult } from '@Molecules';
 import styles from './styles';
 import { UseMerchant } from '@ViewModel'
-export default memo(forwardRef(({ navigation: { navigate }, getMerchant, merchantList, loading, merchantError }, ref) => {
+export default memo(forwardRef(({ navigation: { navigate }, getMerchant, merchantList, loading, merchantError, searchQuery, setSearchQuery, filterCategory, filteredCategory, clearFilteredCategory }, ref) => {
     const { colors } = useTheme();
     const [modalVisible, setModalVisible] = useState(false);
-    const [text, setText] = useState('');
+
     useImperativeHandle(ref, () => ({
         toggle,
     }));
@@ -26,7 +28,7 @@ export default memo(forwardRef(({ navigation: { navigate }, getMerchant, merchan
         navigate('ProductsList', merchant)
     }, [modalVisible])
     const _renderCardCategory = ({ item }) => <CardCategory merchant={item} numColumns={3} onPress={_onPressCategory} />
-    log('NAH KAN HomeTemp DE RELOAD!!>>>>>>')
+    // log('NAH KAN HomeTemp DE RELOAD!!>>>>>>')
     return (
         <MyModal
             visible={modalVisible}
@@ -35,23 +37,45 @@ export default memo(forwardRef(({ navigation: { navigate }, getMerchant, merchan
             contentContainerStyle={styles.contentContainerStyle}>
             <View style={styles.drawerIndicator} />
             <View style={styles.sectionContainer}>
-                <View style={{ paddingVertical: 10 }}>
-                    <InputItems.MyTextInput placeholder={'Kamu mau pesan apa?'} value={text} onChangeText={setText} returnKeyType='search' onResetField={() => setText('')} />
+                <View style={{ paddingTop: 24, paddingBottom: 32 }}>
+                    {/* <InputItems.MyTextInput placeholder={'Kamu mau pesan apa?'} value={text} onChangeText={setText} returnKeyType='search' onResetField={() => setText('')} /> */}
+                    <Searchbar
+                        placeholder="Search"
+                        onChangeText={setSearchQuery}
+                        onSubmitEditing={filterCategory}
+                        value={searchQuery}
+                        inputStyle={{ fontSize: 12, fontFamily: 'ReadexProLight', color: colors.cerulean, paddingTop: 10, }}
+                        iconColor={colors.cerulean}
+                        maxLength={30}
+                        clearIcon={() => <TextInput.Icon
+                            style={{ position: 'absolute', top: -20, left: -20 }}
+                            name={'close'}
+                            onPress={clearFilteredCategory}
+                            size={20}
+                            color={colors.cerulean} />}
+                    />
                 </View>
-                <MyText bold medium color={colors.black} left>Aneka Kuliner</MyText>
-                <MyText left>Yuk cari makanan atau minuman buat hari ini</MyText>
+                {merchantError != 'MERCHANT_NOT_FOUND' && <>
+                    <MyText bold medium black left>Aneka Kuliner</MyText>
+                    <MyText left>Yuk cari makanan atau minuman buat hari ini</MyText>
+                </>}
             </View>
-            <FlatList
-                data={loading ? [] : merchantList}
-                renderItem={_renderCardCategory}
-                snapToInterval={150}
-                keyExtractor={({ id }) => id}
-                numColumns={3}
-                ListEmptyComponent={<MyText large bold color={colors.black}>Oops, Kategori Masih kosong nih...!</MyText>}
-                showsHorizontalScrollIndicator={false}
-                showsVerticalScrollIndicator={false}
-                nestedScrollEnabled={true}
-            />
+            {merchantError != 'MERCHANT_NOT_FOUND' &&
+                <FlatList
+                    contentContainerStyle={{ marginTop: 20 }}
+                    data={loading ? [] : (filteredCategory.length > 0 ? filteredCategory : merchantList)}
+                    renderItem={_renderCardCategory}
+                    snapToInterval={150}
+                    keyExtractor={({ id }) => id}
+                    numColumns={3}
+                    ListEmptyComponent={<MyText large bold black>Oops, Kategori Masih kosong nih...!</MyText>}
+                    showsHorizontalScrollIndicator={false}
+                    showsVerticalScrollIndicator={false}
+                    nestedScrollEnabled={true}
+                />
+                ||
+                <EmptySearchResult title={'Oops,'} subTitle={'Menu yang kamu cari sepertinya tidak tersedia, yuk coba cari yang lain'} />
+            }
         </MyModal>
     )
 }))

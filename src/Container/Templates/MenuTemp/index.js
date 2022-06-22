@@ -26,7 +26,7 @@ export default memo(({ navigation }) => {
         activeOpacity={.8}
         onPress={props.onClickSearch}
         style={styles.pressableIcon}>
-        <Icon name={props.iconName} size={26} color={colors.black} />
+        <Icon name={props.iconName} size={26} black />
     </TouchableOpacity>)
 
     const _onMenuPress = useCallback(() => {

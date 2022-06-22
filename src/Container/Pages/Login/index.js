@@ -41,7 +41,7 @@ export default memo(({ navigation: { navigate } }) => {
                 resizeMode={'stretch'}
                 style={{ marginVertical: 6.5 }}
             />
-            <MyText left bold large color={colors.black} style={{ marginVertical: 6 }}>Selamat Datang!</MyText>
+            <MyText left bold large black style={{ marginVertical: 6 }}>Selamat Datang!</MyText>
             <MyText left style={{ marginVertical: 6 }}>Selanjutnya, masukkan Nama Pengguna dan Kata sandimu disini ya.</MyText>
             <Forms
                 ref={refForms}

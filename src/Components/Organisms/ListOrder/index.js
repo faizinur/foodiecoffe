@@ -21,20 +21,20 @@ export default (props) => {
                             <Image source={IC_PRODUCT} style={styles.img} />
                             <View style={styles.productDetail}>
                                 <View style={styles.innerContainer}>
-                                    <MyText fontSize={14} color={colors.black}>{item?.menuName}</MyText>
+                                    <MyText fontSize={14} black>{item?.menuName}</MyText>
                                     <View style={styles.orderState}>
                                         <Icon name='check' size={17} color={colors.emerald} />
                                     </View>
                                 </View>
-                                 <MyText numberOfLines={2} left style={styles.notes} color={colors.black} fontSize={10}>
-                                    <MyText bold color={colors.black}>Catatan :</MyText>
+                                <MyText numberOfLines={2} left style={styles.notes} black fontSize={10}>
+                                    <MyText bold black>Catatan :</MyText>
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                                 </MyText>
                                 <View style={styles.innerContainer}>
                                     <View style={styles.orderTable}>
                                         <MyText light bold color={colors.cerulean}>x{item?.qty}</MyText>
                                     </View>
-                                    <MyText bold light color={colors.black}><MyText strikeThrough>{item?.discount > 0 ? `Rp${item?.price}` : ''}</MyText>  Rp{parseInt(item?.price)-parseInt(item?.discount)}</MyText>
+                                    <MyText bold light black><MyText strikeThrough>{item?.discount > 0 ? `Rp${item?.price}` : ''}</MyText>  Rp{parseInt(item?.price) - parseInt(item?.discount)}</MyText>
                                 </View>
                             </View>
                         </View>

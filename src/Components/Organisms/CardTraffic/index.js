@@ -16,7 +16,7 @@ export default memo(props => {
                 <View style={styles.revenue}>
                     <Icon name={'trending-up'} size={25} color={colors.cerulean} style={styles.iconRevenue} />
                     <MyText left light>Revenue</MyText>
-                    <MyText bold left color={colors.black}>{props.revenue}</MyText>
+                    <MyText bold left black>{props.revenue}</MyText>
                 </View>
                 <View style={styles.graph}>
                     <Image source={IC_TRAFFIC_GRAPH} />

@@ -45,7 +45,7 @@ export default memo(({ navigation }) => {
         activeOpacity={.8}
         onPress={props.onClickSearch}
         style={styles.pressableIcon}>
-        <Icon name={props.iconName} size={26} color={colors.black} />
+        <Icon name={props.iconName} size={26} black />
     </TouchableOpacity>)
 
     const _onPressQR = async props => {
@@ -73,7 +73,7 @@ export default memo(({ navigation }) => {
                         <MyPressableIcon onClickSearch={_onClickSearch} iconName={'close'} />
                     </View>
                     <View ref={refTextTitleContainer} style={styles.renderTitleWrappwe('flex')}>
-                        <MyText center color={colors.black} style={{ textTransform: 'capitalize' }}>pilih meja</MyText>
+                        <MyText center black style={{ textTransform: 'capitalize' }}>pilih meja</MyText>
                         <MyPressableIcon onClickSearch={_onClickSearch} iconName={'search-web'} />
                     </View>
                 </>}
@@ -83,7 +83,7 @@ export default memo(({ navigation }) => {
                 style={styles.flatList}
                 ListHeaderComponent={
                     (tableList.length > 0 && <View style={styles.sectionContainer}>
-                        <MyText bold medium color={colors.black} left>Cek Mejamu disini</MyText>
+                        <MyText bold medium black left>Cek Mejamu disini</MyText>
                         <MyText left>Yuk, pilih lokasi mejamu sebelum penuh</MyText>
                     </View>
                     )}
@@ -93,7 +93,7 @@ export default memo(({ navigation }) => {
                 snapToInterval={130}
                 keyExtractor={({ id }) => id}
                 numColumns={2}
-                ListEmptyComponent={<MyText large bold color={colors.black}>Oops, Meja Penuh nih...!</MyText>}
+                ListEmptyComponent={<MyText large bold black>Oops, Meja Penuh nih...!</MyText>}
                 ListFooterComponent={<View style={styles.separator} />}
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}

@@ -17,7 +17,7 @@ export default memo(props => {
             style={styles.cardTransaksiContainer}>
             <Image source={IC_ICON_TRANSAKSI} />
             <View style={styles.cashWrapper}>
-                <MyText left medium bold numberOfLines={1} color={colors.black}>{props.paymentMethod}</MyText>
+                <MyText left medium bold numberOfLines={1} black>{props.paymentMethod}</MyText>
                 <MyText left >Rp{props.paymentAmount}</MyText>
             </View>
         </TouchableOpacity>

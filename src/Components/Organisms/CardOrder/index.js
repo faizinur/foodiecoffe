@@ -13,11 +13,11 @@ export default (props) => {
             style={styles.cardContainer}
             activeOpacity={.9}
             onPress={props?.onPress}>
-           <View style={styles.userInfo}>
+            <View style={styles.userInfo}>
                 <Image source={IC_AVATAR_ORDER_SUCCESS} />
                 <View style={styles.userInfoWrapper}>
                     <View style={styles.userInfoDetail}>
-                        <MyText fontSize={14} lineHeight={18} bold color={colors.black} numberOfLines={1} style={styles.userTextlength}>{props?.order?.name || 'Anonim'}</MyText>
+                        <MyText fontSize={14} lineHeight={18} bold black numberOfLines={1} style={styles.userTextlength}>{props?.order?.name || 'Anonim'}</MyText>
                         <MyText fontSize={10} lineHeight={12}>
                             <Icon name='clock-time-four-outline' /> {DateDiff(props?.order?.createdAt)}</MyText>
                     </View>
@@ -25,7 +25,7 @@ export default (props) => {
                 </View>
             </View>
             <View style={styles.listOrder}>
-                <MyText fontSize={12} lineHeight={15} bold numberOfLines={1} color={colors.black} center style={{ width: '85%' }}> • {props?.order?.items[0]?.menuName} ...</MyText>
+                <MyText fontSize={12} lineHeight={15} bold numberOfLines={1} black center style={{ width: '85%' }}> • {props?.order?.items[0]?.menuName} ...</MyText>
                 <View style={styles.orderCount}>
                     <MyText fontSize={12} lineHeight={14} center color={colors.cerulean} bold>+{props?.order?.items?.length}</MyText>
                 </View>
@@ -35,8 +35,8 @@ export default (props) => {
                 <View style={styles.tableNumber(colors.cerulean)}>
                     <MyText fontSize={10} lineHeight={12} center color={colors.white} bold numberOfLines={1} style={{ width: '80%' }}>Table {props?.order?.tableNumber}</MyText>
                 </View>
-                <MyText fontSize={14} lineHeight={18} center bold color={colors.black}>Rp{props?.order?.total}</MyText>
-            </View> 
+                <MyText fontSize={14} lineHeight={18} center bold black>Rp{props?.order?.total}</MyText>
+            </View>
         </TouchableOpacity>
     )
 }

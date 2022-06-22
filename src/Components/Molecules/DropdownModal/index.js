@@ -1,5 +1,5 @@
 import { TouchableOpacity } from 'react-native';
-import React, { useState, useCallback, forwardRef, useImperativeHandle, } from 'react';
+import React, { useState, useCallback, forwardRef, useImperativeHandle, useEffect } from 'react';
 import { log, CONSTANT } from '@Utils';
 import { useTheme } from 'react-native-paper';
 import { MyText, MyModal } from '@Atoms';
@@ -56,6 +56,8 @@ export default forwardRef((props, ref) => {
         }
         setModalVisible(prevState => !prevState);
     }, [modalVisible, animationType]);
+
+    useEffect(() => { }, [animationType]);
     return (
         <MyModal
             visible={modalVisible}

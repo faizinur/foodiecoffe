@@ -12,7 +12,7 @@ export default (props) => {
         <View style={styles.container}>
             <Image source={IC_AVATAR_ORDER_SUCCESS} style={styles.img} />
             <View style={styles.customerInfo}>
-                <MyText left medium color={colors.black} numberOfLines={1} style={styles.nameWidth}>{props.name}</MyText>
+                <MyText left medium black numberOfLines={1} style={styles.nameWidth}>{props.name}</MyText>
                 <MyText left light>{props.invoice}</MyText>
                 <MyText left light><Icon name='phone' />  {props.phone}</MyText>
             </View>

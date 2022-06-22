@@ -35,7 +35,7 @@ export default memo(() => {
 
                 <View style={styles.cardTansaksiWrapper}>
                     <View style={styles.titleSection}>
-                        <MyText bold color={colors.black}>Transaksi</MyText>
+                        <MyText bold black>Transaksi</MyText>
                         <TouchableOpacity
                             activeOpacity={.8}
                             onPress={_onDetailTransactionPress}>
@@ -50,7 +50,7 @@ export default memo(() => {
                         renderItem={_renderCardTransaksi}
                         snapToInterval={200}
                         keyExtractor={({ id }) => id}
-                        ListEmptyComponent={<MyText light bold color={colors.black}>Oops, Transaksi kosong nih...!</MyText>}
+                        ListEmptyComponent={<MyText light bold black>Oops, Transaksi kosong nih...!</MyText>}
                         showsHorizontalScrollIndicator={false}
                         showsVerticalScrollIndicator={false}
                         nestedScrollEnabled={true}
@@ -59,7 +59,7 @@ export default memo(() => {
 
                 <View style={styles.listTrafficWrapper}>
                     <View style={styles.trafficTitle}>
-                        <MyText bold left color={colors.black}>Traffic Hari Ini</MyText>
+                        <MyText bold left black>Traffic Hari Ini</MyText>
                     </View>
                     <FlatList
                         style={styles.flatListTraffic}
@@ -68,7 +68,7 @@ export default memo(() => {
                         renderItem={_renderCardTraffic}
                         snapToInterval={200}
                         keyExtractor={({ id }) => id}
-                        ListEmptyComponent={<MyText light bold color={colors.black}>Oops, Traffic kosong nih...!</MyText>}
+                        ListEmptyComponent={<MyText light bold black>Oops, Traffic kosong nih...!</MyText>}
                         showsHorizontalScrollIndicator={false}
                         showsVerticalScrollIndicator={false}
                         nestedScrollEnabled={true}

@@ -17,6 +17,11 @@ export default memo(({ navigation }) => {
         merchantList,
         loading,
         merchantError,
+        searchQuery,
+        setSearchQuery,
+        _filterCategory,
+        filteredCategory,
+        _clearFilteredCategory,
     } = UseMerchant()
     const {
         _getOrders,
@@ -69,7 +74,7 @@ export default memo(({ navigation }) => {
                 <View key='0' style={{ flex: 1, paddingHorizontal: '5%', paddingBottom: 60 }}>
                     {orderError == '' &&
                         <FlatList
-                            ListHeaderComponent={<MyText medium bold left color={colors.black}>List Pesanan</MyText>}
+                            ListHeaderComponent={<MyText medium bold left black>List Pesanan</MyText>}
                             refreshControl={
                                 <RefreshControl
                                     refreshing={refreshingOrder}
@@ -85,9 +90,9 @@ export default memo(({ navigation }) => {
                             keyExtractor={({ id }) => id}
                             showsVerticalScrollIndicator={false}
                             ListFooterComponent={<View style={{ height: 100 }} />}
-                            ListEmptyComponent={orderList.length > 0 ? <MyText light bold color={colors.black}>tunggu</MyText> : <EmptyOrderScreen />}
+                            ListEmptyComponent={orderList.length > 0 ? <MyText light bold black>tunggu</MyText> : <EmptyOrderScreen />}
                         />
-                        || <MyText light bold style={{ textAlign: 'center' }} color={colors.black}>upss kita ada kendala nih... {`\n\n`}{orderError}</MyText>}
+                        || <MyText light bold style={{ textAlign: 'center' }} black>upss kita ada kendala nih... {`\n\n`}{orderError}</MyText>}
                     <FAB
                         disabled={refreshingOrder}
                         theme={styles.fab}
@@ -112,8 +117,8 @@ export default memo(({ navigation }) => {
                         snapToInterval={150}
                         keyExtractor={({ id }) => id}
                         showsVerticalScrollIndicator={false}
-                        // ListEmptyComponent={() => <MyText light bold color={colors.black}>{JSON.stringify(error) !== '""' ? error : 'Harap Tunggu...'}</MyText>}
-                        ListEmptyComponent={() => <MyText light bold color={colors.black}>ups, tidak ada data transaksi disini</MyText>}
+                        // ListEmptyComponent={() => <MyText light bold black>{JSON.stringify(error) !== '""' ? error : 'Harap Tunggu...'}</MyText>}
+                        ListEmptyComponent={() => <MyText light bold black>ups, tidak ada data transaksi disini</MyText>}
                     />
                 </View>
             </PagerView>
@@ -124,6 +129,11 @@ export default memo(({ navigation }) => {
                 merchantList={merchantList}
                 loading={loading}
                 merchantError={merchantError}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                filterCategory={_filterCategory}
+                filteredCategory={filteredCategory}
+                clearFilteredCategory={_clearFilteredCategory}
             />
         </View>
     )

@@ -1,5 +1,5 @@
 import { View, Image, StatusBar } from 'react-native';
-import React, { useState, useCallback, forwardRef, useImperativeHandle, } from 'react';
+import React, { useState, useCallback, forwardRef, useImperativeHandle, useEffect } from 'react';
 import { log, CONSTANT } from '@Utils';
 import { useTheme, } from 'react-native-paper';
 import { MyText, MyModal } from '@Atoms';
@@ -89,6 +89,8 @@ export default forwardRef((props, ref) => {
         toggle,
     }));
 
+    useEffect(() => { }, [animationType])
+
     return (
         <MyModal
             disableBack={false}
@@ -101,7 +103,7 @@ export default forwardRef((props, ref) => {
                 <View style={{ flex: 1 }} />
                 <View style={{ width: '100%', height: DOWN_SIZE * .6 }}>
                     <Animated.Image source={imageSource} resizeMode={'cover'} style={[imageSizeStyle, { alignSelf: 'center', borderRadius: 25 }]} />
-                    <MyText large bold color={colors.black} style={{ marginTop: 24 }}>{textTitle}</MyText>
+                    <MyText large bold black style={{ marginTop: 24 }}>{textTitle}</MyText>
                     <MyText style={{ marginBottom: 24 }}>{textDescription}</MyText>
                     <InputItems.MyButton
                         disabled={loading}

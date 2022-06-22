@@ -6,6 +6,7 @@ import EmptyOrderScreen from './EmptyOrderScreen';
 import ExitBar from './ExitBar';
 import PendingModals from './PendingModals';
 import DropdownModal from './DropdownModal';
+import EmptySearchResult from './EmptySearchResult';
 export {
     InputItems,
     TitleBar,
@@ -15,4 +16,5 @@ export {
     ExitBar,
     PendingModals,
     DropdownModal,
+    EmptySearchResult,
 }

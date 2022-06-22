@@ -11,7 +11,7 @@ export default forwardRef((props, ref) => {
     const refText = useRef(<Text />);
     const { colors } = useTheme();
     const textStyle = {
-        color: 'color' in props ? props?.color : colors.jumbo,
+        color: 'color' in props ? props?.color : ('black' in props ? colors.black : colors.jumbo),
         fontFamily: 'bold' in props ? 'ReadexProBold' : ('medium' in props ? 'ReadexProMedium' : 'ReadexProLight'),
         fontSize: 'large' in props ? 24 : ('medium' in props ? 16 : ('light' in props ? 12 : props?.fontSize)),
         lineHeight: 'large' in props ? 30 : ('medium' in props ? 22 : ('small' in props ? 20 : props?.lineHeight)),

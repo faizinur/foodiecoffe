@@ -14,7 +14,7 @@ export default memo(props => {
                 style={styles.cardContainer}>
                 <MyImage source={{ uri: props?.merchant?.image?.url }} resizeMode={'cover'} style={styles.cardImage} />
                 {/* <Image source={{ uri: props?.merchant?.image?.url }} resizeMode={'cover'} style={styles.cardImage} /> */}
-                <MyText bold color={colors.black}>{props?.merchant?.name}</MyText>
+                <MyText bold black>{props?.merchant?.name}</MyText>
             </TouchableOpacity>
         </View>
     )

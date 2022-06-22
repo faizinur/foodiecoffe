@@ -50,7 +50,7 @@ const MyTextInput = (props) => {
 
     //LEFT 
     const LeftPhonePadIcon = () => (<View style={styles.leftIconContainer}>
-        <MyText color={colors.black} style={styles.prefixNumber}>+62</MyText>
+        <MyText black style={styles.prefixNumber}>+62</MyText>
         <View style={styles.prefixDivider} />
     </View>)
     return (
@@ -117,7 +117,7 @@ const MyRadioInput = (props) => {
             <TextInput {...props.register} onBlur={props.onBlur} value={value} key={props.id} disabled={true} mode='outlined' style={{ display: 'none' }} />
             <View style={styles.hiddenInputPatch} />
             <View style={styles.switchWrapper}>
-                <MyText left color={colors.black}>{props.placeholder}</MyText>
+                <MyText left black>{props.placeholder}</MyText>
                 <View style={styles.switchContainer}>
                     {
                         props?.data.map(({ code, description }) =>
@@ -160,9 +160,47 @@ const MyTitleBarInput = (props) => {
     />
 }
 
+const MyListRadio = props => {
+    const { colors } = useTheme();
+    const defaultColor = props.error ? colors.wildWaterMelon : colors.cerulean;
+    let value = typeof props.value === 'undefined' ? '' : props.value;
+    return <View style={{ marginBottom: 60 }}>
+        <RadioButton.Group onValueChange={props.onChangeText} value={value}>
+            <TextInput {...props.register} onBlur={props.onBlur} value={value} key={props.id} disabled={true} mode='outlined' style={{ display: 'none' }} />
+            <View style={styles.hiddenInputPatch} />
+            <MyText left black bold>{props.label}</MyText>
+            <MyText left >{props.placeholder}</MyText>
+            {props?.data.map(({ code, description }) =>
+                <TouchableOpacity key={`${code}-${description}`} onPress={() => props.onChangeText(code)} style={{ flex: 1, justifyContent: 'space-between', marginVertical: 13, flexDirection: 'row', borderBottomColor: colors.athensGray, borderBottomWidth: 1 }}>
+                    <MyText black>{code}</MyText>
+                    <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
+                        <MyText black>{description}</MyText>
+                        <RadioButton value={code} />
+                    </View>
+                </TouchableOpacity>
+            )}
+        </RadioButton.Group>
+    </View>
+}
+const MyListCheck = props => {
+    const { colors } = useTheme();
+    return <View>
+        <MyText>MyListRadio</MyText>
+    </View>
+}
+const MyTextArea = props => {
+    const { colors } = useTheme();
+    return <View>
+        <MyText>MyListRadio</MyText>
+    </View>
+}
+
 export {
     MyButton,
     MyTextInput,
     MyRadioInput,
     MyTitleBarInput,
+    MyListRadio,
+    MyListCheck,
+    MyTextArea,
 }

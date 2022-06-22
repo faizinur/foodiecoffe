@@ -57,14 +57,14 @@ export default forwardRef((props, ref) => {
             </View>
             <FloatingQRMarker />
             <View style={styles.cardSummary}>
-                <MyText left medium bold color={colors.black} style={{ marginBottom: 15 }}>Ringkasan Belanja</MyText>
+                <MyText left medium bold black style={{ marginBottom: 15 }}>Ringkasan Belanja</MyText>
                 <View style={styles.sectionList}>
-                    <MyText light color={colors.black}>Jumlah Orang</MyText>
-                    <MyText bold light color={colors.black}>5 Orang</MyText>
+                    <MyText light black>Jumlah Orang</MyText>
+                    <MyText bold light black>5 Orang</MyText>
                 </View>
                 <View style={styles.sectionList}>
-                    <MyText light color={colors.black}>Lokasi </MyText>
-                    <MyText bold light color={colors.black}>Lantai 2</MyText>
+                    <MyText light black>Lokasi </MyText>
+                    <MyText bold light black>Lantai 2</MyText>
                 </View>
                 <View style={styles.dashed} />
                 <View style={styles.sectionList}>

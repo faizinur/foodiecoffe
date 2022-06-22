@@ -14,14 +14,14 @@ export default memo(props => {
                 <Image source={IC_DEFAULT_PROFILE} style={styles.avatar} />
             </View>
             <View style={styles.descriptionContainer}>
-                <MyText left medium bold color={colors.black}>Riza Sulaemans</MyText>
+                <MyText left medium bold black>Riza Sulaemans</MyText>
                 <MyText left light>riza_sulamemans@gmail.com</MyText>
                 <View style={styles.role}>
                     <View style={styles.roleName}>
                         <MyText center bold light color={colors.white}>Kasir</MyText>
                     </View>
                     <View style={styles.rating} />
-                    <MyText center light bold color={colors.black}>4.8/5</MyText>
+                    <MyText center light bold black>4.8/5</MyText>
                 </View>
             </View>
             <TouchableOpacity

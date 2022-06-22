@@ -20,7 +20,7 @@ export default ({ navigation: { replace, goBack } }) => {
         <>
             <TitleBar />
             <PageWrapper>
-                <MyText left bold large color={colors.black}>Buat akun</MyText>
+                <MyText left bold large black>Buat akun</MyText>
                 <MyText left>Untuk membuat akun baru kamu, silahkan isi dengan lengkap form berikut ini.</MyText>
                 <Forms
                     formname={FORM_NAME}

@@ -114,7 +114,46 @@ export default forwardRef(({ formname = 'myFieldArray', inputList, defaultValue 
                                 errorText={errors[name]?.message}
                                 onResetField={_onResetField}
                                 onFocus={name => focusedInput = name}
-                                data={config.data}
+                                data={config?.data || []}
+                                {...inputProps} />
+                            || type == 'listRadio' &&
+                            <InputItems.MyListRadio
+                                id={id}
+                                register={register(`${FORM_NAME}.${name}.value`)}
+                                name={name}
+                                onBlur={onBlur}
+                                onChangeText={onChange}
+                                value={value}
+                                error={name in errors}
+                                errorText={errors[name]?.message}
+                                onFocus={name => focusedInput = name}
+                                data={config?.data || []}
+                                {...inputProps} />
+                            || type == 'listCheck' &&
+                            <InputItems.MyListCheck
+                                id={id}
+                                register={register(`${FORM_NAME}.${name}.value`)}
+                                name={name}
+                                onBlur={onBlur}
+                                onChangeText={onChange}
+                                value={value}
+                                error={name in errors}
+                                errorText={errors[name]?.message}
+                                onFocus={name => focusedInput = name}
+                                data={config?.data || []}
+                                {...inputProps} />
+                            || type == 'textArea' &&
+                            <InputItems.MyTextArea
+                                id={id}
+                                register={register(`${FORM_NAME}.${name}.value`)}
+                                name={name}
+                                onBlur={onBlur}
+                                onChangeText={onChange}
+                                value={value}
+                                error={name in errors}
+                                errorText={errors[name]?.message}
+                                onFocus={name => focusedInput = name}
+                                data={config?.data || []}
                                 {...inputProps} />
                             || <MyText>Undefined Input {type}</MyText>
                         )}

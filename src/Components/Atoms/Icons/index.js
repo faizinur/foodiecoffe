@@ -27,6 +27,7 @@ const IC_PAYMENT_SUCCESS = require('../../../Assets/Images/ic_payment_success.pn
 const IC_PAYMENT_FAILED = require('../../../Assets/Images/ic_payment_failed.png');
 const IC_ACCEPT = require('../../../Assets/Images/ic_accept.png');
 const IC_REJECT = require('../../../Assets/Images/ic_reject.png');
+const IC_PRODUCT_NOT_FOUND = require('../../../Assets/Images/ic_product_not_found.png');
 
 export {
     IC_SPLASH,
@@ -58,4 +59,5 @@ export {
     IC_ACCEPT,
     IC_REJECT,
     IC_PRODUCT_DETAIL,
+    IC_PRODUCT_NOT_FOUND,
 }

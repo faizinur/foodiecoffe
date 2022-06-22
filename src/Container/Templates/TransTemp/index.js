@@ -30,7 +30,7 @@ export default memo(({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
-                <MyText medium bold left color={colors.black}>Daftar Transaksi</MyText>
+                <MyText medium bold left black>Daftar Transaksi</MyText>
             </View>
             <MyToolBar
                 tool={[
@@ -61,7 +61,7 @@ export default memo(({ navigation }) => {
                     snapToInterval={150}
                     keyExtractor={({ id }) => id}
                     showsVerticalScrollIndicator={false}
-                    ListEmptyComponent={() => <MyText light bold color={colors.black}>{JSON.stringify(error) !== '""' ? error : 'Harap Tunggu...'}</MyText>}
+                    ListEmptyComponent={() => <MyText light bold black>{JSON.stringify(error) !== '""' ? error : 'Harap Tunggu...'}</MyText>}
                 />
             </View>
         </View>

@@ -42,39 +42,39 @@ export default forwardRef((props, ref) => {
                 style={styles.modalContainer}>
                 <Image source={IC_PRODUCT_BIG} style={styles.imgBadge} />
                 <View style={styles.description}>
-                    <MyText left medium bold color={colors.black}>Caramel Macchiato</MyText>
-                    <MyText left color={colors.black}>Rp.60.250</MyText>
+                    <MyText left medium bold black>Caramel Macchiato</MyText>
+                    <MyText left black>Rp.60.250</MyText>
                     <MyText left light numberOfLines={2}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fames interdum diam. </MyText>
                 </View>
                 <View style={styles.sectionStatus}>
-                    <MyText left center bold color={colors.black}>Status</MyText>
+                    <MyText left center bold black>Status</MyText>
                     <MySwitch />
                 </View>
-                <MyText left bold color={colors.black} style={styles.titleVariant}>Varian Ukuran</MyText>
+                <MyText left bold black style={styles.titleVariant}>Varian Ukuran</MyText>
                 <View style={styles.sectionVariant}>
-                    <MyText left center light color={colors.black}>Kecil</MyText><MySwitch />
+                    <MyText left center light black>Kecil</MyText><MySwitch />
                 </View>
                 <View style={styles.sectionVariant}>
-                    <MyText left light color={colors.black}>Sedang</MyText><MySwitch />
+                    <MyText left light black>Sedang</MyText><MySwitch />
                 </View>
                 <View style={styles.sectionVariant}>
-                    <MyText left center light color={colors.black}>Besar</MyText><MySwitch />
+                    <MyText left center light black>Besar</MyText><MySwitch />
                 </View>
-                <MyText left bold color={colors.black} style={styles.titleVariant}>Varian Topping</MyText>
+                <MyText left bold black style={styles.titleVariant}>Varian Topping</MyText>
                 <View style={styles.sectionVariant}>
-                    <MyText left center light color={colors.black}>Extra Cocout Jelly</MyText><MySwitch />
-                </View>
-                <View style={styles.sectionVariant}>
-                    <MyText left center light color={colors.black}>Extra Sugar Syrup</MyText><MySwitch />
+                    <MyText left center light black>Extra Cocout Jelly</MyText><MySwitch />
                 </View>
                 <View style={styles.sectionVariant}>
-                    <MyText left center light color={colors.black}>Extra Expresso Shot</MyText><MySwitch />
+                    <MyText left center light black>Extra Sugar Syrup</MyText><MySwitch />
                 </View>
                 <View style={styles.sectionVariant}>
-                    <MyText left center light color={colors.black}>Extra Grass Jelly</MyText><MySwitch />
+                    <MyText left center light black>Extra Expresso Shot</MyText><MySwitch />
                 </View>
                 <View style={styles.sectionVariant}>
-                    <MyText left center light color={colors.black}>Extra Oreo</MyText><MySwitch />
+                    <MyText left center light black>Extra Grass Jelly</MyText><MySwitch />
+                </View>
+                <View style={styles.sectionVariant}>
+                    <MyText left center light black>Extra Oreo</MyText><MySwitch />
                 </View>
             </ScrollView>
             <View style={styles.buttonsContainer}>
