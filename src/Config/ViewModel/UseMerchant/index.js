@@ -1,5 +1,5 @@
 import { Merchant } from '@Model';
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { log } from '@Utils';
 export default () => {
     const { getMerchantCategory, getCategoryList } = Merchant;
@@ -10,7 +10,7 @@ export default () => {
     const [searchQuery, setSearchQuery] = React.useState('');
     const [loading, setLoading] = useState(false);
 
-    const _getMerchant = useCallback(async () => {
+    const _getMerchant = useMemo(async () => {
         try {
             setLoading(true)
             setMerchantError('')
@@ -22,9 +22,9 @@ export default () => {
             setMerchantError(`error Merchant ${err}`)
             setLoading(false)
         }
-    }, [])
+    }, [merchantList])
 
-    const _getCategoryList = useCallback(async (params) => {
+    const _getCategoryList = useMemo(async (params) => {
         try {
             const { status, data, message } = await getCategoryList();
             if (status != 'SUCCESS') throw message;
@@ -35,7 +35,7 @@ export default () => {
     }, [categoryList])
 
 
-    const _filterCategory = useCallback(({ nativeEvent: { text } }) => {
+    const _filterCategory = useMemo(({ nativeEvent: { text } }) => {
         if (text == '') return false;
         try {
             setLoading(true)

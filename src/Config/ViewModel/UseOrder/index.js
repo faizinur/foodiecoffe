@@ -1,5 +1,5 @@
 import { Order } from '@Model';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { log } from '@Utils';
 export default () => {
     const { getOrders } = Order;
@@ -7,7 +7,7 @@ export default () => {
     const [orderError, setOrderError] = useState('');
     const [refreshingOrder, setRefreshingOrder] = useState(false);
 
-    const _getOrders = useCallback(async () => {
+    const _getOrders = useMemo(async () => {
         try {
             setRefreshingOrder(true)
             setOrderError('')
@@ -19,7 +19,7 @@ export default () => {
             setOrderError(`error Merchant ${err}`)
             setRefreshingOrder(false)
         }
-    }, [])
+    }, [orderList])
 
     return {
         _getOrders,

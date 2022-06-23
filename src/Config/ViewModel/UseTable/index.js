@@ -1,5 +1,5 @@
 import { Table } from '@Model';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { log } from '@Utils';
 let tmpTable = []
 export default () => {
@@ -11,7 +11,7 @@ export default () => {
     const [tableError, setTableError] = useState('');
     const [refreshingTable, setRefreshingTable] = useState(false);
 
-    const _getTables = useCallback(async () => {
+    const _getTables = useMemo(async () => {
         try {
             setRefreshingTable(true)
             setTableError('')
@@ -25,13 +25,13 @@ export default () => {
             setTableError(`error Table ${err}`)
             setRefreshingTable(false)
         }
-    }, []);
+    }, [selectedTable, tableList]);
 
     const _onChangeText = useCallback(text => {
         setSearchValue(text)
     }, [searchValue])
 
-    const _searchTable = useCallback(async (fnFilter) => {
+    const _searchTable = useMemo(async (fnFilter) => {
         if (typeof fnFilter != 'function') throw (`Error Params`)
         try {
             setSelectedTable({});
