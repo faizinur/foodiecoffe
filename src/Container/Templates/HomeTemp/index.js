@@ -53,7 +53,7 @@ export default memo(({ navigation }) => {
     const _onFABPress = useCallback(() =>
         refHomeModals.current?.toggle()
         , [])
-    const _onPressCalendar = useCallback(() => log('_onPressCalendar Pressed'), [])
+    const _onConfirmCalendar = useCallback(data => log('_onPressCalendar Pressed', data), [])
     const _renderCardOrder = useCallback(({ item }) => <CardOrder order={item} onPress={() => navigation.navigate('DetailOrder', { order: { ...item } })} />, []);
     useEffect(() => {
         log('Mount HomeTemp');
@@ -107,7 +107,7 @@ export default memo(({ navigation }) => {
                         activeOrderList={ORDER_TYPES[0]}
                         listCount={0}
                         onPressChips={() => log('chips press')}
-                        onPressCalendar={_onPressCalendar}
+                        onConfirmCalendar={_onConfirmCalendar}
                         loading={false}
                     />
                     <FlatList

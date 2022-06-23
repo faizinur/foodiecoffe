@@ -1,6 +1,6 @@
 import React from 'react';
 import { log, MyRealm } from '@Utils';
-import {BASE_URL} from '../CONSTANT'
+import { BASE_URL, NETWORK_TIMEOUT } from '../CONSTANT'
 import axios from 'axios';
 
 const controller = new AbortController();
@@ -14,8 +14,8 @@ const cancelToken = CancelToken.source();
 // controller.abort(); // the message parameter is not supported
 
 const myAxiosInstance = axios.create({
-    baseURL : BASE_URL,
-    timeout: 3000,
+    baseURL: BASE_URL,
+    timeout: NETWORK_TIMEOUT,
     headers: {
         'Content-type': 'application/json; charset=UTF-8',
         "Access-Control-Allow-Origin": true

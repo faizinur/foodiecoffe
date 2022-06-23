@@ -19,8 +19,4 @@ export default StyleSheet.create({
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
     },
-    filterContainerStyle: {
-        flex: 1,
-        justifyContent: 'flex-end'
-    },
 })

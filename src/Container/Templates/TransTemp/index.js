@@ -13,7 +13,8 @@ export default memo(({ navigation }) => {
         transactionList,
         activeTransationList,
         _getTransaksiList,
-        ORDER_TYPES
+        ORDER_TYPES,
+        _filterTransaksi,
     } = UseTransaksi();
 
     const { colors } = useTheme();
@@ -52,6 +53,7 @@ export default memo(({ navigation }) => {
                 onPressChips={_getTransaksi}
                 onPressCalendar={_onPressCalendar}
                 loading={loading}
+                onChoosenCalendar={_filterTransaksi}
             />
             <View style={styles.content}>
                 <FlatList

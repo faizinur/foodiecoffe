@@ -1,4 +1,4 @@
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, StatusBar, Modal } from 'react-native';
 import React, { useState, useCallback, forwardRef, useImperativeHandle, memo } from 'react';
 import { log } from '@Utils';
 import { useTheme } from 'react-native-paper';
@@ -6,6 +6,9 @@ import { MyText, MyModal, PageWrapper } from '@Atoms';
 import { Forms } from '@Organisms';
 import { INPUT_LIST, FORM_NAME } from './input';
 import styles, { height } from './styles';
+
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
 export default memo(forwardRef((props, ref) => {
     const { colors } = useTheme();
     const [modalVisible, setModalVisible] = useState(false);
@@ -20,27 +23,23 @@ export default memo(forwardRef((props, ref) => {
         setModalVisible(prevState => !prevState);
     }, [modalVisible]);
     return (
-        <MyModal
+        <Modal
+            animationType={"slide"}
+            transparent
+            statusBarTranslucent={false}
             visible={modalVisible}
-            onRequestClose={_onCloseModal}
-            statusBarTranslucent={true}
-            contentContainerStyle={styles.filterContainerStyle}>
-            <View style={{ width: '100%', position: 'absolute', bottom: 0, left: 0, backgroundColor: colors.white, paddingHorizontal: '5%', paddingTop: '2%', borderTopLeftRadius: 15, borderTopRightRadius: 15, }}>
-                <View style={{ height: 4, width: 30, backgroundColor: colors.athensGray, borderRadius: 10, alignSelf: 'center', marginBottom: '3%' }} />
-                <ScrollView
-                    style={{ height: height * .87 }}
-                    contentContainerStyle={{ paddingBottom: 10 }}
-                    showsVerticalScrollIndicator={false}>
-                    <MyText left bold medium black style={{ marginBottom: 24 }}>Kastem Pesanan</MyText>
+            onRequestClose={_onCloseModal}>
+            <KeyboardAwareScrollView style={{ backgroundColor: 'rgba(0,0,0,.0)' }} showsVerticalScrollIndicator={false} >
+                <View style={{ paddingHorizontal: '5%', paddingBottom: '5%', paddingTop: '2.5%', flex: 1, backgroundColor: colors.white, marginTop: StatusBar.currentHeight, borderTopStartRadius: 16, borderTopEndRadius: 16 }}>
+                    <View style={{ width: 30, height: 4, backgroundColor: colors.athensGray, borderRadius: 10, alignSelf: 'center', marginBottom: 25 }} />
                     <Forms
                         formname={FORM_NAME}
                         inputList={INPUT_LIST}
                         onFormSubmit={(data) => log(data)}
                         submitLabel={'Simpan'}
                     />
-                    <View style={{ width: '100%', height: 300 }} />
-                </ScrollView>
-            </View>
-        </MyModal>
+                </View>
+            </KeyboardAwareScrollView>
+        </Modal>
     )
 }))

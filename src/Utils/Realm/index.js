@@ -72,9 +72,9 @@ const deleteData = (key) => {
     })
 }
 
-const closeConnection = () => {
+const closeConnection = async () => {
     try {
-        Realm.close()
+        await Realm.close()
     } catch (e) {
         log('closeConnection ERR : ', e)
     }

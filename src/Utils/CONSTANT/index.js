@@ -6,7 +6,7 @@
 //     stiffness: 800, //120
 // }
 const BASE_URL = 'http://beta-api.foodie.coffee/';
-
+const NETWORK_TIMEOUT = 15000;
 const SPRING_CONFIG = {
     damping: 15,
     overshootClamping: false,
@@ -28,4 +28,5 @@ export {
     SPRING_CONFIG,
     ZOOM_IN,
     BASE_URL,
+    NETWORK_TIMEOUT,
 }

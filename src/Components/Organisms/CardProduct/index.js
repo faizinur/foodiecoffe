@@ -26,7 +26,7 @@ export default (props) => {
                                 <Icon name={'plus'} size={20} color={colors.wildWaterMelon} />
                             </TouchableOpacity>
                         </View>
-                        <Chip selectedColor={colors.jumbo} onPress={props?.addNotes} icon={'pencil'} textStyle={{ fontSize: 12, width: '100%' }} style={{ height: 33, width: 100, marginHorizontal: 5, borderWidth: 1, backgroundColor: colors.white, borderColor: colors.athensGray }}>Catatan</Chip>
+                        <Chip selectedColor={colors.jumbo} onPress={props?.addNotes} icon={'pencil'} textStyle={{ fontSize: 12, width: '100%' }} style={{ height: 33, width: 100, borderWidth: 1, backgroundColor: colors.white, borderColor: colors.athensGray }}>Catatan</Chip>
                     </View>
                 </View>
             </View>

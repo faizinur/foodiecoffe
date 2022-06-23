@@ -10,6 +10,7 @@ import MyToolBar from './MyToolBar';
 import CardProduct from './CardProduct';
 import ListCustomer from './ListCustomer';
 import ListOrder from './ListOrder';
+import DatePicker from './DatePicker';
 export {
     Forms,
     CardOrder,
@@ -23,4 +24,5 @@ export {
     CardProduct,
     ListCustomer,
     ListOrder,
+    DatePicker,
 }
