@@ -1,6 +1,7 @@
 import { Order } from '@Model';
 import { useState, useCallback, useMemo } from 'react';
-import { log } from '@Utils';
+import { log, CONSTANT } from '@Utils';
+let SUBSCRIBE_TINEOUT = null;
 export default () => {
     const { getOrders } = Order;
     const [orderList, setOrderList] = useState([])
@@ -19,10 +20,30 @@ export default () => {
             setOrderError(`error Merchant ${err}`)
             setRefreshingOrder(false)
         }
-    }, [orderList])
+    }, [orderList]);
 
+    const _subscribeOrders = useMemo(() => async () => {
+        const { status, data, message } = await getOrders();
+        if (status == 'SUCCESS') {
+            setOrderList(data)
+        } else {
+            log('_subscribeOrders : ', message)
+        }
+
+        await new Promise(resolve => {
+            _unSubscribeOrders();
+            SUBSCRIBE_TINEOUT = setTimeout(resolve, CONSTANT.CONNECT_RETRIES)
+        });
+        await _subscribeOrders();
+    }, [orderList]);
+
+    const _unSubscribeOrders = () => {
+        clearTimeout(SUBSCRIBE_TINEOUT)
+    }
     return {
         _getOrders,
+        _subscribeOrders,
+        _unSubscribeOrders,
         orderList,
         refreshingOrder,
         setRefreshingOrder,

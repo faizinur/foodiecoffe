@@ -1,4 +1,4 @@
-import { log, GET, LONG_POLL } from '@Utils';
+import { log, GET } from '@Utils';
 
 const getOrders = async () => {
     try {

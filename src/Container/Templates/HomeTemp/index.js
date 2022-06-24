@@ -25,6 +25,8 @@ export default memo(({ navigation }) => {
     } = UseMerchant()
     const {
         _getOrders,
+        _subscribeOrders,
+        _unSubscribeOrders,
         orderList,
         refreshingOrder,
         setRefreshingOrder,
@@ -57,10 +59,12 @@ export default memo(({ navigation }) => {
     const _renderCardOrder = useCallback(({ item }) => <CardOrder order={item} onPress={() => navigation.navigate('DetailOrder', { order: { ...item } })} />, []);
     useEffect(() => {
         log('Mount HomeTemp');
-        _getOrders()
-        _getMerchant()
+        // _getOrders()
+        _subscribeOrders()
+        // _getMerchant()
         return () => {
             log('Unmount HomeTemp')
+            _unSubscribeOrders();
         }
     }, [])
     return (

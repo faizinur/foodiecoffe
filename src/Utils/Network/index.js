@@ -1,6 +1,6 @@
 import React from 'react';
 import { log, MyRealm } from '@Utils';
-import { BASE_URL, NETWORK_TIMEOUT } from '../CONSTANT'
+import { BASE_URL, NETWORK_TIMEOUT, CONNECT_RETRIES } from '../CONSTANT'
 import axios from 'axios';
 
 const controller = new AbortController();
@@ -92,16 +92,4 @@ const GET = async (url = '', data = {}) => {
     }
 };
 
-const LONG_POLL = (fn, retries = Infinity, timeoutBetweenAttempts = 1000) => {
-    return Promise.resolve()
-        .then(fn)
-        .catch(function retry(err) {
-            if (retries-- > 0)
-                return delay(timeoutBetweenAttempts)
-                    .then(fn)
-                    .catch(retry);
-            throw err;
-        });
-}
-
-export { POST, GET, LONG_POLL, cancelToken, controller };
+export { POST, GET, cancelToken, controller };
