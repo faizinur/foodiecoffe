@@ -5,50 +5,55 @@ export default () => {
     const { getMerchantCategory, getCategoryList } = Merchant;
     const [merchantList, setMerchantList] = useState([])
     const [merchantError, setMerchantError] = useState('');
+    const [merchantLoading, setMerchantLoading] = useState(false);
     const [categoryList, setcategoryList] = useState([]);
     const [filteredCategory, setFilteredCategory] = useState([]);
     const [searchQuery, setSearchQuery] = React.useState('');
-    const [loading, setLoading] = useState(false);
 
-    const _getMerchant = useMemo(async () => {
+    const _getMerchant = useMemo(() => async () => {
         try {
-            setLoading(true)
+            setMerchantLoading(true)
             setMerchantError('')
             const { status, data, message } = await getMerchantCategory();
             if (status != 'SUCCESS') throw message;
             setMerchantList(data)
-            setLoading(false)
+            setMerchantLoading(false)
         } catch (err) {
             setMerchantError(`error Merchant ${err}`)
-            setLoading(false)
+            setMerchantLoading(false)
         }
     }, [merchantList])
 
-    const _getCategoryList = useMemo(async (params) => {
+    const _getCategoryList = useMemo(() => async (params) => {
         try {
+            setMerchantLoading(true)
+            setMerchantError('')
             const { status, data, message } = await getCategoryList();
             if (status != 'SUCCESS') throw message;
             setcategoryList(data)
+            setMerchantLoading(false)
         } catch (err) {
             log('getCategoryList : ', err)
+            setMerchantError(err)
+            setMerchantLoading(false)
         }
     }, [categoryList])
 
 
-    const _filterCategory = useMemo(({ nativeEvent: { text } }) => {
+    const _filterCategory = useCallback(({ nativeEvent: { text } }) => {
         if (text == '') return false;
         try {
-            setLoading(true)
+            setMerchantLoading(true)
             setMerchantError('')
             let tmpMerchant = [...merchantList].filter(({ name }) => name.toLowerCase().includes(text.toLowerCase()))
             if (tmpMerchant.length == 0) throw 'MERCHANT_NOT_FOUND';
             setFilteredCategory(tmpMerchant)
-            setLoading(false)
+            setMerchantLoading(false)
             tmpMerchant = []
         } catch (err) {
             log('_filterMerchant : ', err);
             setMerchantError(err)
-            setLoading(false)
+            setMerchantLoading(false)
         }
     }, [searchQuery, filteredCategory, merchantList])
 
@@ -63,7 +68,8 @@ export default () => {
         _getCategoryList,
         merchantList,
         categoryList,
-        loading,
+        merchantLoading,
+        setMerchantLoading,
         merchantError,
         searchQuery,
         setSearchQuery,

@@ -1,4 +1,4 @@
-import { log, GET } from '@Utils';
+import { log, GET, LONG_POLL } from '@Utils';
 
 const getOrders = async () => {
     try {
@@ -19,5 +19,5 @@ const getOrders = async () => {
 };
 
 export {
-    getOrders
+    getOrders,
 }

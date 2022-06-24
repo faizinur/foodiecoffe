@@ -1,7 +1,7 @@
 import { Transaksi } from '@Model';
 const { getDaftarTransaksi } = Transaksi;
 import { log } from '@Utils';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 export default () => {
     const ORDER_TYPES = [0, 1];
     const [errorTransaksi, setErrorTransaksi] = useState('');
@@ -9,7 +9,7 @@ export default () => {
     const [transactionList, setTransactionList] = useState([]);
     const [activeTransationList, setActiveTransationList] = useState(ORDER_TYPES[0]);
 
-    const _getTransaksiList = useMemo(async (transactionType = 0) => {
+    const _getTransaksiList = useMemo(() => async (transactionType = 0) => {
         if (loading == true) return false;
         try {
             setLoading(true);

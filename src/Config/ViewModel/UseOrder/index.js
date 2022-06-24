@@ -7,7 +7,7 @@ export default () => {
     const [orderError, setOrderError] = useState('');
     const [refreshingOrder, setRefreshingOrder] = useState(false);
 
-    const _getOrders = useMemo(async () => {
+    const _getOrders = useMemo(() => async () => {
         try {
             setRefreshingOrder(true)
             setOrderError('')

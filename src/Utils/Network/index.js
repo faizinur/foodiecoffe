@@ -40,51 +40,32 @@ const myAxiosInstance = axios.create({
 const POST = async (url = '', data = {}) => {
     log(`POST TO ${BASE_URL}${url}`)
     if (url == '' || (url == '' && data == {})) return Promise.reject()
-    return new Promise((resolve, reject) => {
-        // const myForms = new FormData();
-        // myForms.append('adsad', 0);
+    try {
+        return new Promise((resolve, reject) => {
+            // const myForms = new FormData();
+            // myForms.append('adsad', 0);
 
-        myAxiosInstance.post(url, data)
-            .then(({ data, status, statusText, headers, config }) => {
-                if ([200, 202].includes(status)) {
-                    resolve(data)
-                } else {
-                    reject({ status })
-                }
-            }).catch(err => {
-                log(`ERROR POST ${url}`)
-                reject(err)
-            })
-    })
+            myAxiosInstance.post(url, data)
+                .then(({ data, status, statusText, headers, config }) => {
+                    if ([200, 202].includes(status)) {
+                        resolve(data)
+                    } else {
+                        reject({ status })
+                    }
+                }).catch(err => {
+                    log(`ERROR POST ${url}`)
+                    reject(err)
+                })
+        })
+    } catch (err) {
+        log('ERROR POST')
+        return Promise.reject(err)
+    }
 };
+
 const GET = async (url = '', data = {}) => {
     log(`GET TO ${BASE_URL}${url}`)
     if (url == '' || (url == '' && data == {})) return Promise.reject()
-
-    let Authorization = '';
-    let select = await MyRealm.selectData();
-    if (select.length > 0) {
-        Authorization = `Bearer ${JSON.parse(select[0]?.value)?.token?.access_token}`;
-    }
-    return new Promise((resolve, reject) => {
-        myAxiosInstance.get(url, {
-            headers: { Authorization, }
-        }).then(({ data, status, statusText, headers, config }) => {
-            if ([200, 202].includes(status)) {
-                resolve(data)
-            } else {
-                reject({ status })
-            }
-        }).catch(err => {
-            log(`ERROR GET ${url}`)
-            reject(err)
-        })
-    })
-};
-const GET_PICTURE = async (url = '', data = {}, config = {}) => {
-    log(`GET TO ${BASE_URL}${url}`)
-    if (url == '' || (url == '' && data == {})) return Promise.reject('incomplete GET params')
-
     try {
         let Authorization = '';
         let select = await MyRealm.selectData();
@@ -93,10 +74,7 @@ const GET_PICTURE = async (url = '', data = {}, config = {}) => {
         }
         return new Promise((resolve, reject) => {
             myAxiosInstance.get(url, {
-                headers: {
-                    Authorization,
-                    ...config,
-                }
+                headers: { Authorization, }
             }).then(({ data, status, statusText, headers, config }) => {
                 if ([200, 202].includes(status)) {
                     resolve(data)
@@ -109,9 +87,21 @@ const GET_PICTURE = async (url = '', data = {}, config = {}) => {
             })
         })
     } catch (err) {
+        log('ERROR GET')
         return Promise.reject(err)
     }
 };
 
+const LONG_POLL = (fn, retries = Infinity, timeoutBetweenAttempts = 1000) => {
+    return Promise.resolve()
+        .then(fn)
+        .catch(function retry(err) {
+            if (retries-- > 0)
+                return delay(timeoutBetweenAttempts)
+                    .then(fn)
+                    .catch(retry);
+            throw err;
+        });
+}
 
-export { POST, GET, GET_PICTURE, cancelToken, controller };
+export { POST, GET, LONG_POLL, cancelToken, controller };

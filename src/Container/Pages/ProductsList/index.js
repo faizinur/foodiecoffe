@@ -1,4 +1,4 @@
-import { View, FlatList, TouchableOpacity } from 'react-native';
+import { View, FlatList, TouchableOpacity, RefreshControl } from 'react-native';
 import React, { useEffect, memo, useRef, useCallback } from 'react';
 import { log, CONSTANT } from '@Utils';
 import { useTheme } from 'react-native-paper';
@@ -18,7 +18,7 @@ import styles from './styles';
 import { UseMerchant } from '@ViewModel';
 
 export default memo(({ navigation, route: { params } }) => {
-    const { _getCategoryList, categoryList } = UseMerchant()
+    const { _getCategoryList, categoryList, merchantLoading, setMerchantLoading, } = UseMerchant()
     const { colors } = useTheme();
     const refModalProductList = useRef(<ModalProductList />)
     const refModalFilterProduct = useRef(<ModalFilterProduct />)
@@ -85,12 +85,22 @@ export default memo(({ navigation, route: { params } }) => {
             <View style={styles.container}>
                 <View style={{ backgroundColor: colors.white, flex: 1 }}>
                     <FlatList
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={merchantLoading}
+                                onRefresh={() => {
+                                    _getCategoryList(params);
+                                    setMerchantLoading(true);
+                                    setTimeout(() => setMerchantLoading(false), 3000);
+                                }}
+                            />}
                         data={categoryList}
                         renderItem={_renderCardProduct}
                         snapToInterval={150}
                         keyExtractor={(data) => data}
                         showsVerticalScrollIndicator={false}
                         nestedScrollEnabled={true}
+                        ListEmptyComponent={<MyText large bold black>Oops, Kategori Masih kosong nih...!</MyText>}
                         ListFooterComponent={<Animated.View style={footerHeightStyle} />}
                     />
                 </View>

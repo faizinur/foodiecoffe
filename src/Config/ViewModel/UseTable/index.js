@@ -11,7 +11,7 @@ export default () => {
     const [tableError, setTableError] = useState('');
     const [refreshingTable, setRefreshingTable] = useState(false);
 
-    const _getTables = useMemo(async () => {
+    const _getTables = useMemo(() => async () => {
         try {
             setRefreshingTable(true)
             setTableError('')
@@ -31,7 +31,7 @@ export default () => {
         setSearchValue(text)
     }, [searchValue])
 
-    const _searchTable = useMemo(async (fnFilter) => {
+    const _searchTable = useCallback(async (fnFilter) => {
         if (typeof fnFilter != 'function') throw (`Error Params`)
         try {
             setSelectedTable({});

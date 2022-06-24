@@ -15,7 +15,7 @@ export default memo(({ navigation }) => {
     const {
         _getMerchant,
         merchantList,
-        loading,
+        merchantLoading,
         merchantError,
         searchQuery,
         setSearchQuery,
@@ -127,7 +127,7 @@ export default memo(({ navigation }) => {
                 navigation={navigation}
                 getMerchant={_getMerchant}
                 merchantList={merchantList}
-                loading={loading}
+                loading={merchantLoading}
                 merchantError={merchantError}
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
