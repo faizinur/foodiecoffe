@@ -7,11 +7,10 @@
  */
 
 import React, { useEffect, useRef, } from 'react';
-import { View, StatusBar, StyleSheet, AppState, Button } from 'react-native';
+import { View, StatusBar, StyleSheet, AppState } from 'react-native';
 import MainStackNavigator from '@Pages';
 import { enableFreeze } from 'react-native-screens';
 import { LogBox } from "react-native";
-import { MyRealm } from '@Utils';
 import notifee from '@notifee/react-native';
 enableFreeze(true)
 const App = () => {
@@ -50,7 +49,6 @@ const App = () => {
 		const subscription = AppState.addEventListener("change", async nextAppState => {
 			if (nextAppState === "background") {
 				onDisplayNotification()
-				// await MyRealm.closeConnection()
 			}
 			appState.current = nextAppState;
 		});
