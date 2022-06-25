@@ -64,8 +64,14 @@ const insertProduct = payloads => {
             const realm = await Realm.open(dbOptions);
             realm.write(() => {
                 payloads.map(payload => {
-                    log(JSON.stringify(payload, null, 3))
-                    realm.create('product', payload)
+                    realm.create('product', {
+                        ...payload,
+                        ...{
+                            image: JSON.stringify(payload.image),
+                            options: JSON.stringify({ ...payload.options, enable: false }),
+                            addons: JSON.stringify({ ...payload.addons, enable: false }),
+                        }
+                    })
                 })
             });
             //realm.close();

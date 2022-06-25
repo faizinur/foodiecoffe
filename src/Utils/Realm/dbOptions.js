@@ -1,10 +1,14 @@
 import {
-    AppConfigSchema, ProductSchema, productImage, productOption, productOptionList,
+    AppConfigSchema,
+    ProductSchema,
+    // productImage,
+    // productOption,
+    // productOptionList,
     migrationAppConfigSchema,
     migrationProductSchema,
-    migrationProductImage,
-    migrationProductOption,
-    migrationProductOptionList,
+    // migrationProductImage,
+    // migrationProductOption,
+    // migrationProductOptionList,
 } from './schema';
 
 let key = new Int8Array(64);
@@ -22,16 +26,18 @@ const version = 1;
 
 export default dbOptions = {
     path: "FoodieCoffieDB",
-    schema: [AppConfigSchema, ProductSchema, productImage, productOption, productOptionList],
+    schema: [AppConfigSchema, ProductSchema,
+        // productImage, productOption, productOptionList
+    ],
     schemaVersion: version,
     encryptionKey: key,
     migration: (oldRealm, newRealm) => {
         if (oldRealm.schemaVersion < version) {
             migrationAppConfigSchema(oldRealm, newRealm);
             migrationProductSchema(oldRealm, newRealm);
-            migrationProductImage(oldRealm, newRealm);
-            migrationProductOption(oldRealm, newRealm);
-            migrationProductOptionList(oldRealm, newRealm);
+            // migrationProductImage(oldRealm, newRealm);
+            // migrationProductOption(oldRealm, newRealm);
+            // migrationProductOptionList(oldRealm, newRealm);
         }
     },
 }
