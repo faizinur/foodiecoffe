@@ -60,6 +60,7 @@ export default memo(({ navigation }) => {
     useEffect(() => {
         log('Mount HomeTemp');
         _subscribeOrders()
+        _getMerchant()
         return () => {
             log('Unmount HomeTemp')
             _unSubscribeOrders();
@@ -127,7 +128,6 @@ export default memo(({ navigation }) => {
             <HomeModals
                 ref={refHomeModals}
                 navigation={navigation}
-                getMerchant={_getMerchant}
                 merchantList={merchantList}
                 loading={merchantLoading}
                 merchantError={merchantError}

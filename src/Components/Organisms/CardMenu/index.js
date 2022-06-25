@@ -8,12 +8,12 @@ import { IC_PRODUCT } from '@Atoms/Icons';
 export default memo(props => {
     const { colors } = useTheme();
     return (
-        <TouchableOpacity activeOpacity={.9} onPress={props?.onPress} style={styles.cardContainer}>
-            <Image source={IC_PRODUCT} style={styles.imgProduct} />
+        <TouchableOpacity activeOpacity={.9} onPress={() => props?.onPress(props.item)} style={styles.cardContainer}>
+            <Image source={{ uri: props.item.image.url }} style={styles.imgProduct} />
             <View style={styles.imgDescription}>
-                <MyText left medium bold black>Caramel Macchiato</MyText>
-                <MyText left black>Rp.60.250</MyText>
-                <MyText left light numberOfLines={2}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fames interdum diam. </MyText>
+                <MyText left medium bold black>{props.item.name}</MyText>
+                <MyText left black>Rp.{props.item.price}</MyText>
+                <MyText left light numberOfLines={2}>{props.item.description}</MyText>
             </View>
         </TouchableOpacity>
     )

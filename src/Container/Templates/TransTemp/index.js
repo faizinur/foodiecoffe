@@ -19,11 +19,10 @@ export default memo(({ navigation }) => {
 
     const { colors } = useTheme();
     const _onPressCalendar = useCallback(() => log('_onPressCalendar Pressed'), [])
-    const _getTransaksi = async (transactionType) => await _getTransaksiList(transactionType);
     const renderCardOrder = ({ item }) => <CardOrder {...item} />
     useEffect(() => {
         log('Mount TransTemp');
-        _getTransaksi()
+        _getTransaksiList()
         return () => {
             log('Unmount TransTemp')
         }
@@ -50,7 +49,7 @@ export default memo(({ navigation }) => {
                 ]}
                 activeOrderList={activeTransationList}
                 listCount={transactionList.length}
-                onPressChips={_getTransaksi}
+                onPressChips={_getTransaksiList}
                 onPressCalendar={_onPressCalendar}
                 loading={loading}
                 onChoosenCalendar={_filterTransaksi}

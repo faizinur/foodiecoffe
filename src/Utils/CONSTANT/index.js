@@ -7,7 +7,7 @@
 // }
 const BASE_URL = 'http://beta-api.foodie.coffee/';
 const CONNECT_RETRIES = 15000;
-const NETWORK_TIMEOUT = 15000;
+const NETWORK_TIMEOUT = 30000;
 const SPRING_CONFIG = {
     damping: 15,
     overshootClamping: false,

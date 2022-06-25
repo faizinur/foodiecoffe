@@ -38,12 +38,12 @@ const App = () => {
 	}
 
 	useEffect(() => {
-		notifee.onForegroundEvent(({ type, detail }) => {
-			console.log('onForegroundEvent', type, detail);
-		});
-		notifee.onBackgroundEvent(async ({ type, detail }) => {
-			console.log('onBackgroundEvent: ', type, detail)
-		});
+		// notifee.onForegroundEvent(({ type, detail }) => {
+		// 	console.log('onForegroundEvent', type, detail);
+		// });
+		// notifee.onBackgroundEvent(async ({ type, detail }) => {
+		// 	console.log('onBackgroundEvent: ', type, detail)
+		// });
 
 
 		const subscription = AppState.addEventListener("change", async nextAppState => {

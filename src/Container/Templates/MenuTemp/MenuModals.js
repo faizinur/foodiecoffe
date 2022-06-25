@@ -1,4 +1,4 @@
-import { View, Image, ScrollView } from 'react-native';
+import { View, Image, ScrollView, FlatList } from 'react-native';
 import React, { useState, useCallback, forwardRef, useImperativeHandle, useRef } from 'react';
 import { log } from '@Utils';
 import { useTheme, List } from 'react-native-paper';
@@ -10,13 +10,15 @@ export default forwardRef((props, ref) => {
     const { colors } = useTheme();
     const [modalVisible, setModalVisible] = useState(false);
     const [loading, setLoading] = useState(false)
+    const [product, setProduct] = useState(false)
     useImperativeHandle(ref, () => ({
         toggle,
     }));
-    const toggle = useCallback(() => {
+    const toggle = useCallback((item) => {
         log('_toggle : ')
+        setProduct(item)
         setModalVisible(prevState => !prevState);
-    }, [])
+    }, [product])
     const _onCloseModal = useCallback(() => {
         setModalVisible(prevState => !prevState);
     }, [modalVisible]);
@@ -24,6 +26,26 @@ export default forwardRef((props, ref) => {
         log('_onCanceled : ')
         setModalVisible(prevState => !prevState);
     }, [modalVisible])
+    const renderSectionOptions = ({ item }) => {
+        return <>
+            <View style={styles.sectionStatus}>
+                <MyText left center bold black>Status</MyText>
+                <MySwitch />
+            </View>
+            <View style={styles.sectionStatus}>
+                <MyText left center bold black>{item.name}</MyText>
+            </View>
+            {item.list.map(({ name, price }) =>
+                <View key={`key-list-${name}`} style={styles.sectionVariant}>
+                    <View>
+                        <MyText left black>{name}</MyText>
+                        <MyText left light black>Rp.{price}</MyText>
+                    </View>
+                    <MySwitch />
+                </View>)}
+        </>
+    }
+
     const _onSave = useCallback(() => {
         setLoading(true)
         setTimeout(() => {
@@ -40,48 +62,26 @@ export default forwardRef((props, ref) => {
             <TitleBar
                 customLeftPress={_onCloseModal}
                 title={'Edit Menu'} />
-            <ScrollView
+
+            <FlatList
                 scrollEventThrottle={16}
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
-                style={styles.modalContainer}>
-                <Image source={IC_PRODUCT_BIG} style={styles.imgBadge} />
-                <View style={styles.description}>
-                    <MyText left medium bold black>Caramel Macchiato</MyText>
-                    <MyText left black>Rp.60.250</MyText>
-                    <MyText left light numberOfLines={2}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fames interdum diam. </MyText>
-                </View>
-                <View style={styles.sectionStatus}>
-                    <MyText left center bold black>Status</MyText>
-                    <MySwitch />
-                </View>
-                <MyText left bold black style={styles.titleVariant}>Varian Ukuran</MyText>
-                <View style={styles.sectionVariant}>
-                    <MyText left center light black>Kecil</MyText><MySwitch />
-                </View>
-                <View style={styles.sectionVariant}>
-                    <MyText left light black>Sedang</MyText><MySwitch />
-                </View>
-                <View style={styles.sectionVariant}>
-                    <MyText left center light black>Besar</MyText><MySwitch />
-                </View>
-                <MyText left bold black style={styles.titleVariant}>Varian Topping</MyText>
-                <View style={styles.sectionVariant}>
-                    <MyText left center light black>Extra Cocout Jelly</MyText><MySwitch />
-                </View>
-                <View style={styles.sectionVariant}>
-                    <MyText left center light black>Extra Sugar Syrup</MyText><MySwitch />
-                </View>
-                <View style={styles.sectionVariant}>
-                    <MyText left center light black>Extra Expresso Shot</MyText><MySwitch />
-                </View>
-                <View style={styles.sectionVariant}>
-                    <MyText left center light black>Extra Grass Jelly</MyText><MySwitch />
-                </View>
-                <View style={styles.sectionVariant}>
-                    <MyText left center light black>Extra Oreo</MyText><MySwitch />
-                </View>
-            </ScrollView>
+                style={styles.modalContainer}
+                ListHeaderComponent={<>
+                    <Image source={IC_PRODUCT_BIG} style={styles.imgBadge} />
+                    <View style={styles.description}>
+                        <MyText left medium bold black>{product.name}</MyText>
+                        <MyText left black>Rp.{product.price}</MyText>
+                        <MyText left light numberOfLines={2}>{product.description}</MyText>
+                    </View>
+                </>}
+                contentContainerStyle={{}}
+                data={product?.options}
+                renderItem={renderSectionOptions}
+                snapToInterval={150}
+                keyExtractor={({ name }) => name} />
+
             <View style={styles.buttonsContainer}>
                 <InputItems.MyButton
                     secondary

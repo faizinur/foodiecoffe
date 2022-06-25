@@ -2,11 +2,12 @@ import { log, GET } from '@Utils';
 
 const getDaftarTransaksi = async () => {
     try {
-        let transaksiData = await GET('order/all')
+        let transaksiData = await GET('order/all');
+        log(transaksiData)
         return {
             status: 'SUCCESS',
             message: 'API SUCCESS!',
-            data: transaksiData,
+            data: [],
         }
     } catch (e) {
         log(e)

@@ -12,6 +12,7 @@ export default () => {
 
     const _getMerchant = useMemo(() => async () => {
         try {
+            log('_getMerchant')
             setMerchantLoading(true)
             setMerchantError('')
             const { status, data, message } = await getMerchantCategory();

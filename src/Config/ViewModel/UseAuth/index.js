@@ -14,8 +14,9 @@ export default () => {
         try {
             setLoading(true)
             setAuthError('')
-            const { status, data: { user, token }, message } = await authUser(userData);
+            const { status, data, message } = await authUser(userData);
             if (status != 'SUCCESS') throw message;
+            const { user, token } = data;
             if (user.id === '' && token.access_token === '') throw 'Login FAILED.'
             dispatch(setUser({ user, token }));
             setLoading(false)
@@ -51,10 +52,10 @@ export default () => {
         }
     }, [])
 
-    const _refreshToken = useCallback(async () => {
+    const _refreshToken = useCallback(async (token) => {
         try {
-            let token = await refreshToken()
-            return Promise.resolve(token)
+            let { status, message, data } = await refreshToken(token)
+            return Promise.resolve({ token: data })
         } catch (err) {
             return Promise.reject(err);
         }

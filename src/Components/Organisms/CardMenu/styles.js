@@ -13,7 +13,11 @@ export default StyleSheet.create({
         borderBottomColor: colors.lightgray
     },
     imgProduct: {
-        alignSelf: 'center'
+        alignSelf: 'center',
+        height: 80,
+        width: 80,
+        borderRadius: 12,
+        marginRight: 16,
     },
     imgDescription: {
         flex: 1,

@@ -9,7 +9,7 @@ import { CardCategory } from '@Organisms';
 import { EmptySearchResult } from '@Molecules';
 import styles from './styles';
 import { UseMerchant } from '@ViewModel'
-export default memo(forwardRef(({ navigation: { navigate }, getMerchant, merchantList, loading, merchantError, searchQuery, setSearchQuery, filterCategory, filteredCategory, clearFilteredCategory }, ref) => {
+export default memo(forwardRef(({ navigation: { navigate }, merchantList, loading, merchantError, searchQuery, setSearchQuery, filterCategory, filteredCategory, clearFilteredCategory }, ref) => {
     const { colors } = useTheme();
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -17,7 +17,7 @@ export default memo(forwardRef(({ navigation: { navigate }, getMerchant, merchan
         toggle,
     }));
     const toggle = useCallback(() => {
-        log('_toggle : ')
+        log('_toggle : ');
         setModalVisible(prevState => !prevState);
     }, [modalVisible])
     const _onCloseModal = useCallback(() => {

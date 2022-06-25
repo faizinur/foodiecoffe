@@ -14,11 +14,12 @@ export default memo(({ navigation: { replace } }) => {
     const _onMount = useCallback(async () => {
         try {
             let userData = await _getUserData()
-            // let newToken = await _refreshToken()
-            // log('data udah ada', newToken)
+            let newToken = await _refreshToken(userData.token);
+            if (newToken.token != null) userData.token.access_token = newToken.token;
             dispatch(setUser(userData));
             setTimeout(() => replace('Home'), 1500)
         } catch (e) {
+            log('Splash on mount', e)
             setTimeout(() => replace('Login'), 1500)
         }
     }, [])

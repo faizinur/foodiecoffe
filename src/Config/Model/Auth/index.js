@@ -24,13 +24,13 @@ const registerUser = data => {
     }
 };
 
-const refreshToken = async () => {
+const refreshToken = async (token) => {
     try {
-        let newToken = await POST('/auth/refresh')
+        let newToken = await POST('auth/refresh', token)
         return {
-            status: 'SUCCESS',
-            message: 'API SUCCESS!',
-            data: newToken,
+            status: newToken?.status,
+            message: newToken?.message || 'Got New Token',
+            data: newToken?.status == 200 ? newToken?.token : null,
         }
     } catch (e) {
         return {

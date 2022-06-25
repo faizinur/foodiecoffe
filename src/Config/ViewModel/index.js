@@ -1,6 +1,6 @@
 import UseHomeVM from './UseHomeVM';
 import UseTransaksi from './UseTransaksi';
-import UseProductVM from './UseProductVM';
+import UseProduct from './UseProduct';
 import UseAuth from './UseAuth';
 import UseMerchant from './UseMerchant';
 import UseOrder from './UseOrder';
@@ -9,7 +9,7 @@ import UseTable from './UseTable';
 export {
     UseHomeVM,
     UseTransaksi,
-    UseProductVM,
+    UseProduct,
     UseAuth,
     UseMerchant,
     UseOrder,

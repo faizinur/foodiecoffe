@@ -1,18 +1,17 @@
 import { log, GET } from '@Utils';
 
-const getOrders = async () => {
+const getOrders = async (merchantId = 'B1778H') => {
     try {
-        let orderData = await GET('order/all')
+        let orderData = await GET(`${merchantId}/order/all`)
         return {
             status: 'SUCCESS',
             message: 'API SUCCESS!',
             data: orderData,
         }
     } catch (e) {
-        log(e)
         return {
             status: "FAILED",
-            message: `MODEL ORDER ${e}`,
+            message: `MODEL ORDER ${JSON.stringify(e)}`,
             data: null,
         }
     }

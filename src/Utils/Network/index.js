@@ -23,6 +23,7 @@ const myAxiosInstance = axios.create({
     timeoutErrorMessage: 'requestnya melewati batas ya...',
     cancelToken: cancelToken.token,
     signal: controller.signal,
+    validateStatus: status => status >= 200 && status < 500
     // transformRequest: [(data, headers) => {
     //     // Do whatever you want to transform the data
     //     log('select token before send', data)
@@ -42,23 +43,23 @@ const POST = async (url = '', data = {}) => {
     if (url == '' || (url == '' && data == {})) return Promise.reject()
     try {
         return new Promise((resolve, reject) => {
-            // const myForms = new FormData();
-            // myForms.append('adsad', 0);
-
             myAxiosInstance.post(url, data)
                 .then(({ data, status, statusText, headers, config }) => {
-                    if ([200, 202].includes(status)) {
-                        resolve(data)
-                    } else {
-                        reject({ status })
+                    switch (status) {
+                        case 200:
+                        case 400:
+                        case 403:
+                            resolve(data)
+                            break;
+                        default: throw (status)
                     }
                 }).catch(err => {
-                    log(`ERROR POST ${url}`)
+                    log(`ERROR POST : ${url} ${err}`)
                     reject(err)
                 })
         })
     } catch (err) {
-        log('ERROR POST')
+        log('ERROR POST', err)
         return Promise.reject(err)
     }
 };
@@ -76,13 +77,16 @@ const GET = async (url = '', data = {}) => {
             myAxiosInstance.get(url, {
                 headers: { Authorization, }
             }).then(({ data, status, statusText, headers, config }) => {
-                if ([200, 202].includes(status)) {
-                    resolve(data)
-                } else {
-                    reject({ status })
+                switch (status) {
+                    case 200:
+                    case 400:
+                    case 403:
+                        resolve(data)
+                        break;
+                    default: throw (status)
                 }
             }).catch(err => {
-                log(`ERROR GET ${url}`)
+                log(`ERROR GET ${url} ${err}`)
                 reject(err)
             })
         })
