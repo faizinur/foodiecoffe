@@ -99,7 +99,7 @@ const MyButton = (props) => {
         <Button
             loading={btnLoading}
             disabled={disabled}
-            onPress={disabled != true && props.onPress}
+            onPress={btnLoading == false ? props.onPress : null}
             style={[styles.button(borderWidth), props?.style]}
             contentStyle={[styles.buttonContent(backgroundColor), props?.contentStyle]}
             labelStyle={[styles.buttonLabel(labelColor), props?.labelStyle]}

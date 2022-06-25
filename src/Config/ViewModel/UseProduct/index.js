@@ -1,6 +1,6 @@
-import { DaftarProdct } from '@Model';
-const { getListProduct } = DaftarProdct;
-import { log } from '@Utils';
+import { Product } from '@Model';
+const { getListProduct } = Product;
+import { log, MyRealm } from '@Utils';
 import { useState } from 'react';
 export default () => {
     const [productError, setProductError] = useState('');
@@ -15,8 +15,10 @@ export default () => {
             const { status, data, message } = await getListProduct('B1778H');
             if (status != 'SUCCESS') throw message;
             setProductList(data)
+            await MyRealm.insertProduct(data)
             setLoadingProduct(false)
         } catch (err) {
+            log(err)
             setProductError(`error Merchant ${err}`)
             setLoadingProduct(false)
         }

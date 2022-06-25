@@ -68,12 +68,12 @@ export default memo(({ navigation }) => {
                                 }}
                             />}
                         contentContainerStyle={styles.contentContainerStyle}
-                        data={loadingProduct ? [] : productList}
+                        data={productList}
                         renderItem={renderCardMenu}
                         snapToInterval={150}
                         keyExtractor={({ id }) => id}
                         showsVerticalScrollIndicator={false}
-                        ListEmptyComponent={() => <MyText >Product Kosong</MyText>}
+                        ListEmptyComponent={() => <MyText>Product Kosong</MyText>}
                     /> || <MyText>productError {productError}</MyText>}
             </View>
             <MenuModals ref={refMenuModals} onSave={_onSave} />

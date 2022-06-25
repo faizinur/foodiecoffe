@@ -1,7 +1,7 @@
 import { Order } from '@Model';
 import { useState, useCallback, useMemo } from 'react';
 import { log, CONSTANT } from '@Utils';
-let SUBSCRIBE_TINEOUT = null;
+let SUBSCRIBE_TIMEOUT = null;
 export default () => {
     const { getOrders } = Order;
     const [orderList, setOrderList] = useState([])
@@ -32,13 +32,13 @@ export default () => {
 
         await new Promise(resolve => {
             _unSubscribeOrders();
-            SUBSCRIBE_TINEOUT = setTimeout(resolve, CONSTANT.CONNECT_RETRIES)
+            SUBSCRIBE_TIMEOUT = setTimeout(resolve, CONSTANT.CONNECT_RETRIES)
         });
         await _subscribeOrders();
     }, [orderList]);
 
     const _unSubscribeOrders = () => {
-        clearTimeout(SUBSCRIBE_TINEOUT)
+        clearTimeout(SUBSCRIBE_TIMEOUT)
     }
     return {
         _getOrders,

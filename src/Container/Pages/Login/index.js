@@ -12,8 +12,8 @@ export default memo(({ navigation: { navigate } }) => {
     const { colors } = useTheme()
     const refForms = useRef(<Forms />)
     const defaultValue = {
-        "email": __DEV__ ? "micashier1@gmail.com" : '',
-        "password": __DEV__ ? "foodiecoffee123" : '',
+        email: "micashier1@gmail.com",
+        password: "foodiecoffee123",
     }
     const _onClickRegister = useCallback(() => {
         navigate('Register');
@@ -47,7 +47,7 @@ export default memo(({ navigation: { navigate } }) => {
                 ref={refForms}
                 formname={FORM_NAME}
                 inputList={INPUT_LIST}
-                defaultValue={defaultValue}
+                defaultValue={__DEV__ ? defaultValue : {}}
                 onFormSubmit={_submitLogin}
                 submitLabel={'masuk'}
                 loading={loading}

@@ -87,7 +87,7 @@ export default memo(({ navigation }) => {
                                         setTimeout(() => setRefreshingOrder(false), 3000);
                                     }}
                                 />}
-                            data={refreshingOrder ? [] : orderList}
+                            data={orderList}
                             renderItem={_renderCardOrder}
                             snapToInterval={150}
                             keyExtractor={({ id }) => id}
@@ -97,7 +97,6 @@ export default memo(({ navigation }) => {
                         />
                         || <MyText light bold style={{ textAlign: 'center' }} black>upss kita ada kendala nih... {`\n\n`}{orderError}</MyText>}
                     <FAB
-                        disabled={refreshingOrder}
                         theme={styles.fab}
                         style={styles.fabStyles}
                         color={colors.white}
@@ -120,7 +119,6 @@ export default memo(({ navigation }) => {
                         snapToInterval={150}
                         keyExtractor={({ id }) => id}
                         showsVerticalScrollIndicator={false}
-                        // ListEmptyComponent={() => <MyText light bold black>{JSON.stringify(error) !== '""' ? error : 'Harap Tunggu...'}</MyText>}
                         ListEmptyComponent={() => <MyText light bold black>ups, tidak ada data transaksi disini</MyText>}
                     />
                 </View>

@@ -13,20 +13,26 @@ export default memo(({ navigation: { replace } }) => {
     const dispatch = useDispatch();
     const _onMount = useCallback(async () => {
         try {
-            let userData = await _getUserData()
+            let userData = await _getUserData();
             let newToken = await _refreshToken(userData.token);
-            if (newToken.token != null) userData.token.access_token = newToken.token;
+            userData = {
+                ...userData,
+                ...{
+                    token: {
+                        access_token: newToken.token != null ? newToken.token : userData.token.access_token,
+                    }
+                }
+            }
             dispatch(setUser(userData));
-            setTimeout(() => replace('Home'), 1500)
+            replace('Home')
         } catch (e) {
             log('Splash on mount', e)
-            setTimeout(() => replace('Login'), 1500)
+            replace('Login')
         }
     }, [])
     useEffect(() => {
         log('Mount Splash');
         _onMount()
-        // setTimeout(() => , 1000);
         return () => {
             log('Unmount Splash')
         }

@@ -2,22 +2,7 @@ import 'react-native-get-random-values';
 import Realm from "realm";
 import { log } from '@Utils'
 const { UUID } = Realm.BSON;
-
-const AppConfigSchema = {
-    name: "APP_CONFIG",
-    properties: {
-        _id: "string?",
-        key: "string?",
-        value: "string?",
-    },
-    primaryKey: "_id",
-};
-
-const dbOptions = {
-    path: "myrealm",
-    schema: [AppConfigSchema],
-}
-
+import dbOptions from './dbOptions';
 const insertData = payload => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -72,6 +57,25 @@ const deleteData = (key) => {
     })
 }
 
+
+const insertProduct = payloads => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const realm = await Realm.open(dbOptions);
+            realm.write(() => {
+                payloads.map(payload => {
+                    log(JSON.stringify(payload, null, 3))
+                    realm.create('product', payload)
+                })
+            });
+            //realm.close();
+            resolve(true)
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
+
 const closeConnection = async () => {
     try {
         log('close realm')
@@ -85,4 +89,5 @@ export {
     selectData,
     deleteData,
     closeConnection,
+    insertProduct,
 }

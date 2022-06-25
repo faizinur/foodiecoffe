@@ -69,11 +69,11 @@ export default forwardRef((props, ref) => {
                 showsVerticalScrollIndicator={false}
                 style={styles.modalContainer}
                 ListHeaderComponent={<>
-                    <Image source={IC_PRODUCT_BIG} style={styles.imgBadge} />
+                    <Image source={{ uri: product?.image?.url }} resizeMode={'contain'} style={styles.imgBadge} />
                     <View style={styles.description}>
-                        <MyText left medium bold black>{product.name}</MyText>
+                        <MyText left medium bold black>{product?.name}</MyText>
                         <MyText left black>Rp.{product.price}</MyText>
-                        <MyText left light numberOfLines={2}>{product.description}</MyText>
+                        <MyText left light numberOfLines={2}>{product?.description}</MyText>
                     </View>
                 </>}
                 contentContainerStyle={{}}
