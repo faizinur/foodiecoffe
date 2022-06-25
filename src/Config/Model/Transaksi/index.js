@@ -2,7 +2,7 @@ import { log, GET } from '@Utils';
 
 const getDaftarTransaksi = async () => {
     try {
-        let transaksiData = await GET('order/all');
+        let transaksiData = await GET('transaction/all');
         log(transaksiData)
         return {
             status: 'SUCCESS',
