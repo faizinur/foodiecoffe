@@ -1,8 +1,9 @@
-import { Merchant } from '@Model';
+import { Merchant, Auth } from '@Model';
 import React, { useState, useCallback, useMemo } from 'react';
 import { log } from '@Utils';
 export default () => {
     const { getMerchantCategory, getCategoryList } = Merchant;
+    const { getUserData } = Auth;
     const [merchantList, setMerchantList] = useState([])
     const [merchantError, setMerchantError] = useState('');
     const [merchantLoading, setMerchantLoading] = useState(false);
@@ -15,7 +16,8 @@ export default () => {
             log('_getMerchant')
             setMerchantLoading(true)
             setMerchantError('')
-            const { status, data, message } = await getMerchantCategory();
+            const { user: { merchantId } } = await getUserData();
+            const { status, data, message } = await getMerchantCategory(merchantId);
             if (status != 'SUCCESS') throw message;
             setMerchantList(data)
             setMerchantLoading(false)

@@ -61,19 +61,19 @@ const deleteData = (key) => {
 const insertProduct = payloads => {
     return new Promise(async (resolve, reject) => {
         try {
-            const realm = await Realm.open(dbOptions);
-            realm.write(() => {
-                payloads.map(payload => {
-                    realm.create('product', {
-                        ...payload,
-                        ...{
-                            image: JSON.stringify(payload.image),
-                            options: JSON.stringify({ ...payload.options, enable: false }),
-                            addons: JSON.stringify({ ...payload.addons, enable: false }),
-                        }
-                    })
-                })
-            });
+            // const realm = await Realm.open(dbOptions);
+            // realm.write(() => {
+            //     payloads.map(payload => {
+            //         realm.create('product', {
+            //             ...payload,
+            //             ...{
+            //                 image: JSON.stringify(payload.image),
+            //                 options: JSON.stringify({ ...payload.options, enable: false }),
+            //                 addons: JSON.stringify({ ...payload.addons, enable: false }),
+            //             }
+            //         })
+            //     })
+            // });
             //realm.close();
             resolve(true)
         } catch (e) {

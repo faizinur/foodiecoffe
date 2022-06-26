@@ -1,6 +1,6 @@
 import { log, GET } from '@Utils';
 
-const getTables = async (merchantId = 'B1778H') => {
+const getTables = async merchantId => {
     try {
         let tables = await GET(`${merchantId}/table/all`)
         __DEV__ && (tables[1].occupied = false);

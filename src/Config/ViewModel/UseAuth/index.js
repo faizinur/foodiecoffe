@@ -5,7 +5,7 @@ import { setUser } from '@Actions';
 import { reset } from '@RootNavigation';
 import { log, MyRealm } from '@Utils';
 export default () => {
-    const { authUser, refreshToken } = Auth;
+    const { authUser, refreshToken, getUserData, setUserData } = Auth;
     const [authError, setAuthError] = useState('');
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
@@ -17,10 +17,10 @@ export default () => {
             const { status, data, message } = await authUser(userData);
             if (status != 'SUCCESS') throw message;
             const { user, token } = data;
-            if (user.id === '' && token.access_token === '') throw 'Login FAILED.'
+            if (user.id === '' && token.access_token === '') throw `Login FAILED. ${message}`
             dispatch(setUser({ user, token }));
             setLoading(false)
-            await MyRealm.insertData({ key: 'userData', value: JSON.stringify({ user, token }) })
+            await setUserData({ user, token });
             reset('Home');
         } catch (err) {
             log('err : ', err)
@@ -44,9 +44,8 @@ export default () => {
 
     const _getUserData = useCallback(async () => {
         try {
-            let data = await MyRealm.selectData()
-            if (data.length == 0) throw ('Data Tidak ditemukan');
-            return Promise.resolve(JSON.parse(data[0].value));
+            let data = await getUserData()
+            return Promise.resolve(data);
         } catch (err) {
             return Promise.reject(err);
         }

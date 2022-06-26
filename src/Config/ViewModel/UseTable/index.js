@@ -1,9 +1,10 @@
-import { Table } from '@Model';
+import { Table, Auth } from '@Model';
 import { useState, useCallback, useMemo } from 'react';
 import { log } from '@Utils';
 let tmpTable = []
 export default () => {
     const { getTables } = Table;
+    const { getUserData } = Auth;
     const [tableList, setTableList] = useState([])
     const [filteredTables, setFilteredTables] = useState([])
     const [selectedTable, setSelectedTable] = useState({})
@@ -15,7 +16,8 @@ export default () => {
         try {
             setRefreshingTable(true)
             setTableError('')
-            const { status, data, message } = await getTables();
+            const { user: { merchantId } } = await getUserData();
+            const { status, data, message } = await getTables(merchantId);
             setSelectedTable({})
             if (status != 'SUCCESS') throw message;
             setTableList(data)

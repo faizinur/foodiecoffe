@@ -1,6 +1,6 @@
 import { log, GET } from '@Utils';
 
-const getMerchantCategory = async (merchantId = 'B1778H') => {
+const getMerchantCategory = async merchantId => {
     try {
         let loginData = await GET(`${merchantId}/category/all`)
         return {
@@ -17,9 +17,9 @@ const getMerchantCategory = async (merchantId = 'B1778H') => {
     }
 };
 
-const getCategoryList = async (merchantId = 'B1778H') => {
+const getCategoryList = async merchantId => {
     try {
-        // let loginData = await GET(`${merchantId}/category/all`)
+        log('AMBIL DARI REALM SCHEMA PRODUCT YA!')
         return {
             status: 'SUCCESS',
             message: 'API SUCCESS!',

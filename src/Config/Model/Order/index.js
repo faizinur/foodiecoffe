@@ -1,6 +1,6 @@
 import { log, GET } from '@Utils';
 
-const getOrders = async (merchantId = 'B1778H') => {
+const getOrders = async merchantId => {
     try {
         let orderData = await GET(`${merchantId}/order/all`)
         return {

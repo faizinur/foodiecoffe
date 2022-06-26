@@ -1,9 +1,10 @@
-import { Order } from '@Model';
+import { Order, Auth } from '@Model';
 import { useState, useCallback, useMemo } from 'react';
 import { log, CONSTANT } from '@Utils';
 let SUBSCRIBE_TIMEOUT = null;
 export default () => {
     const { getOrders } = Order;
+    const { getUserData } = Auth;
     const [orderList, setOrderList] = useState([])
     const [orderError, setOrderError] = useState('');
     const [refreshingOrder, setRefreshingOrder] = useState(false);
@@ -12,7 +13,8 @@ export default () => {
         try {
             setRefreshingOrder(true)
             setOrderError('')
-            const { status, data, message } = await getOrders();
+            const { user: { merchantId } } = await getUserData();
+            const { status, data, message } = await getOrders(merchantId);
             if (status != 'SUCCESS') throw message;
             setOrderList(data)
             setRefreshingOrder(false)

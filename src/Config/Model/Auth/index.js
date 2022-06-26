@@ -1,4 +1,4 @@
-import { log, POST } from '@Utils';
+import { log, POST, MyRealm } from '@Utils';
 
 const authUser = async userData => {
     try {
@@ -41,8 +41,29 @@ const refreshToken = async (token) => {
     }
 }
 
+const getUserData = async () => {
+    try {
+        let data = await MyRealm.selectData()
+        if (data.length == 0) throw ('Data Tidak ditemukan');
+        return JSON.parse(data[0].value);
+    } catch (err) {
+        return err;
+    }
+}
+
+const setUserData = async ({ user, token }) => {
+    try {
+        await MyRealm.insertData({ key: 'userData', value: JSON.stringify({ user, token }) })
+        return true;
+    } catch (err) {
+        return err;
+    }
+}
+
 export {
     authUser,
+    getUserData,
+    setUserData,
     registerUser,
     refreshToken,
 }
