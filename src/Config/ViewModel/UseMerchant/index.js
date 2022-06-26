@@ -31,9 +31,9 @@ export default () => {
         try {
             setMerchantLoading(true)
             setMerchantError('')
-            const { status, data, message } = await getCategoryList();
-            if (status != 'SUCCESS') throw message;
-            setcategoryList(data)
+            const data = await getCategoryList();
+            log("INSERT DATANYA BELUM BENER!! BELUM ADA PRODUCT_ID!")
+            setcategoryList([])
             setMerchantLoading(false)
         } catch (err) {
             log('getCategoryList : ', err)

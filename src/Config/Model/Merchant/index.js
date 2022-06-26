@@ -1,4 +1,4 @@
-import { log, GET } from '@Utils';
+import { log, GET, MyRealm } from '@Utils';
 
 const getMerchantCategory = async merchantId => {
     try {
@@ -17,20 +17,13 @@ const getMerchantCategory = async merchantId => {
     }
 };
 
-const getCategoryList = async merchantId => {
+const getCategoryList = async () => {
     try {
-        log('AMBIL DARI REALM SCHEMA PRODUCT YA!')
-        return {
-            status: 'SUCCESS',
-            message: 'API SUCCESS!',
-            data: Array(Math.round(Math.random() * 30)).fill().map((_, index) => index), // generate random array1*30
-        }
-    } catch (e) {
-        return {
-            status: "FAILED",
-            message: `MODEL AUTH ${e}`,
-            data: null,
-        }
+        let data = await MyRealm.selectData('product')
+        return data.length > 0 ? JSON.parse(JSON.stringify(data)) : [];
+    } catch (err) {
+        log('getCategoryList ', err)
+        return err;
     }
 };
 

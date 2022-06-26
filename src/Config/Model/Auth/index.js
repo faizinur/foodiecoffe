@@ -43,10 +43,10 @@ const refreshToken = async (token) => {
 
 const getUserData = async () => {
     try {
-        let data = await MyRealm.selectData()
-        if (data.length == 0) throw ('Data Tidak ditemukan');
-        return JSON.parse(data[0].value);
+        let data = await MyRealm.selectData('APP_CONFIG')
+        return data.length > 0 ? JSON.parse(data[0]?.value) : [];
     } catch (err) {
+        log('getUserData ', err)
         return err;
     }
 }

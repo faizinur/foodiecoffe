@@ -42,14 +42,10 @@ export default () => {
         }
     }, [])
 
-    const _getUserData = useCallback(async () => {
-        try {
-            let data = await getUserData()
-            return Promise.resolve(data);
-        } catch (err) {
-            return Promise.reject(err);
-        }
-    }, [])
+    const _getUserData = async () => {
+        let data = await getUserData()
+        return Promise.resolve(data);
+    }
 
     const _refreshToken = useCallback(async (token) => {
         try {

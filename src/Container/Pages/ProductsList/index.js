@@ -97,7 +97,7 @@ export default memo(({ navigation, route: { params } }) => {
                         data={categoryList}
                         renderItem={_renderCardProduct}
                         snapToInterval={150}
-                        keyExtractor={(data) => data}
+                        keyExtractor={({ productId }) => productId}
                         showsVerticalScrollIndicator={false}
                         nestedScrollEnabled={true}
                         ListEmptyComponent={<MyText large bold black>Oops, Kategori Masih kosong nih...!</MyText>}

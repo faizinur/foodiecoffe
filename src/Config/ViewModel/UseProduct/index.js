@@ -14,17 +14,10 @@ export default () => {
             setLoadingProduct(true)
             setProductError('')
             const { user: { merchantId } } = await getUserData();
+            log(merchantId)
             const { status, data, message } = await getListProduct(merchantId);
             if (status != 'SUCCESS') throw message;
-            log('TOTAL PRODUK ADA ', data.length, 'TAPI REALMNYA BELUM BENER JADI BEUM DITAMPILIN')
-            // setProductList(data.map(product => ({
-            //     ...product,
-            //     ...{
-            //         image: JSON.stringify(product.image),
-            //         options: JSON.stringify({ ...product.options, enable: false }),
-            //         addons: JSON.stringify({ ...product.addons, enable: false }),
-            //     }
-            // })))
+            setProductList(data)
             await MyRealm.insertProduct(data)
             setLoadingProduct(false)
         } catch (err) {

@@ -69,7 +69,7 @@ const GET = async (url = '', data = {}) => {
     if (url == '' || (url == '' && data == {})) return Promise.reject()
     try {
         let Authorization = '';
-        let select = await MyRealm.selectData();
+        let select = await MyRealm.selectData('APP_CONFIG');
         if (select.length > 0) {
             Authorization = `Bearer ${JSON.parse(select[0]?.value)?.token?.access_token}`;
         }

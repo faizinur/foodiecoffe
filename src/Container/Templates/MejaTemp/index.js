@@ -59,7 +59,7 @@ export default memo(({ navigation }) => {
     const _renderCardMeja = ({ item }) => <CardMeja seat={item} numColumns={2} onPress={setSelectedTable} _onPressQR={_onPressQR} selectedTable={selectedTable} />
     useEffect(() => {
         log('Mount MejaTemp');
-        _getTables();
+        // _getTables();
         return () => {
             log('Unmount MejaTemp')
         }

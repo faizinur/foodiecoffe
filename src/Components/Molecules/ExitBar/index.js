@@ -44,6 +44,7 @@ export default memo(() => {
                     }));
                     await MyRealm.closeConnection()
                     reset('Splash')
+                    log('RELEASE REALM DB AND STATE!')
                 }
             }]
         )
