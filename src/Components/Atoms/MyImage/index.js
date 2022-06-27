@@ -3,7 +3,7 @@ import { BLANK_IMAGE } from '@Atoms/Icons'
 import React, { memo, useState } from 'react';
 import Animated, { useAnimatedStyle, withTiming, } from 'react-native-reanimated';
 
-export default memo(({ height = 200, width = 200, source = BLANK_IMAGE, radius = [12, 12, 12, 12], resizeMode = 'cover', resizeMethod = 'resize' }) => {
+export default memo(({ height = 100, width = 100, source = BLANK_IMAGE, radius = [12, 12, 12, 12], resizeMode = 'cover', resizeMethod = 'resize' }) => {
     const [loaded, setLoaded] = useState(false);
     const animatedImageStyle = useAnimatedStyle(() => ({
         opacity: withTiming(loaded ? 1 : 0, { duration: 300 }),
@@ -24,7 +24,7 @@ export default memo(({ height = 200, width = 200, source = BLANK_IMAGE, radius =
     })
     const setLoad = () => setLoaded(true)
     return (
-        <View>
+        <View style={{ width, height }}>
             <Animated.Image
                 onLoadEnd={setLoad}
                 source={source}

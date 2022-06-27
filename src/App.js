@@ -16,7 +16,7 @@ enableFreeze(true)
 const App = () => {
 	let TOAST_ID = null;
 	const refToast = useRef(<Toast />);
-	global.showToast = (message = 'Simple Toast', duration = 7000, type = 'normal', placement = 'bottom') => {
+	global.showToast = (message = 'Simple Toast', duration = 3000, type = 'normal', placement = 'top') => {
 		if (TOAST_ID != null) {
 			refToast.current.update(TOAST_ID, message, { type: 'warning', duration: duration + 3000 })
 			TOAST_ID = null;

@@ -6,13 +6,14 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { IC_PRODUCT } from '@Atoms/Icons';
 import styles from './styles'
 import { log } from '@Utils'
+import { MyImage } from '@Atoms'
 export default (props) => {
     const { colors } = useTheme()
     return (
         <>
             <View
                 style={{ width: '100%', height: 110, paddingHorizontal: 14, justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
-                <Image source={{ uri: props?.item?.image?.url }} style={{ width: 80, height: 80, borderRadius: 12, marginRight: 16 }} />
+                <MyImage source={{ uri: props?.item?.image?.url }} height={80} width={80} radius={[12, 12, 12, 12]} />
                 <View style={{ flex: 1, paddingHorizontal: 15, height: 80 }}>
                     <MyText left bold black>{props?.item?.name}</MyText>
                     <MyText left light black>Rp.{props?.item?.price}</MyText>

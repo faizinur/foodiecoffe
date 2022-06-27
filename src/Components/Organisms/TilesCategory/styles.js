@@ -11,8 +11,11 @@ export default StyleSheet.create({
         alignItems: 'center'
     }),
     cardContainer: {
-        height: 130,
-        backgroundColor: colors.white
+        height: 120,
+        width: 100,
+        backgroundColor: colors.cerulean,
+        flexDirection: 'row',
+        alignItems: 'flex-start'
     },
     cardImage: {
         height: 100,

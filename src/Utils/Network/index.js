@@ -52,11 +52,6 @@ const POST = async (url = '', data = {}) => {
                         case 403:
                             resolve(data)
                             break;
-                        case 401:
-                            log('status : ', status, 'data: ', data);
-                            reset('Splash')
-                            reject(status)
-                            break;
                         default: throw (status)
                     }
                 }).catch(err => {
