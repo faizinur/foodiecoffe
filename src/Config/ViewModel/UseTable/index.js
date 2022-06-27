@@ -24,6 +24,7 @@ export default () => {
             setRefreshingTable(false)
         } catch (err) {
             log(err)
+            global.showToast(err);
             setTableError(`error Table ${err}`)
             setRefreshingTable(false)
         }
@@ -46,6 +47,7 @@ export default () => {
             setFilteredTables(tmpTable)
             tmpTable = [];
         } catch (err) {
+            global.showToast(err);
             log('_searchTable : ', err)
             setTableError(err)
         }
@@ -59,7 +61,7 @@ export default () => {
             setSelectedTable({})
             setSearchValue('')
         } catch (err) {
-
+            global.showToast(err);
         }
     }, [filteredTables, selectedTable, searchValue])
     return {

@@ -11,13 +11,30 @@ import { View, StatusBar, StyleSheet, AppState } from 'react-native';
 import MainStackNavigator from '@Pages';
 import { enableFreeze } from 'react-native-screens';
 import { LogBox } from "react-native";
+import Toast from "react-native-toast-notifications";
 enableFreeze(true)
 const App = () => {
+	let TOAST_ID = null;
+	const refToast = useRef(<Toast />);
+	global.showToast = (message = 'Simple Toast', duration = 7000, type = 'normal', placement = 'bottom') => {
+		if (TOAST_ID != null) {
+			refToast.current.update(TOAST_ID, message, { type: 'warning', duration: duration + 3000 })
+			TOAST_ID = null;
+			return false;
+		}
+		TOAST_ID = refToast.current.show(message, {
+			type,//"normal | success | warning | danger | custom",
+			placement,//"top | bottom",
+			duration,
+			offset: 30,
+			animationType: 'slide-in',//"slide-in | zoom-in",
+		});
+		setTimeout(() => TOAST_ID = null, duration)
+	}
 	const appState = useRef(AppState.currentState);
 	LogBox.ignoreLogs([
 		"exported from 'deprecated-react-native-prop-types'.",
 	])
-
 	useEffect(() => {
 
 
@@ -41,6 +58,7 @@ const App = () => {
 				showHideTransition={'fade'}
 				hidden={false} />
 			<MainStackNavigator />
+			<Toast ref={refToast} />
 		</View>
 	)
 };

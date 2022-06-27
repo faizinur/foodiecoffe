@@ -24,6 +24,7 @@ export default () => {
             log(err)
             setProductError(`error Merchant ${err}`)
             setLoadingProduct(false)
+            global.showToast(err);
         }
     }
 

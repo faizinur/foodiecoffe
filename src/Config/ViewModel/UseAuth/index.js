@@ -26,6 +26,7 @@ export default () => {
             log('err : ', err)
             setAuthError(`error Auth ${err}`)
             setLoading(false)
+            global.showToast(err);
         }
     }, [])
 
@@ -39,6 +40,7 @@ export default () => {
         } catch (err) {
             setAuthError(`error Auth ${err}`)
             setLoading(false)
+            global.showToast(err);
         }
     }, [])
 
@@ -53,6 +55,7 @@ export default () => {
             return Promise.resolve({ token: data })
         } catch (err) {
             return Promise.reject(err);
+            global.showToast(err);
         }
     }, [])
 

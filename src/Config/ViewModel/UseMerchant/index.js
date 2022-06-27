@@ -24,6 +24,7 @@ export default () => {
         } catch (err) {
             setMerchantError(`error Merchant ${err}`)
             setMerchantLoading(false)
+            global.showToast(err);
         }
     }, [merchantList])
 
@@ -42,6 +43,7 @@ export default () => {
         } catch (err) {
             log('getCategoryList : ', err)
             setMerchantError(err)
+            global.showToast(err);
             setMerchantLoading(false)
         }
     }, [categoryList])
@@ -60,6 +62,7 @@ export default () => {
         } catch (err) {
             log('_filterMerchant : ', err);
             setMerchantError(err)
+            global.showToast(err);
             setMerchantLoading(false)
         }
     }, [searchQuery, filteredCategory, merchantList])

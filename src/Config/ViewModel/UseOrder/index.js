@@ -22,6 +22,7 @@ export default () => {
         } catch (err) {
             setOrderError(`error Merchant ${err}`)
             setRefreshingOrder(false)
+            global.showToast(err);
         }
     }, [orderList]);
 

@@ -20,6 +20,7 @@ export default () => {
             setTransactionLoading(false);
         } catch (e) {
             setErrorTransaksi(e);
+            global.showToast(e);
         }
     }, [transactionList]);
 
