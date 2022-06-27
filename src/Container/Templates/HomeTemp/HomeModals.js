@@ -5,7 +5,7 @@ import { useTheme, TextInput, Searchbar } from 'react-native-paper';
 import { MyText, MyModal } from '@Atoms';
 import { IC_PRODUCT_NOT_FOUND } from '@Atoms/Icons';
 import { InputItems } from '@Molecules';
-import { CardCategory } from '@Organisms';
+import { TilesCategory } from '@Organisms';
 import { EmptySearchResult } from '@Molecules';
 import styles from './styles';
 import { UseMerchant } from '@ViewModel'
@@ -27,7 +27,7 @@ export default memo(forwardRef(({ navigation: { navigate }, merchantList, loadin
         setModalVisible(prevState => !prevState);
         navigate('ProductsList', merchant)
     }, [modalVisible])
-    const _renderCardCategory = ({ item }) => <CardCategory merchant={item} numColumns={3} onPress={_onPressCategory} />
+    const _renderTilesCategory = ({ item }) => <TilesCategory merchant={item} numColumns={3} onPress={_onPressCategory} />
     // log('NAH KAN HomeTemp DE RELOAD!!>>>>>>')
     return (
         <MyModal
@@ -64,7 +64,7 @@ export default memo(forwardRef(({ navigation: { navigate }, merchantList, loadin
                 <FlatList
                     contentContainerStyle={{ marginTop: 20 }}
                     data={loading ? [] : (filteredCategory.length > 0 ? filteredCategory : merchantList)}
-                    renderItem={_renderCardCategory}
+                    renderItem={_renderTilesCategory}
                     snapToInterval={150}
                     keyExtractor={({ id }) => id}
                     numColumns={3}

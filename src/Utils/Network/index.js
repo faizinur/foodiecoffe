@@ -1,8 +1,9 @@
 import React from 'react';
 import { log, MyRealm } from '@Utils';
-import { BASE_URL, NETWORK_TIMEOUT, CONNECT_RETRIES } from '../CONSTANT'
+import { BASE_URL, NETWORK_TIMEOUT } from '../CONSTANT'
 import axios from 'axios';
-
+import { APP_CONFIG } from '@Utils/Realm/types';
+import { reset } from '@RootNavigation';
 const controller = new AbortController();
 
 const CancelToken = axios.CancelToken;
@@ -51,6 +52,11 @@ const POST = async (url = '', data = {}) => {
                         case 403:
                             resolve(data)
                             break;
+                        case 401:
+                            log('status : ', status, 'data: ', data);
+                            reset('Splash')
+                            reject(status)
+                            break;
                         default: throw (status)
                     }
                 }).catch(err => {
@@ -69,7 +75,7 @@ const GET = async (url = '', data = {}) => {
     if (url == '' || (url == '' && data == {})) return Promise.reject()
     try {
         let Authorization = '';
-        let select = await MyRealm.selectData('APP_CONFIG');
+        let select = await MyRealm.selectData(APP_CONFIG);
         if (select.length > 0) {
             Authorization = `Bearer ${JSON.parse(select[0]?.value)?.token?.access_token}`;
         }
@@ -82,6 +88,10 @@ const GET = async (url = '', data = {}) => {
                     case 400:
                     case 403:
                         resolve(data)
+                        break;
+                    case 401:
+                        MyRealm.deleteData(APP_CONFIG);
+
                         break;
                     default: throw (status)
                 }

@@ -12,16 +12,28 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 export default memo(forwardRef((props, ref) => {
     const { colors } = useTheme();
     const [modalVisible, setModalVisible] = useState(false);
+    const [product, setProduct] = useState({});
+    const [FORM_INPUT_LIST, SET_FORM_INPUT_LIST] = useState([])
     useImperativeHandle(ref, () => ({
         toggle,
     }));
-    const toggle = useCallback(() => {
-        log('_toggle : ')
+    const toggle = useCallback(data => {
+        log('_toggle : ',)
+        setProduct(data)
+        SET_FORM_INPUT_LIST(INPUT_LIST(data.addons))
         setModalVisible(prevState => !prevState);
-    }, [modalVisible])
+    }, [modalVisible, FORM_INPUT_LIST, product])
     const _onCloseModal = useCallback(() => {
         setModalVisible(prevState => !prevState);
     }, [modalVisible]);
+
+    const _submit = useCallback(notes => {
+        setProduct(prevState => ({
+            ...prevState,
+            notes
+        }))
+        setModalVisible(prevState => !prevState);
+    }, [product, modalVisible])
     return (
         <Modal
             animationType={"slide"}
@@ -29,13 +41,16 @@ export default memo(forwardRef((props, ref) => {
             statusBarTranslucent={false}
             visible={modalVisible}
             onRequestClose={_onCloseModal}>
-            <KeyboardAwareScrollView style={{ backgroundColor: 'rgba(0,0,0,.05)' }} showsVerticalScrollIndicator={false} >
+            <KeyboardAwareScrollView
+                style={{ backgroundColor: 'rgba(0,0,0,.05)' }}
+                contentContainerStyle={{}}
+                showsVerticalScrollIndicator={false}>
                 <View style={{ paddingHorizontal: '5%', paddingBottom: '5%', paddingTop: '2.5%', flex: 1, backgroundColor: colors.white, marginTop: 10, borderTopStartRadius: 16, borderTopEndRadius: 16 }}>
                     <View style={{ width: 30, height: 4, backgroundColor: colors.athensGray, borderRadius: 10, alignSelf: 'center', marginBottom: 25 }} />
                     <Forms
                         formname={FORM_NAME}
-                        inputList={INPUT_LIST}
-                        onFormSubmit={(data) => log(data)}
+                        inputList={FORM_INPUT_LIST}
+                        onFormSubmit={_submit}
                         submitLabel={'Simpan'}
                     />
                 </View>

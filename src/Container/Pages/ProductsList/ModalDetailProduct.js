@@ -7,21 +7,22 @@ import { InputItems } from '@Molecules';
 
 import styles, { height } from './styles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { IC_PRODUCT_DETAIL } from '@Atoms/Icons'
-    ;
+;
 export default forwardRef((props, ref) => {
     const { colors } = useTheme();
     const [modalVisible, setModalVisible] = useState(false);
     const [animationType, setAnimationType] = useState('slide');
     const [modalType, setModalType] = useState('CHANGE');
+    const [product, setProduct] = useState({})
 
-    const toggle = useCallback((type = 'CHANGE') => {
-        log('_toggle : ', type)
+    const toggle = useCallback((type = 'CHANGE', data = {}) => {
+        setProduct(data)
+        log('_toggle : ')
         setModalType(type)
         if (type == 'DETAIL') {
         }
         setModalVisible(prevState => !prevState);
-    }, [modalVisible, modalType])
+    }, [modalVisible, modalType, product])
 
     const _onCloseModal = useCallback(() => {
         setAnimationType('fade')
@@ -30,11 +31,19 @@ export default forwardRef((props, ref) => {
 
     const _onClickPesan = () => {
         _onCloseModal()
-        props.onChangeBucket()
+        props.onChangeBucket(product)
     }
     useImperativeHandle(ref, () => ({
         toggle,
     }));
+
+    const _changeCount = useCallback((type) => {
+        log('_changeCount : ', type)
+        setProduct(prevState => ({
+            ...prevState,
+            count: type == 'plus' ? prevState.count + 1 : (prevState.count > 0 ? prevState.count - 1 : 0)
+        }))
+    }, [product])
 
     useEffect(() => { }, [animationType])
 
@@ -52,27 +61,31 @@ export default forwardRef((props, ref) => {
                     {modalType == 'CHANGE' &&
                         <>
                             <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-                                <Image source={IC_PRODUCT_DETAIL} style={{ marginBottom: 24, width: '100%', borderRadius: 12 }} />
-                                <MyText left medium black style={{ marginVertical: 6 }}>Butter Scotch 1000ML</MyText>
-                                <MyText left black style={{ marginVertical: 6 }}>Rp 888.888 <MyText strikeThrough>Rp 999.999</MyText></MyText>
-                                <MyText left black style={{ marginVertical: 6 }} >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Non aenean viverra vitae aliquam. Quis ullamcorper integer nec nibh duis.</MyText>
+                                <Image source={{ uri: product?.image?.url }} style={{ marginBottom: 24, height: 150, width: '100%', borderRadius: 12 }} />
+                                <MyText left medium black style={{ marginVertical: 6 }}>{product?.name}</MyText>
+                                <MyText left black style={{ marginVertical: 6 }}>Rp{product?.price}<MyText strikeThrough>Rp 999.999</MyText></MyText>
+                                <MyText left black style={{ marginVertical: 6 }} >{product?.description}</MyText>
                             </ScrollView>
                             <View style={{ width: '100%', height: 80, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                                 <View style={{ width: '40%', height: 48, backgroundColor: colors.magnolia, borderRadius: 12, padding: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
                                     <TouchableOpacity
                                         activeOpacity={.8}
-                                        style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: colors.wildWaterMelon, justifyContent: 'center', alignItems: 'center' }}>
+                                        disabled={product?.count <= 0}
+                                        onPress={() => _changeCount('minus')}
+                                        style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: product?.count <= 0 ? colors.lightgray : colors.wildWaterMelon, justifyContent: 'center', alignItems: 'center' }}>
                                         <Icon name={'minus'} color={colors.white} size={15} />
                                     </TouchableOpacity>
-                                    <MyText bold medium black>1</MyText>
+                                    <MyText bold medium color={product?.count <= 0 ? colors.lightgray : colors.black}>{product?.count}</MyText>
                                     <TouchableOpacity
                                         activeOpacity={.8}
+                                        onPress={() => _changeCount('plus')}
                                         style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: colors.wildWaterMelon, justifyContent: 'center', alignItems: 'center' }}>
                                         <Icon name={'plus'} color={colors.white} size={15} />
                                     </TouchableOpacity>
                                 </View>
                                 <View style={{ width: '10%' }} />
                                 <InputItems.MyButton
+                                    disabled={product?.count <= 0}
                                     onPress={_onClickPesan}
                                     style={[styles.button, { width: '40%', marginVertical: 15 }]}
                                     label={'Tambahkan'}

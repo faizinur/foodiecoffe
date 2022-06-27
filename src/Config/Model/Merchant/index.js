@@ -1,4 +1,5 @@
 import { log, GET, MyRealm } from '@Utils';
+import { PRODUCT } from '@Utils/Realm/types';
 
 const getMerchantCategory = async merchantId => {
     try {
@@ -19,8 +20,8 @@ const getMerchantCategory = async merchantId => {
 
 const getCategoryList = async () => {
     try {
-        let data = await MyRealm.selectData('product')
-        return data.length > 0 ? JSON.parse(JSON.stringify(data)) : [];
+        let data = await MyRealm.selectData(PRODUCT)
+        return data.length > 0 ? data : [];
     } catch (err) {
         log('getCategoryList ', err)
         return err;

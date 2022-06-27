@@ -1,11 +1,11 @@
 import Forms from './Forms';
 import CardOrder from './CardOrder';
-import CardMeja from './CardMeja';
+import TilesMeja from './TilesMeja';
 import CardProfile from './CardProfile';
 import CardTransaksi from './CardTransaksi';
 import CardTraffic from './CardTraffic';
 import CardMenu from './CardMenu';
-import CardCategory from './CardCategory';
+import TilesCategory from './TilesCategory';
 import MyToolBar from './MyToolBar';
 import CardProduct from './CardProduct';
 import ListCustomer from './ListCustomer';
@@ -14,12 +14,12 @@ import DatePicker from './DatePicker';
 export {
     Forms,
     CardOrder,
-    CardMeja,
+    TilesMeja,
     CardProfile,
     CardTransaksi,
     CardTraffic,
     CardMenu,
-    CardCategory,
+    TilesCategory,
     MyToolBar,
     CardProduct,
     ListCustomer,

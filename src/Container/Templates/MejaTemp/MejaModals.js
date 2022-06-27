@@ -1,28 +1,28 @@
 import { View, Image } from 'react-native';
-import React, { useState, useCallback, forwardRef, useImperativeHandle, useRef } from 'react';
+import React, { useState, useCallback, forwardRef, useImperativeHandle } from 'react';
 import { log } from '@Utils';
-import { useTheme, List } from 'react-native-paper';
+import { useTheme } from 'react-native-paper';
 import { MyText, MySwitch, MyModal } from '@Atoms';
 import { InputItems } from '@Molecules';
 import styles from './styles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { IC_AVATAR_ORDER_SUCCESS } from '@Atoms/Icons'
 export default forwardRef((props, ref) => {
     const { colors } = useTheme();
     const [isSwitch, setIsSwitch] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
-    const [QR_IMG, setQR_IMG] = useState('');
+    const [meja, setMeja] = useState('');
     useImperativeHandle(ref, () => ({
         toggle,
     }));
-    const toggle = useCallback((qr) => {
-        log('_onPressMeja : ')
-        setQR_IMG({ uri: qr })
+    const toggle = useCallback((props) => {
+        log('_onPressMeja : ', props)
+        setMeja(props)
         setModalVisible(prevState => !prevState);
-    }, [modalVisible, QR_IMG])
+    }, [modalVisible, meja])
     const _onPerbaharuiPress = useCallback(() => {
         log('_onPerbaharuiPress  :')
-    }, []);
+        setModalVisible(prevState => !prevState);
+    }, [modalVisible]);
     const _onCloseModal = useCallback(() => {
         setModalVisible(prevState => !prevState);
     }, [modalVisible]);
@@ -33,14 +33,13 @@ export default forwardRef((props, ref) => {
     }, [])
     const FloatingQRMarker = useCallback(() => (<View style={styles.qrWrapper}>
         <View style={styles.qrMarker}>
-            {/* <Icon name={'qrcode'} size={180} color={'rgba(0,0,0,.15)'} /> */}
-            <Image source={QR_IMG} style={{ height: '100%', width: '100%' }} />
+            <Image source={meja.qr} style={{ height: '100%', width: '100%' }} />
         </View>
         <View style={styles.qrMarkerTopRight} />
         <View style={styles.qrMarkerTopLeft} />
         <View style={styles.qrMarkerBottomRight} />
         <View style={styles.qrMarkerBottomLeft} />
-    </View>), [QR_IMG])
+    </View>), [meja])
     return (
         <MyModal
             animationType={'fade'}
@@ -53,25 +52,25 @@ export default forwardRef((props, ref) => {
                 <View style={styles.badgeIcon}>
                     <Icon name={'desktop-tower-monitor'} size={20} color={colors.cerulean} />
                 </View>
-                <MyText bold color={isSwitch ? colors.black : colors.lightgray}>04</MyText>
+                <MyText bold color={meja?.occupied ? colors.black : colors.lightgray}>{meja?.number}</MyText>
             </View>
             <FloatingQRMarker />
             <View style={styles.cardSummary}>
                 <MyText left medium bold black style={{ marginBottom: 15 }}>Ringkasan Belanja</MyText>
                 <View style={styles.sectionList}>
                     <MyText light black>Jumlah Orang</MyText>
-                    <MyText bold light black>5 Orang</MyText>
+                    <MyText bold light black>{meja?.seat} Orang</MyText>
                 </View>
                 <View style={styles.sectionList}>
                     <MyText light black>Lokasi </MyText>
-                    <MyText bold light black>Lantai 2</MyText>
+                    <MyText bold light black>Lantai {meja?.floor}</MyText>
                 </View>
                 <View style={styles.dashed} />
                 <View style={styles.sectionList}>
                     <MyText light>Status :: <MyText bold color={isSwitch ? colors.emerald : colors.black}>
-                        {isSwitch ? 'Terisi' : 'Ditempati'} </MyText>::
+                        {meja?.occupied ? 'Terisi' : 'Ditempati'} </MyText>::
                     </MyText>
-                    <MySwitch color={colors.emerald} value={isSwitch} onValueChange={setIsSwitch} />
+                    <MySwitch color={colors.emerald} value={meja?.occupied} onValueChange={data => log(data)} />
                 </View>
             </View>
             <View style={styles.buttonContainer}>

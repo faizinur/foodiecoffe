@@ -32,8 +32,12 @@ export default () => {
             setMerchantLoading(true)
             setMerchantError('')
             const data = await getCategoryList();
-            log("INSERT DATANYA BELUM BENER!! BELUM ADA PRODUCT_ID!")
-            setcategoryList([])
+            setcategoryList(
+                data
+                    .map(item => ({ ...item, ...{ notes: null, count: 0 } }))
+                    .sort((prev, next) => prev.id < next.id)
+                    .filter(({ categoryId }) => categoryId == params.id)
+            )
             setMerchantLoading(false)
         } catch (err) {
             log('getCategoryList : ', err)
@@ -71,6 +75,7 @@ export default () => {
         _getCategoryList,
         merchantList,
         categoryList,
+        setcategoryList,
         merchantLoading,
         setMerchantLoading,
         merchantError,

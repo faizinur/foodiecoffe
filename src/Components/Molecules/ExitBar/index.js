@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { reset } from '@RootNavigation';
 import { useDispatch } from 'react-redux';
 import { setUser } from '@Actions';
+import { APP_CONFIG, } from '@Utils/Realm/types';
 export default memo(() => {
     const { colors } = useTheme();
     const dispatch = useDispatch();
@@ -22,7 +23,10 @@ export default memo(() => {
             },
             {
                 text: "Mau aja", onPress: async () => {
-                    await MyRealm.deleteData('userData');
+                    await MyRealm.deleteData(APP_CONFIG);
+                    await MyRealm.deleteData(PRODUCT);
+                    await MyRealm.deleteData(PRODUCT_OPTION);
+                    await MyRealm.deleteData(PRODUCT_OPTION_LIST);
                     dispatch(setUser({
                         user: {
                             id: "-",
@@ -44,7 +48,6 @@ export default memo(() => {
                     }));
                     await MyRealm.closeConnection()
                     reset('Splash')
-                    log('RELEASE REALM DB AND STATE!')
                 }
             }]
         )

@@ -1,5 +1,5 @@
 import { log, POST, MyRealm } from '@Utils';
-
+import { APP_CONFIG } from '@Utils/Realm/types';
 const authUser = async userData => {
     try {
         let loginData = await POST('/auth/login', userData)
@@ -43,7 +43,7 @@ const refreshToken = async (token) => {
 
 const getUserData = async () => {
     try {
-        let data = await MyRealm.selectData('APP_CONFIG')
+        let data = await MyRealm.selectData(APP_CONFIG)
         return data.length > 0 ? JSON.parse(data[0]?.value) : [];
     } catch (err) {
         log('getUserData ', err)

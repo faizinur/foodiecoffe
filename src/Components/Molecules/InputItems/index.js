@@ -90,7 +90,7 @@ const MyTextInput = (props) => {
 
 const MyButton = (props) => {
     const { colors } = useTheme();
-    const disabled = props?.disabled || false;
+    const disabled = props?.loading == true ? true : props?.disabled || false;
     const backgroundColor = props?.disabled ? colors.magnolia : ('secondary' in props ? colors.white : colors.cerulean);
     const labelColor = props?.disabled ? colors.silverChalice : ('secondary' in props ? colors.cerulean : colors.white);
     const borderWidth = props?.disabled ? 0 : ('secondary' in props ? 0.8 : 0);
@@ -168,12 +168,12 @@ const MyListRadio = props => {
             <View style={styles.hiddenInputPatch} />
             <MyText left black bold>{props.label}</MyText>
             <MyText left >{props.placeholder}</MyText>
-            {props?.data.map(({ code, description }) =>
+            {props?.data.map(({ code, description, prefix, suffix }) =>
                 <TouchableOpacity activeOpacity={.8} key={`${code}-${description}`} onPress={() => props.onChangeText(code)}
                     style={{ flex: 1, justifyContent: 'space-between', marginVertical: 13, flexDirection: 'row', borderBottomColor: colors.athensGray, borderBottomWidth: 1 }}>
                     <MyText black>{code}</MyText>
                     <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
-                        <MyText black>{description}</MyText>
+                        <MyText black>{prefix}{description}{suffix}</MyText>
                         <RadioButton
                             value={code}
                             uncheckedColor={colors.lightgray}

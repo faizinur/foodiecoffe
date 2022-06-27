@@ -3,10 +3,11 @@ import { View, Dimensions } from 'react-native'
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 const { width, height } = Dimensions.get('window');
 
-const Image = props =>
-    <SkeletonPlaceholder>
-        <SkeletonPlaceholder.Item {...props?.style} highlightColor={'red'} />
+const Image = props => {
+    return <SkeletonPlaceholder>
+        <SkeletonPlaceholder.Item />
     </SkeletonPlaceholder>
+}
 
 const HomePage = () =>
     <View style={{ flex: 1, backgroundColor: 'white', justifyContent: 'space-between', alignItems: 'center', paddingTop: '5%' }}>

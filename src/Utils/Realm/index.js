@@ -37,8 +37,8 @@ const selectData = async (key) => {
             let selectedData = '';
             const realm = await Realm.open(dbOptions);
             realm.write(() => {
-                selectedData = realm.objects(key)
-                // selectedData = JSON.parse(JSON.stringify(realm.objects(key)));
+                // selectedData = realm.objects(key)
+                selectedData = JSON.parse(JSON.stringify(realm.objects(key)));
             });
             //realm.close();
             resolve(selectedData);
@@ -54,7 +54,7 @@ const deleteData = (key) => {
             let selectedData = '';
             const realm = await Realm.open(dbOptions);
             realm.write(() => {
-                selectedData = realm.objects(APP_CONFIG).filtered(`key == '${key}'`);
+                selectedData = realm.objects(key).filtered(`key == '${key}'`);
                 realm.delete(selectedData);
                 selectedData = null;
             })
@@ -67,15 +67,18 @@ const deleteData = (key) => {
 }
 
 
-const insertProduct = payloads => {
+const insertProduct = products => {
     return new Promise(async (resolve, reject) => {
         try {
             const realm = await Realm.open(dbOptions);
             realm.write(() => {
-                payloads.map(payload => {
+                products.map(product => {
+                    let foundProduct = realm.objects(PRODUCT).filtered(`id = '${product.id}'`)
+                    if (foundProduct.length > 0) realm.delete(foundProduct)
+                    foundProduct = null;
                     realm.create(PRODUCT, {
                         productId: new UUID().toHexString(),
-                        ...payload,
+                        ...product,
                     })
                 })
             });

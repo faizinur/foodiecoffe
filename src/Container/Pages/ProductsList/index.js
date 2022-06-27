@@ -18,7 +18,7 @@ import styles from './styles';
 import { UseMerchant } from '@ViewModel';
 
 export default memo(({ navigation, route: { params } }) => {
-    const { _getCategoryList, categoryList, merchantLoading, setMerchantLoading, } = UseMerchant()
+    const { _getCategoryList, categoryList, merchantLoading, setMerchantLoading, setcategoryList } = UseMerchant()
     const { colors } = useTheme();
     const refModalProductList = useRef(<ModalProductList />)
     const refModalFilterProduct = useRef(<ModalFilterProduct />)
@@ -32,18 +32,22 @@ export default memo(({ navigation, route: { params } }) => {
         height: withSpring(footerHeight.value.height, CONSTANT.SPRING_CONFIG),
     }))
 
-    const _onChangeBucket = () => refModalDetailProduct?.current?.toggle('CHANGE');
+    const _onChangeBucket = (type, product) => refModalDetailProduct?.current?.toggle(type, product)
 
-    const _onBucketChanged = () => {
-        footerHeight.value = { height: footerHeight.value == 0 ? 80 : 0 }
-        navBarPosY.value = { bottom: navBarPosY.value.bottom == 0 ? -80 : 0 }
-    }
+    const _onBucketChanged = useCallback((product) => {
+        let index = categoryList.findIndex(({ id }) => id === product.id)
+        let tmpCategoryList = [...categoryList]
+        tmpCategoryList[index] = product;
+        setcategoryList(tmpCategoryList)
+        // footerHeight.value = { height: footerHeight.value == 0 ? 80 : 0 }
+        // navBarPosY.value = { bottom: navBarPosY.value.bottom == 0 ? -80 : 0 }
+    }, [categoryList])
 
     const _onDetailBucketPress = () => refModalDetailProduct?.current?.toggle('DETAIL');
 
-    const _onAddNotes = (props) => {
-        log('_onPesanPress : ', props)
-        refModalProductList?.current?.toggle()
+    const _onAddNotes = (product) => {
+        log('_onPesanPress addons : ')
+        refModalProductList?.current?.toggle(product)
     }
 
     const _onPressFilter = () => {
@@ -55,7 +59,7 @@ export default memo(({ navigation, route: { params } }) => {
         log('_filterProduct : ', sortType, discount)
     }
 
-    const _renderCardProduct = useCallback(({ item }) => <CardProduct onAdd={_onChangeBucket} onRemove={_onChangeBucket} addNotes={() => _onAddNotes(item)} />, [])
+    const _renderCardProduct = useCallback(({ item }) => <CardProduct item={item} onAdd={() => _onChangeBucket('CHANGE', item)} onRemove={() => _onChangeBucket('CHANGE', item)} addNotes={() => _onAddNotes(item)} />, [])
 
     useEffect(() => {
         log('Mount ProductsList');
@@ -119,7 +123,7 @@ export default memo(({ navigation, route: { params } }) => {
                             labelStyle={{ fontSize: 16 }} />
                     </View>
                 </Animated.View>
-                <ModalProductList ref={refModalProductList} navigation={navigation} />
+                <ModalProductList ref={refModalProductList} navigation={navigation} onChangeBucket={_onBucketChanged} />
                 <ModalFilterProduct ref={refModalFilterProduct} onApplyFilter={_filterProduct} />
                 <ModalDetailProduct ref={refModalDetailProduct} onChangeBucket={_onBucketChanged} />
             </View>

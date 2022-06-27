@@ -5,7 +5,7 @@ import { log, CONSTANT } from '@Utils';
 import { useTheme } from 'react-native-paper';
 import { MyText } from '@Atoms';
 import { TitleBar, InputItems, EmptySearchResult } from '@Molecules';
-import { CardMeja } from '@Organisms';
+import { TilesMeja } from '@Organisms';
 import styles from './styles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MejaModals from './MejaModals';
@@ -53,13 +53,13 @@ export default memo(({ navigation }) => {
         const { user: { merchantId } } = await _getUserData()
         const qrURI = `${BASE_URL}${merchantId || 'B1778H'}/qr/${props.qr.name}`;
         setSelectedTable(props)
-        refMejaModals.current?.toggle(qrURI)
+        refMejaModals.current?.toggle({ ...props, qr: { uri: qrURI } })
     }
 
-    const _renderCardMeja = ({ item }) => <CardMeja seat={item} numColumns={2} onPress={setSelectedTable} _onPressQR={_onPressQR} selectedTable={selectedTable} />
+    const _renderTilesMeja = ({ item }) => <TilesMeja seat={item} numColumns={2} onPress={setSelectedTable} _onPressQR={_onPressQR} selectedTable={selectedTable} />
     useEffect(() => {
         log('Mount MejaTemp');
-        // _getTables();
+        _getTables();
         return () => {
             log('Unmount MejaTemp')
         }
@@ -95,7 +95,7 @@ export default memo(({ navigation }) => {
                         )}
                     contentContainerStyle={styles.flatListContent}
                     data={filteredTables.length > 0 ? filteredTables : tableList}
-                    renderItem={_renderCardMeja}
+                    renderItem={_renderTilesMeja}
                     snapToInterval={130}
                     keyExtractor={({ id }) => id}
                     numColumns={2}

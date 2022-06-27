@@ -1,16 +1,38 @@
-import { View, Image, Text } from 'react-native'
-import { Skeleton } from '@Atoms'
+import { View, StyleSheet } from 'react-native'
+import { BLANK_IMAGE } from '@Atoms/Icons'
 import React, { memo, useState } from 'react';
-export default memo(({ source, style, ...rest }) => {
-    // const [loaded, setLoaded] = useState(true);
+import Animated, { useAnimatedStyle, withTiming, } from 'react-native-reanimated';
+
+export default memo(({ height = 200, width = 200, source = BLANK_IMAGE, radius = [12, 12, 12, 12], resizeMode = 'cover', resizeMethod = 'resize' }) => {
+    const [loaded, setLoaded] = useState(false);
+    const animatedImageStyle = useAnimatedStyle(() => ({
+        opacity: withTiming(loaded ? 1 : 0, { duration: 300 }),
+        transform: [{ scale: withTiming(loaded ? 1 : .8, { duration: 300 }) }]
+    }))
+    const styles = StyleSheet.create({
+        defaultStyle: [StyleSheet.absoluteFill, {
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: loaded ? 'transparent' : 'rgba(0,0,0,.05)',
+            borderTopLeftRadius: radius[0],
+            borderTopRightRadius: radius[1],
+            borderBottomLeftRadius: radius[3],
+            borderBottomRightRadius: radius[2],
+            width,
+            height
+        }]
+    })
+    const setLoad = () => setLoaded(true)
     return (
-        <>
-            <Image source={source} style={style} {...rest}
-            // onLoadEnd={() => setTimeout(() => setLoaded(false), 1000)}
+        <View>
+            <Animated.Image
+                onLoadEnd={setLoad}
+                source={source}
+                style={[styles.defaultStyle, animatedImageStyle]}
+                resizeMode={resizeMode}
+                resizeMethod={resizeMethod}
             />
-            {/* {loaded == false && */}
-            {/* <Skeleton.Image style={{ position: 'absolute', height: '100%', width: '100%', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,.7)' }} /> */}
-            {/* } */}
-        </>
+            {!loaded && <View style={styles.defaultStyle} />}
+        </View>
     )
 })

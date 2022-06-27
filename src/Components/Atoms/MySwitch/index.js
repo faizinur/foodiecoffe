@@ -29,7 +29,7 @@ const MySwitch = props => {
         xPos.value = (initialValue == START_X_POS ? END_X_POS : START_X_POS);
         bgColor.value = { backgroundColor: (initialValue == START_X_POS ? ACTIVE_COLOR : INAVTIVE_COLOR) }
         if ('onValueChange' in props) {
-            props?.onValueChange(initialValue == START_X_POS)
+            props?.onValueChange?.(initialValue == START_X_POS)
         }
     }, [])
 

@@ -6,7 +6,8 @@ const { colors } = THEME;
 export default StyleSheet.create({
 
     content: {
-        flex: 1,
+        width,
+        height: height * .6,
         justifyContent: 'center',
         alignItems: 'center',
     },

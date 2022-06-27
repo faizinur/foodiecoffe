@@ -23,7 +23,7 @@ const App = () => {
 
 		const subscription = AppState.addEventListener("change", async nextAppState => {
 			if (nextAppState === "background") {
-				onDisplayNotification()
+				console.log('lagi di background')
 			}
 			appState.current = nextAppState;
 		});

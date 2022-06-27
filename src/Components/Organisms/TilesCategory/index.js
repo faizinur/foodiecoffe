@@ -12,7 +12,7 @@ export default memo(props => {
                 activeOpacity={.8}
                 onPress={() => props?.onPress(props?.merchant)}
                 style={styles.cardContainer}>
-                <MyImage source={{ uri: props?.merchant?.image?.url }} resizeMode={'cover'} style={styles.cardImage} />
+                <MyImage source={{ uri: props?.merchant?.image?.url }} resizeMode={'cover'} />
                 {/* <Image source={{ uri: props?.merchant?.image?.url }} resizeMode={'cover'} style={styles.cardImage} /> */}
                 <MyText bold black>{props?.merchant?.name}</MyText>
             </TouchableOpacity>
