@@ -13,9 +13,7 @@ export default StyleSheet.create({
     cardContainer: {
         height: 120,
         width: 100,
-        backgroundColor: colors.cerulean,
-        flexDirection: 'row',
-        alignItems: 'flex-start'
+        backgroundColor: colors.white,
     },
     cardImage: {
         height: 100,

@@ -1,36 +1,28 @@
 import { UseAuth } from '@ViewModel';
 import { View, Image } from 'react-native'
-import React, { useEffect, memo, useCallback } from 'react'
-import { useDispatch } from "react-redux";
+import React, { useEffect, memo, useCallback, useState } from 'react'
 import { log } from '@Utils';
 import { IC_SPLASH } from '@Atoms/Icons';
-import { setUser } from '@Actions';
 import { useTheme } from 'react-native-paper';
 export default memo(({ navigation: { replace } }) => {
     const { _getUserData, _refreshToken } = UseAuth();
     const { colors } = useTheme();
-    //dispatcher
-    const dispatch = useDispatch();
     const _onMount = useCallback(async () => {
         try {
             let userData = await _getUserData();
-            if ('token' in userData && 'user' in userData) {
-                let newToken = await _refreshToken(userData.token);
-                userData = {
-                    ...userData,
-                    ...{
-                        token: {
-                            access_token: newToken.token != null ? newToken.token : userData.token.access_token,
-                        }
-                    }
+            if (userData != null) {
+                let resultRefresh = await _refreshToken(userData);
+                if (resultRefresh == 'OK') {
+                    setTimeout(() => replace('Home'), 1000)
+                } else {
+                    throw "GAGAL PERBAHARUI TOKEN";
                 }
-                dispatch(setUser(userData));
-                replace('Home')
             } else {
-                replace('Login')
+                throw "MASUK DULU";
             }
         } catch (e) {
             log('Splash on mount', e)
+            setTimeout(() => replace('Login'), 1000)
         }
     }, [])
     useEffect(() => {

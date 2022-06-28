@@ -85,7 +85,6 @@ export default forwardRef((props, ref) => {
                                 </View>
                                 <View style={{ width: '10%' }} />
                                 <InputItems.MyButton
-                                    disabled={product?.count <= 0}
                                     onPress={_onClickPesan}
                                     style={[styles.button, { width: '40%', marginVertical: 15 }]}
                                     label={'Tambahkan'}

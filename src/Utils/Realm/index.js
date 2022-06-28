@@ -51,15 +51,14 @@ const selectData = async (key) => {
 const deleteData = (key) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let selectedData = '';
             const realm = await Realm.open(dbOptions);
             realm.write(() => {
-                selectedData = realm.objects(key).filtered(`key == '${key}'`);
-                realm.delete(selectedData);
-                selectedData = null;
+                let foundData = realm.objects(key)
+                realm.delete(foundData)
+                foundData = null;
             })
             //realm.close();
-            resolve(selectedData);
+            resolve('OK');
         } catch (e) {
             reject(e);
         }

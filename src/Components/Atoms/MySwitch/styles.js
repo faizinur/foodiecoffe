@@ -4,33 +4,19 @@ export { height, width };
 import { THEME } from '@Utils';
 const { colors } = THEME;
 export default StyleSheet.create({
-    switch: {
-        width: 44,
+    track: {
+        width: 45,
         height: 24,
-        borderRadius: 25,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.20,
-        shadowRadius: 1.41,
-        elevation: 2,
+        backgroundColor: colors.cerulean,
+        borderRadius: 12,
+        padding: 3,
+        justifyContent: 'center'
     },
-    slider: {
+    thumb: {
         width: 18,
         height: 18,
-        backgroundColor: colors.white,
         borderRadius: 9,
-        position: 'absolute',
-        top: 3,
-        shadowColor: "#fff",
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.20,
-        shadowRadius: 1.41,
-        elevation: 2,
-    }
+        backgroundColor: colors.white
+    },
+
 })

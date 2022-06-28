@@ -81,12 +81,9 @@ const GET = async (url = '', data = {}) => {
                 switch (status) {
                     case 200:
                     case 400:
+                    case 401:
                     case 403:
                         resolve(data)
-                        break;
-                    case 401:
-                        MyRealm.deleteData(APP_CONFIG);
-
                         break;
                     default: throw (status)
                 }

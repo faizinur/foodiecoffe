@@ -45,17 +45,29 @@ export default () => {
     }, [])
 
     const _getUserData = async () => {
-        let data = await getUserData()
+        let data = await getUserData();
+        if (data == null) return Promise.reject(null);
         return Promise.resolve(data);
     }
 
-    const _refreshToken = useCallback(async (token) => {
+    const _refreshToken = useCallback(async (userData) => {
+        global.showToast('Refreshing Token');
         try {
-            let { status, message, data } = await refreshToken(token)
-            return Promise.resolve({ token: data })
+            let { status, message, data } = await refreshToken(userData.token);
+
+            if (status == 'FAILED') throw message;
+
+            if (data == null) {
+                global.showToast(message);
+                return Promise.resolve('OK')
+            }
+            let newUserData = userData.token.access_token = data;
+            await setUserData(newUserData);
+            dispatch(setUser(newUserData));
+            return Promise.resolve('OK')
         } catch (err) {
-            return Promise.reject(err);
             global.showToast(err);
+            return Promise.reject('FAILED');
         }
     }, [])
 
