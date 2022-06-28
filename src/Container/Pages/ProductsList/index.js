@@ -18,7 +18,7 @@ import styles from './styles';
 import { UseMerchant } from '@ViewModel';
 
 export default memo(({ navigation, route: { params } }) => {
-    const { _getCategoryList, categoryList, merchantLoading, setMerchantLoading, setcategoryList } = UseMerchant()
+    const { _getCategoryList, categoryList, merchantLoading, setMerchantLoading, setcategoryList, _onBucketChanged } = UseMerchant()
     const { colors } = useTheme();
     const refModalProductList = useRef(<ModalProductList />)
     const refModalFilterProduct = useRef(<ModalFilterProduct />)
@@ -34,14 +34,6 @@ export default memo(({ navigation, route: { params } }) => {
 
     const _onChangeBucket = (type, product) => refModalDetailProduct?.current?.toggle(type, product)
 
-    const _onBucketChanged = useCallback((product) => {
-        let index = categoryList.findIndex(({ id }) => id === product.id)
-        let tmpCategoryList = [...categoryList]
-        tmpCategoryList[index] = product;
-        setcategoryList(tmpCategoryList)
-        // footerHeight.value = { height: footerHeight.value == 0 ? 80 : 0 }
-        // navBarPosY.value = { bottom: navBarPosY.value.bottom == 0 ? -80 : 0 }
-    }, [categoryList])
 
     const _onDetailBucketPress = () => refModalDetailProduct?.current?.toggle('DETAIL');
 

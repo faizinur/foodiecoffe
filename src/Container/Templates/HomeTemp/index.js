@@ -60,12 +60,12 @@ export default memo(({ navigation }) => {
     useEffect(() => {
         log('Mount HomeTemp');
         Promise.all([
-            _subscribeOrders(),
+            // _subscribeOrders(),
             _getMerchant()
         ]);
         return () => {
             log('Unmount HomeTemp')
-            _unSubscribeOrders();
+            // _unSubscribeOrders();
         }
     }, [])
     return (

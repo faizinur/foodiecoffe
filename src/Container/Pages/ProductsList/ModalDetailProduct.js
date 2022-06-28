@@ -2,7 +2,7 @@ import { View, Image, ScrollView, TouchableOpacity } from 'react-native';
 import React, { useState, useCallback, forwardRef, useImperativeHandle, useEffect, } from 'react';
 import { log } from '@Utils';
 import { useTheme, } from 'react-native-paper';
-import { MyText, MyModal } from '@Atoms';
+import { MyText, MyModal, MyImage } from '@Atoms';
 import { InputItems } from '@Molecules';
 
 import styles, { height } from './styles';
@@ -61,7 +61,7 @@ export default forwardRef((props, ref) => {
                     {modalType == 'CHANGE' &&
                         <>
                             <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-                                <Image source={{ uri: product?.image?.url }} style={{ marginBottom: 24, height: 150, width: '100%', borderRadius: 12 }} />
+                                <MyImage source={{ uri: product?.image?.url }} height={150} width={'100%'} resizeMode={'center'} />
                                 <MyText left medium black style={{ marginVertical: 6 }}>{product?.name}</MyText>
                                 <MyText left black style={{ marginVertical: 6 }}>Rp{product?.price}<MyText strikeThrough>Rp 999.999</MyText></MyText>
                                 <MyText left black style={{ marginVertical: 6 }} >{product?.description}</MyText>

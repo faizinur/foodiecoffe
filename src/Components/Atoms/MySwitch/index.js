@@ -7,7 +7,7 @@ import Animated, {
     withTiming,
 } from 'react-native-reanimated';
 
-const MySwitch = props => {
+export default props => {
     const { colors } = useTheme();
 
     const thumbStyle = useAnimatedStyle(() => ({
@@ -20,19 +20,11 @@ const MySwitch = props => {
     return (
         <TouchableOpacity
             activeOpacity={.8}
-            onPress={() => props.onChange(!props?.value)}
-        >
+            onPress={() => props.onChange(!props?.value)}>
             <Animated.View
                 style={[trackStyle, styles.track]}>
                 <Animated.View style={[thumbStyle, styles.thumb]} />
             </Animated.View>
         </TouchableOpacity >
     )
-}
-
-MySwitch.defaultProps = {
-    value: false,
-    disabled: false,
-}
-
-export default MySwitch;
+};

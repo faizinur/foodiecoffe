@@ -22,7 +22,7 @@ export default memo(({ navigation }) => {
     const renderCardOrder = ({ item }) => <></>//<CardOrder order={item} />
     useEffect(() => {
         log('Mount TransTemp');
-        _getTransaksiList()
+        // _getTransaksiList()
         return () => {
             log('Unmount TransTemp')
         }

@@ -16,7 +16,8 @@ export default memo(({ navigation }) => {
         loadingProduct,
         productList,
         _getDaftarProduct,
-        setLoadingProduct
+        setLoadingProduct,
+        _setProductavalability,
     } = UseProduct();
     const { colors } = useTheme();
     const refMenuModals = useRef(<MenuModals />)
@@ -37,8 +38,8 @@ export default memo(({ navigation }) => {
         refMenuModals.current?.toggle(item)
     }, [])
     const renderCardMenu = ({ item }) => <CardMenu item={item} onPress={_onMenuPress} />
-    const _onSave = () => {
-        log(' _onSave')
+    const _onSave = async product => {
+        await _setProductavalability(product)
         refMenuModalSuccess.current?.toggle()
     }
     useEffect(() => {

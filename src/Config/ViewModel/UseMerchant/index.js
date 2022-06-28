@@ -1,8 +1,9 @@
-import { Merchant, Auth } from '@Model';
+import { Merchant, Auth, Product } from '@Model';
 import React, { useState, useCallback, useMemo } from 'react';
 import { log } from '@Utils';
 export default () => {
-    const { getMerchantCategory, getCategoryList } = Merchant;
+    const { getMerchantCategory } = Merchant;
+    const { getProductList } = Product;
     const { getUserData } = Auth;
     const [merchantList, setMerchantList] = useState([])
     const [merchantError, setMerchantError] = useState('');
@@ -32,7 +33,7 @@ export default () => {
         try {
             setMerchantLoading(true)
             setMerchantError('')
-            const data = await getCategoryList();
+            const data = await getProductList();
             setcategoryList(
                 data
                     .map(item => ({ ...item, ...{ notes: null, count: 0 } }))
@@ -41,7 +42,7 @@ export default () => {
             )
             setMerchantLoading(false)
         } catch (err) {
-            log('getCategoryList : ', err)
+            log('getProductList : ', err)
             setMerchantError(err)
             global.showToast(err);
             setMerchantLoading(false)
@@ -73,6 +74,14 @@ export default () => {
         setMerchantError('')
 
     }, [searchQuery, filteredCategory])
+
+    const _onBucketChanged = useCallback((product) => {
+        let index = categoryList.findIndex(({ id }) => id === product.id)
+        let tmpCategoryList = [...categoryList]
+        tmpCategoryList[index] = product;
+        setcategoryList(tmpCategoryList)
+    }, [categoryList])
+
     return {
         _getMerchant,
         _getCategoryList,
@@ -86,7 +95,8 @@ export default () => {
         setSearchQuery,
         _filterCategory,
         filteredCategory,
-        _clearFilteredCategory
+        _clearFilteredCategory,
+        _onBucketChanged
     }
 }
 
