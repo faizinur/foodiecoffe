@@ -39,6 +39,7 @@ export default () => {
     const _setProductavalability = async product => {
         try {
             let result = await setProductAvalability(product);
+            setProductList(data.sort((prev, next) => prev.id < next.id))
             log(result)
         } catch (err) {
             log(err)

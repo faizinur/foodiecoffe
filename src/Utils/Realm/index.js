@@ -88,11 +88,26 @@ const insertProduct = products => {
         }
     })
 }
+const updateData = (key, updatedValue) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const realm = await Realm.open(dbOptions);
+            let foundData = realm.objectForPrimaryKey(key, updatedValue.id);
+            if (typeof (foundData) !== 'undefined') {
+                Object.keys(foundData).map(key => foundData[key] = updatedValue[key])
+                resolve(foundData);
+            } else {
+                reject(`Primary key ${updatedValue.productId} Not Found`);
+            }
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
 
 const closeConnection = async () => {
     try {
         log('close realm')
-        // await Realm.close()
     } catch (e) {
         log('closeConnection ERR : ', e)
     }
@@ -103,4 +118,5 @@ export {
     deleteData,
     closeConnection,
     insertProduct,
+    updateData,
 }

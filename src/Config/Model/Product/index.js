@@ -30,17 +30,12 @@ const getProductList = async () => {
 
 const setProductAvalability = async product => {
     try {
-        return {
-            status: 'SUCCESS',
-            message: 'UPDATE SUCCESS!',
-            data: product,
-        }
+        await MyRealm.updateData(PRODUCT, product);
+        let data = await MyRealm.selectData(PRODUCT)
+        return data.length > 0 ? data : [];
     } catch (error) {
-        return {
-            status: "FAILED",
-            message: `MODEL PRODUCT ${e}`,
-            data: null,
-        }
+        log('setProductAvalability ', err)
+        return err;
     }
 }
 
