@@ -1,14 +1,11 @@
-import { View, FlatList, Image } from 'react-native';
+import { View, FlatList, } from 'react-native';
 import React, { useState, useCallback, forwardRef, useImperativeHandle, memo } from 'react';
 import { log } from '@Utils';
 import { useTheme, TextInput, Searchbar } from 'react-native-paper';
 import { MyText, MyModal } from '@Atoms';
-import { IC_PRODUCT_NOT_FOUND } from '@Atoms/Icons';
-import { InputItems } from '@Molecules';
 import { TilesCategory } from '@Organisms';
 import { EmptySearchResult } from '@Molecules';
 import styles from './styles';
-import { UseMerchant } from '@ViewModel'
 export default memo(forwardRef(({ navigation: { navigate }, merchantList, loading, merchantError, searchQuery, setSearchQuery, filterCategory, filteredCategory, clearFilteredCategory }, ref) => {
     const { colors } = useTheme();
     const [modalVisible, setModalVisible] = useState(false);

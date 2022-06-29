@@ -73,6 +73,7 @@ export default forwardRef(({ formname = 'myFieldArray', inputList, defaultValue 
                         render={({ field: { onChange, onBlur, value, name, ref } }) => (
                             type == 'text' &&
                             <InputItems.MyTextInput
+                                loading={loading}
                                 id={id}
                                 register={register(`${FORM_NAME}.${name}.value`)}
                                 name={name}
@@ -87,6 +88,7 @@ export default forwardRef(({ formname = 'myFieldArray', inputList, defaultValue 
                             />
                             || type == 'dropdown' &&
                             <InputItems.MyTextInput
+                                loading={loading}
                                 id={id}
                                 register={register(`${FORM_NAME}.${name}.value`)}
                                 name={name}
@@ -104,6 +106,7 @@ export default forwardRef(({ formname = 'myFieldArray', inputList, defaultValue 
                             />
                             || type == 'radio' &&
                             <InputItems.MyRadioInput
+                                loading={loading}
                                 id={id}
                                 register={register(`${FORM_NAME}.${name}.value`)}
                                 name={name}
@@ -118,6 +121,7 @@ export default forwardRef(({ formname = 'myFieldArray', inputList, defaultValue 
                                 {...inputProps} />
                             || type == 'listRadio' &&
                             <InputItems.MyListRadio
+                                loading={loading}
                                 id={id}
                                 register={register(`${FORM_NAME}.${name}.value`)}
                                 name={name}
@@ -131,6 +135,7 @@ export default forwardRef(({ formname = 'myFieldArray', inputList, defaultValue 
                                 {...inputProps} />
                             || type == 'listCheck' &&
                             <InputItems.MyListCheck
+                                loading={loading}
                                 id={id}
                                 register={register(`${FORM_NAME}.${name}.value`)}
                                 name={name}
@@ -144,6 +149,7 @@ export default forwardRef(({ formname = 'myFieldArray', inputList, defaultValue 
                                 {...inputProps} />
                             || type == 'textArea' &&
                             <InputItems.MyTextArea
+                                loading={loading}
                                 id={id}
                                 register={register(`${FORM_NAME}.${name}.value`)}
                                 name={name}

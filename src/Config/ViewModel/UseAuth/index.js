@@ -1,11 +1,12 @@
+import { Alert } from 'react-native';
 import { Auth } from '@Model';
 import { useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { setUser } from '@Actions';
 import { reset } from '@RootNavigation';
-import { log, MyRealm } from '@Utils';
+import { log } from '@Utils';
 export default () => {
-    const { authUser, refreshToken, getUserData, setUserData } = Auth;
+    const { authUser, refreshToken, getUserData, setUserData, logOut } = Auth;
     const [authError, setAuthError] = useState('');
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
@@ -26,7 +27,6 @@ export default () => {
             log('err : ', err)
             setAuthError(`error Auth ${err}`)
             setLoading(false)
-            global.showToast(err);
         }
     }, [])
 
@@ -51,16 +51,15 @@ export default () => {
     }
 
     const _refreshToken = useCallback(async (userData) => {
-        global.showToast('Refreshing Token');
         try {
             let { status, message, data } = await refreshToken(userData.token);
 
-            if (status == 'FAILED') throw message;
+            if (status != 200) throw 'rerfreshing token error';
 
             if (data == null) {
-                global.showToast(message);
                 return Promise.resolve('OK')
             }
+            global.showToast(message);
             let newUserData = userData.token.access_token = data;
             await setUserData(newUserData);
             dispatch(setUser(newUserData));
@@ -71,6 +70,42 @@ export default () => {
         }
     }, [])
 
+    const _logOut = () => {
+        log('_onLogOut : ');
+        Alert.alert(
+            'Foodie Coffe',
+            'Mau keluar nih?',
+            [{
+                text: "Batal", onPress: () => log("Cancel Pressed"), style: "cancel"
+            },
+            {
+                text: "Mau aja", onPress: async () => {
+                    await logOut()
+                    dispatch(setUser({
+                        user: {
+                            id: "-",
+                            name: "-",
+                            username: "-",
+                            image: {
+                                title: "-",
+                                name: "-",
+                                url: "-",
+                            },
+                            email: "-",
+                            role: "-",
+                            merchantId: "-",
+                        },
+                        token: {
+                            access_token: "-",
+                            refresh_token: "-",
+                        }
+                    }));
+                    reset('Splash')
+                }
+            }]
+        )
+    }
+
     return {
         _submitLogin,
         _submitRegister,
@@ -78,6 +113,7 @@ export default () => {
         authError,
         _getUserData,
         _refreshToken,
+        _logOut,
     }
 }
 

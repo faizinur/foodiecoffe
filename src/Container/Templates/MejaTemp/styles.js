@@ -182,4 +182,29 @@ export default StyleSheet.create({
         paddingHorizontal: '5%',
         justifyContent: 'center',
     },
+    jumbotron: {
+        paddingHorizontal: '5%',
+        marginBottom: 24,
+        marginTop: 24,
+    },
+    drawerIndicator: {
+        height: 4,
+        width: 30,
+        alignSelf: 'center',
+        backgroundColor: colors.athensGray,
+        borderRadius: 100,
+        marginBottom: 6
+    },
+
+    contentContainerStyle: {
+        padding: 5,
+        flex: 1,
+        backgroundColor: colors.white,
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+    },
+
+    sectionContainer: {
+        paddingHorizontal: '5%'
+    }
 })

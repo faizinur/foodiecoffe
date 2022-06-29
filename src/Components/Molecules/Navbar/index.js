@@ -1,49 +1,11 @@
 import { Image, TouchableOpacity } from 'react-native'
-import React, { useEffect, memo, useState, useCallback } from 'react'
+import React, { useEffect, memo, useState, useCallback, forwardRef, useImperativeHandle } from 'react'
 import { log, UUID, CONSTANT } from '@Utils';
 import { useTheme } from 'react-native-paper';
 import { UseKeyboard } from '@CustomHooks';
-import {
-    IC_HOME,
-    IC_HOME_FILL,
-    IC_TRANSAKSI,
-    IC_TRANSAKSI_FILL,
-    IC_MENU,
-    IC_MENU_FILL,
-    IC_MEJA,
-    IC_MEJA_FILL,
-    IC_AKUN,
-    IC_AKUN_FILL,
-} from '@Atoms/Icons';
 import styles from './styles';
 import { MyText } from '@Atoms';
-const navMenu = [
-    {
-        icon: IC_HOME,
-        iconActive: IC_HOME_FILL,
-        title: 'Home',
-    },
-    {
-        icon: IC_TRANSAKSI,
-        iconActive: IC_TRANSAKSI_FILL,
-        title: 'Transaksi',
-    },
-    {
-        icon: IC_MENU,
-        iconActive: IC_MENU_FILL,
-        title: 'Menu',
-    },
-    {
-        icon: IC_MEJA,
-        iconActive: IC_MEJA_FILL,
-        title: 'Meja',
-    },
-    {
-        icon: IC_AKUN,
-        iconActive: IC_AKUN_FILL,
-        title: 'Akun',
-    },
-]
+
 import Animated, {
     useSharedValue,
     useAnimatedStyle,
@@ -51,9 +13,10 @@ import Animated, {
 } from 'react-native-reanimated';
 
 
-export default memo(({ onChange, navigation: { navigate }, INITIAL_PAGE = null }) => {
+
+export default memo(forwardRef(({ onChange, navigation: { navigate }, INITIAL_PAGE = null }, ref) => {
     const { colors } = useTheme();
-    const [activeMenu, setActiveMenu] = useState(INITIAL_PAGE == null ? 'Home' : navMenu[INITIAL_PAGE].title)
+    const [activeMenu, setActiveMenu] = useState(INITIAL_PAGE == null ? 'Home' : CONSTANT.NAVBAR_MENU[INITIAL_PAGE].title)
     const onMenuPress = useCallback((title, index) => {
         if (index == 4) {
             navigate('Akun')
@@ -73,6 +36,10 @@ export default memo(({ onChange, navigation: { navigate }, INITIAL_PAGE = null }
     const _animateNavbar = useCallback((bottom, opacity) => {
         yPosNavbar.value = { bottom, opacity };
     }, [])
+    const toggle = (bottom, opacity) => _animateNavbar(bottom, opacity)
+    useImperativeHandle(ref, () => ({
+        toggle,
+    }));
     useEffect(() => {
         isKeyBoardOpen ? _animateNavbar(-66, 0) : _animateNavbar(0, 1)
         return () => {
@@ -80,7 +47,7 @@ export default memo(({ onChange, navigation: { navigate }, INITIAL_PAGE = null }
     })
     return (
         <Animated.View style={[styles.navbarContainer, yPosNavbarStyle]}>
-            {navMenu.map(({ icon, iconActive, title }, index) =>
+            {CONSTANT.NAVBAR_MENU.map(({ icon, iconActive, title }, index) =>
                 <TouchableOpacity
                     activeOpacity={.8}
                     onPress={() => onMenuPress(title, index)}
@@ -92,4 +59,4 @@ export default memo(({ onChange, navigation: { navigate }, INITIAL_PAGE = null }
                 </TouchableOpacity>)}
         </Animated.View >
     )
-})
+}))

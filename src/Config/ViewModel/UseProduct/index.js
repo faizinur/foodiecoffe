@@ -21,8 +21,9 @@ export default () => {
                 setProductList(products.sort((prev, next) => prev.id < next.id));
             } else {
                 log('DATA PRODUCT AMBIL KE BACKEND!')
-                const { user: { merchantId } } = await getUserData();
-                const { status, data, message } = await getListProduct(merchantId);
+                const userData = await getUserData();
+                if (userData == null) return Promise.reject(`userData null`);
+                const { status, data, message } = await getListProduct(userData.user.merchantId);
                 if (status != 'SUCCESS') throw message;
                 setProductList(data.sort((prev, next) => prev.id < next.id))
                 await MyRealm.insertProduct(data)

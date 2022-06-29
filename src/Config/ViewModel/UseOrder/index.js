@@ -13,9 +13,9 @@ export default () => {
         try {
             setRefreshingOrder(true)
             setOrderError('')
-            const { user: { merchantId } } = await getUserData();
-
-            const { status, data, message } = await getOrders(merchantId);
+            const userData = await getUserData();
+            if (userData == null) return Promise.reject(`userData null`);
+            const { status, data, message } = await getOrders(userData.user.merchantId);
             if (status != 'SUCCESS') throw message;
             setOrderList(data)
             setRefreshingOrder(false)
@@ -27,8 +27,9 @@ export default () => {
     }, [orderList]);
 
     const _subscribeOrders = useMemo(() => async () => {
-        const { user: { merchantId } } = await getUserData();
-        const { status, data, message } = await getOrders(merchantId);
+        const userData = await getUserData();
+        if (userData == null) return Promise.reject(`userData null`);
+        const { status, data, message } = await getOrders(userData.user.merchantId);
         if (status == 'SUCCESS') {
             setOrderList(data)
         } else {

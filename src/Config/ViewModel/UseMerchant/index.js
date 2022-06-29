@@ -17,8 +17,9 @@ export default () => {
             log('_getMerchant')
             setMerchantLoading(true)
             setMerchantError('')
-            const { user: { merchantId } } = await getUserData();
-            const { status, data, message } = await getMerchantCategory(merchantId);
+            const userData = await getUserData();
+            if (userData == null) return Promise.reject(`userData null`);
+            const { status, data, message } = await getMerchantCategory(userData.user.merchantId);
             if (status != 'SUCCESS') throw message;
             setMerchantList(data)
             setMerchantLoading(false)

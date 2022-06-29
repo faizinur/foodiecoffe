@@ -1,8 +1,8 @@
 import { log, POST, MyRealm } from '@Utils';
-import { APP_CONFIG } from '@Utils/Realm/types';
+import { APP_CONFIG, PRODUCT } from '@Utils/Realm/types';
 const authUser = async userData => {
     try {
-        let loginData = await POST('/auth/login', userData)
+        let loginData = await POST('auth/login', userData)
         return {
             status: 'SUCCESS',
             message: 'API SUCCESS!',
@@ -26,11 +26,11 @@ const registerUser = data => {
 
 const refreshToken = async (token) => {
     try {
-        let newToken = await POST('auth/refresh', token);
+        let refreshed = await POST('auth/refresh', token);
         return {
-            status: newToken?.status,
-            message: newToken?.message || 'Got New Token',
-            data: newToken?.status == 200 ? newToken?.token : null,
+            status: 200,
+            message: 'token' in refreshed ? 'Got New Token' : '',
+            data: 'token' in refreshed ? refreshed.token : null,
         }
     } catch (err) {
         return {
@@ -60,10 +60,21 @@ const setUserData = async ({ user, token }) => {
     }
 }
 
+const logOut = async () => {
+    try {
+        await MyRealm.deleteData(APP_CONFIG);
+        await MyRealm.deleteData(PRODUCT);
+        await MyRealm.closeConnection()
+        return true
+    } catch (err) {
+        return err
+    }
+}
 export {
     authUser,
     getUserData,
     setUserData,
     registerUser,
     refreshToken,
+    logOut,
 }

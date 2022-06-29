@@ -1,3 +1,15 @@
+import {
+    IC_HOME,
+    IC_HOME_FILL,
+    IC_TRANSAKSI,
+    IC_TRANSAKSI_FILL,
+    IC_MENU,
+    IC_MENU_FILL,
+    IC_MEJA,
+    IC_MEJA_FILL,
+    IC_AKUN,
+    IC_AKUN_FILL,
+} from '@Atoms/Icons';
 // const SPRING_CONFIG = {
 //     damping: 80, //15
 //     overshootClamping: true, //false
@@ -25,10 +37,39 @@ const ZOOM_IN = {
         scale: 1,
     },
 }
+
+const NAVBAR_MENU = [
+    {
+        icon: IC_HOME,
+        iconActive: IC_HOME_FILL,
+        title: 'Home',
+    },
+    {
+        icon: IC_TRANSAKSI,
+        iconActive: IC_TRANSAKSI_FILL,
+        title: 'Transaksi',
+    },
+    {
+        icon: IC_MENU,
+        iconActive: IC_MENU_FILL,
+        title: 'Menu',
+    },
+    {
+        icon: IC_MEJA,
+        iconActive: IC_MEJA_FILL,
+        title: 'Meja',
+    },
+    {
+        icon: IC_AKUN,
+        iconActive: IC_AKUN_FILL,
+        title: 'Akun',
+    },
+]
 export {
     SPRING_CONFIG,
     ZOOM_IN,
     BASE_URL,
     NETWORK_TIMEOUT,
     CONNECT_RETRIES,
+    NAVBAR_MENU,
 }

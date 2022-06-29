@@ -16,16 +16,6 @@ export default StyleSheet.create({
         height: '100%',
         backgroundColor: colors.white
     },
-    fab: {
-        colors: {
-            accent: colors.cerulean
-        }
-    },
-    fabStyles: {
-        position: 'absolute',
-        right: 24,
-        bottom: 90,
-    },
     pagerContainer: {
         flex: 1
     },

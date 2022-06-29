@@ -1,6 +1,6 @@
 import { UseTable } from '@ViewModel';
-import { View, TouchableOpacity, FlatList } from 'react-native';
-import React, { useEffect, memo, useRef } from 'react';
+import { View, TouchableOpacity, FlatList, RefreshControl } from 'react-native';
+import React, { useEffect, memo, useRef, useCallback } from 'react';
 import { log, CONSTANT } from '@Utils';
 import { useTheme } from 'react-native-paper';
 import { MyText } from '@Atoms';
@@ -10,10 +10,12 @@ import styles from './styles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MejaModals from './MejaModals';
 import MejaFilterModal from './MejaFilterModal';
-import { UseAuth } from '@ViewModel';
+import MenuCategoryModal from './MenuCategoryModal';
+import { UseAuth, UseMerchant } from '@ViewModel';
+import Animated, { useAnimatedStyle, withTiming, } from 'react-native-reanimated';
 let searchState = false;
 const { BASE_URL } = CONSTANT;
-export default memo(({ navigation }) => {
+export default memo(({ navigation, animateNavbar }) => {
     const { _getUserData } = UseAuth();
     const {
         _getTables,
@@ -26,12 +28,32 @@ export default memo(({ navigation }) => {
         _onChangeText,
         searchValue,
         tableError,
+        refreshingTable,
+        setRefreshingTable,
     } = UseTable();
+    const {
+        _getMerchant,
+        merchantList,
+        merchantLoading,
+        merchantError,
+        searchQuery,
+        setSearchQuery,
+        _filterCategory,
+        filteredCategory,
+        _clearFilteredCategory,
+    } = UseMerchant()
     const { colors } = useTheme();
     const refTextinputContainer = useRef(<View />)
     const refTextTitleContainer = useRef(<View />)
+    const refMenuCategoryModal = useRef(<MenuCategoryModal />)
     const refMejaModals = useRef(<MejaModals />)
     const refMejaFilterModal = useRef(<MejaFilterModal />)
+
+    const navbarButtonStyle = useAnimatedStyle(() => ({
+        transform: [{ translateY: withTiming(Object.keys(selectedTable).length > 0 ? 0 : 80, { duration: 100 }) }]
+    }))
+
+
     const _onClickSearch = () => {
         if (searchState) _clearFiltered()
         searchState = !searchState;
@@ -56,10 +78,24 @@ export default memo(({ navigation }) => {
         refMejaModals.current?.toggle({ ...props, qr: { uri: qrURI } })
     }
 
-    const _renderTilesMeja = ({ item }) => <TilesMeja seat={item} numColumns={2} onPress={setSelectedTable} _onPressQR={_onPressQR} selectedTable={selectedTable} />
+    const _selectTable = useCallback(meja => {
+        if (selectedTable?.id == meja?.id) {
+            setSelectedTable({})
+            animateNavbar(0, 1)
+        } else {
+            setSelectedTable(meja)
+            animateNavbar(-66, 0)
+        }
+        log(selectedTable?.id)
+    }, [selectedTable])
+
+    const _onPilihMejaPress = useCallback(() => refMenuCategoryModal.current?.toggle(), [])
+
+    const _renderTilesMeja = ({ item }) => <TilesMeja seat={item} numColumns={2} onPress={_selectTable} _onPressQR={_onPressQR} selectedTable={selectedTable} />
     useEffect(() => {
         log('Mount MejaTemp');
-        // _getTables();
+        _getTables();
+        _getMerchant();
         return () => {
             log('Unmount MejaTemp')
         }
@@ -88,18 +124,27 @@ export default memo(({ navigation }) => {
                 <FlatList
                     style={styles.flatList}
                     ListHeaderComponent={
-                        (tableList.length > 0 && <View style={styles.sectionContainer}>
+                        (tableList.length > 0 && <View style={styles.jumbotron}>
                             <MyText bold medium black left>Cek Mejamu disini</MyText>
                             <MyText left>Yuk, pilih lokasi mejamu sebelum penuh</MyText>
                         </View>
                         )}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshingTable}
+                            onRefresh={() => {
+                                _getTables();
+                                setRefreshingTable(true);
+                                setTimeout(() => setRefreshingTable(false), 3000);
+                            }}
+                        />}
                     contentContainerStyle={styles.flatListContent}
                     data={filteredTables.length > 0 ? filteredTables : tableList}
                     renderItem={_renderTilesMeja}
                     snapToInterval={130}
                     keyExtractor={({ id }) => id}
                     numColumns={2}
-                    ListEmptyComponent={<MyText large bold black>Oops, Meja Penuh nih...!</MyText>}
+                    ListEmptyComponent={tableList.length > 0 && tableError == '' ? <MyText large bold black>Oops, Meja Penuh nih...!</MyText> : <MyText large bold black>Tunggu ya...!</MyText>}
                     ListFooterComponent={<View style={styles.separator} />}
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
@@ -108,6 +153,30 @@ export default memo(({ navigation }) => {
                 ||
                 <EmptySearchResult title={'Oops,'} subTitle={'Meja yang kamu cari sepertinya tidak tersedia'} />
             }
+            <Animated.View style={[navbarButtonStyle, { width: '100%', paddingHorizontal: '5%', paddingVertical: 5, justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', backgroundColor: colors.white, borderTopColor: colors.athensGray, borderTopWidth: 1 }]}>
+                <InputItems.MyButton
+                    secondary
+                    onPress={() => _selectTable(selectedTable)}
+                    style={{ width: '48%' }}
+                    label={'Batal'}
+                    labelStyle={{ fontSize: 14 }} />
+                <InputItems.MyButton
+                    onPress={_onPilihMejaPress}
+                    style={{ width: '48%' }}
+                    label={'Pilih Menu'}
+                    labelStyle={{ fontSize: 14 }} />
+            </Animated.View>
+            <MenuCategoryModal
+                ref={refMenuCategoryModal}
+                navigation={navigation}
+                merchantList={merchantList}
+                loading={merchantLoading}
+                merchantError={merchantError}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                filterCategory={_filterCategory}
+                filteredCategory={filteredCategory}
+                clearFilteredCategory={_clearFilteredCategory} />
             <MejaModals ref={refMejaModals} />
             <MejaFilterModal
                 ref={refMejaFilterModal}

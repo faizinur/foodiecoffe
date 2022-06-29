@@ -3,11 +3,10 @@ import { log, MyRealm } from '@Utils';
 import { BASE_URL, NETWORK_TIMEOUT } from '../CONSTANT'
 import axios from 'axios';
 import { APP_CONFIG } from '@Utils/Realm/types';
-import { reset } from '@RootNavigation';
-const controller = new AbortController();
+// const controller = new AbortController();
 
-const CancelToken = axios.CancelToken;
-const cancelToken = CancelToken.source();
+// const CancelToken = axios.CancelToken;
+// const cancelToken = CancelToken.source();
 
 // // cancel the request (the message parameter is optional)
 // cancelToken.cancel('Operation canceled by the user.');
@@ -19,83 +18,55 @@ const myAxiosInstance = axios.create({
     timeout: NETWORK_TIMEOUT,
     headers: {
         'Content-type': 'application/json; charset=UTF-8',
-        "Access-Control-Allow-Origin": true
+        // "Access-Control-Allow-Origin": true
     },
     timeoutErrorMessage: 'requestnya melewati batas ya...',
-    cancelToken: cancelToken.token,
-    signal: controller.signal,
+    // cancelToken: cancelToken.token,
+    // signal: controller.signal,
     validateStatus: status => status >= 200 && status < 500
-    // transformRequest: [(data, headers) => {
-    //     // Do whatever you want to transform the data
-    //     log('select token before send', data)
-    //     return data;
-    // }],
-    // transformResponse: [(data) => {
-    //     // Do whatever you want to transform the data
-    //     log('Rubah Struktur Data')
-    //     return data;
-    // }],
     // onDownloadProgress: (progressEvent) => { log('onDownloadProgress : ', progressEvent)},
     // onUploadProgress: (progressEvent) => {log('onUploadProgress : ', progressEvent)},
 });
 
-const POST = async (url = '', data = {}) => {
-    log(`POST TO ${BASE_URL}${url}`)
-    if (url == '' || (url == '' && data == {})) return Promise.reject()
+const POST = async (url = '', payload = {}) => {
+    // log(`POST TO ${BASE_URL}${url}`)
     try {
-        return new Promise((resolve, reject) => {
-            myAxiosInstance.post(url, data)
-                .then(({ data, status, statusText, headers, config }) => {
-                    switch (status) {
-                        case 200:
-                        case 400:
-                        case 403:
-                            resolve(data)
-                            break;
-                        default: throw (status)
-                    }
-                }).catch(err => {
-                    log(`ERROR POST : ${url} ${err}`)
-                    reject(err)
-                })
-        })
+        let { data, status } = await myAxiosInstance.post(url, payload);
+        switch (status) {
+            case 200:
+            case 400:
+            case 401:
+            case 403:
+                return Promise.resolve(data)
+            default: throw (status)
+        }
     } catch (err) {
-        log('ERROR POST', err)
+        log('ERROR POST CATCH :', err)
         return Promise.reject(err)
     }
 };
 
-const GET = async (url = '', data = {}) => {
-    log(`GET TO ${BASE_URL}${url}`)
-    if (url == '' || (url == '' && data == {})) return Promise.reject()
+const GET = async (url = '') => {
+    if (url == '') return Promise.reject()
+    // log(`GET TO ${BASE_URL}${url}`)
     try {
         let Authorization = '';
-        let select = await MyRealm.selectData(APP_CONFIG);
-        if (select.length > 0) {
-            Authorization = `Bearer ${JSON.parse(select[0]?.value)?.token?.access_token}`;
+        let appConfig = await MyRealm.selectData(APP_CONFIG);
+        Authorization = `Bearer ${appConfig.length > 0 ? JSON.parse(appConfig[0]?.value)?.token?.access_token : ''}`;
+        let { data, status } = await myAxiosInstance.get(url, { headers: { Authorization, } });
+        switch (status) {
+            case 200:
+            case 400:
+            case 401:
+            case 403:
+                return Promise.resolve(data)
+            default: throw (status)
         }
-        return new Promise((resolve, reject) => {
-            myAxiosInstance.get(url, {
-                headers: { Authorization, }
-            }).then(({ data, status, statusText, headers, config }) => {
-                switch (status) {
-                    case 200:
-                    case 400:
-                    case 401:
-                    case 403:
-                        resolve(data)
-                        break;
-                    default: throw (status)
-                }
-            }).catch(err => {
-                log(`ERROR GET ${url} ${err}`)
-                reject(err)
-            })
-        })
+
     } catch (err) {
         log('ERROR GET')
         return Promise.reject(err)
     }
 };
 
-export { POST, GET, cancelToken, controller };
+export { POST, GET };

@@ -19,10 +19,10 @@ export default memo(({ navigation }) => {
 
     const { colors } = useTheme();
     const _onPressCalendar = useCallback(() => log('_onPressCalendar Pressed'), [])
-    const renderCardOrder = ({ item }) => <></>//<CardOrder order={item} />
+    const renderCardOrder = ({ item }) => <CardOrder order={item} />
     useEffect(() => {
         log('Mount TransTemp');
-        // _getTransaksiList()
+        _getTransaksiList()
         return () => {
             log('Unmount TransTemp')
         }

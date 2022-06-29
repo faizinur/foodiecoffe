@@ -1,28 +1,16 @@
 import { View, FlatList, RefreshControl } from 'react-native';
 import React, { useEffect, memo, useRef, useCallback } from 'react';
 import { log } from '@Utils';
-import { useTheme, FAB } from 'react-native-paper';
+import { useTheme } from 'react-native-paper';
 import { MyText } from '@Atoms'
 import { PagerView } from 'react-native-pager-view';
 import styles from './styles';
 import { CardOrder } from '@Organisms';
 import { TopTabbar, EmptyOrderScreen } from '@Molecules';
 import { MyToolBar } from '@Organisms';
-import HomeModals from './HomeModals'
-import { UseOrder, UseMerchant } from '@ViewModel';
+import { UseOrder } from '@ViewModel';
 const INITIAL_PAGE = 0;
 export default memo(({ navigation }) => {
-    const {
-        _getMerchant,
-        merchantList,
-        merchantLoading,
-        merchantError,
-        searchQuery,
-        setSearchQuery,
-        _filterCategory,
-        filteredCategory,
-        _clearFilteredCategory,
-    } = UseMerchant()
     const {
         _getOrders,
         _subscribeOrders,
@@ -34,7 +22,6 @@ export default memo(({ navigation }) => {
     } = UseOrder()
     const { colors } = useTheme();
     const refPagerViewChild = useRef(<PagerView />);
-    const refHomeModals = useRef(<HomeModals />);
     const ORDER_TYPES = ['PAID', 'CANCELED'];
     const TOOL = [
         {
@@ -52,20 +39,14 @@ export default memo(({ navigation }) => {
     ];
 
     const _onTabChange = useCallback((index) => refPagerViewChild.current?.setPage(index), [])
-    const _onFABPress = useCallback(() =>
-        refHomeModals.current?.toggle()
-        , [])
     const _onConfirmCalendar = useCallback(data => log('_onPressCalendar Pressed', data), [])
     const _renderCardOrder = useCallback(({ item }) => <CardOrder order={item} onPress={() => navigation.navigate('DetailOrder', { order: { ...item } })} />, []);
     useEffect(() => {
         log('Mount HomeTemp');
-        Promise.all([
-            // _subscribeOrders(),
-            _getMerchant()
-        ]);
+        _subscribeOrders()
         return () => {
             log('Unmount HomeTemp')
-            // _unSubscribeOrders();
+            _unSubscribeOrders();
         }
     }, [])
     return (
@@ -98,21 +79,15 @@ export default memo(({ navigation }) => {
                             ListEmptyComponent={orderList.length > 0 ? <MyText light bold black>tunggu</MyText> : <EmptyOrderScreen />}
                         />
                         || <MyText light bold style={{ textAlign: 'center' }} black>upss kita ada kendala nih... {`\n\n`}{orderError}</MyText>}
-                    <FAB
-                        theme={styles.fab}
-                        style={styles.fabStyles}
-                        color={colors.white}
-                        icon="plus"
-                        onPress={_onFABPress} />
                 </View>
                 <View key='1' style={styles.pagerInnerContainer}>
                     <MyToolBar
                         tool={TOOL}
                         activeOrderList={ORDER_TYPES[0]}
-                        listCount={0}
+                        listCount={1}
                         onPressChips={() => log('chips press')}
                         onConfirmCalendar={_onConfirmCalendar}
-                        loading={false}
+                        loading={true}
                     />
                     <FlatList
                         contentContainerStyle={styles.contentContainerStyle}
@@ -125,18 +100,6 @@ export default memo(({ navigation }) => {
                     />
                 </View>
             </PagerView>
-            <HomeModals
-                ref={refHomeModals}
-                navigation={navigation}
-                merchantList={merchantList}
-                loading={merchantLoading}
-                merchantError={merchantError}
-                searchQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
-                filterCategory={_filterCategory}
-                filteredCategory={filteredCategory}
-                clearFilteredCategory={_clearFilteredCategory}
-            />
         </View>
     )
 })

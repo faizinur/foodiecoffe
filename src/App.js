@@ -10,12 +10,12 @@ import React, { useEffect, useRef, } from 'react';
 import { View, StatusBar, StyleSheet, AppState } from 'react-native';
 import MainStackNavigator from '@Pages';
 import { enableFreeze } from 'react-native-screens';
-import { LogBox } from "react-native";
 import Toast from "react-native-toast-notifications";
 enableFreeze(true)
 const App = () => {
-	let TOAST_ID = null;
+	const appState = useRef(AppState.currentState);
 	const refToast = useRef(<Toast />);
+	let TOAST_ID = null;
 	global.showToast = (message = 'Simple Toast', duration = 3000, type = 'normal', placement = 'top') => {
 		if (TOAST_ID != null) {
 			refToast.current.update(TOAST_ID, message, { type: 'warning', duration: duration + 3000 })
@@ -31,13 +31,8 @@ const App = () => {
 		});
 		setTimeout(() => TOAST_ID = null, duration)
 	}
-	const appState = useRef(AppState.currentState);
-	LogBox.ignoreLogs([
-		"exported from 'deprecated-react-native-prop-types'.",
-	])
+
 	useEffect(() => {
-
-
 		const subscription = AppState.addEventListener("change", async nextAppState => {
 			if (nextAppState === "background") {
 				console.log('lagi di background')

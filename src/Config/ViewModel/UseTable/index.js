@@ -16,11 +16,12 @@ export default () => {
         try {
             setRefreshingTable(true)
             setTableError('')
-            const { user: { merchantId } } = await getUserData();
-            const { status, data, message } = await getTables(merchantId);
+            const userData = await getUserData();
+            if (userData == null) return Promise.reject(`userData null`);
+            const { status, data, message } = await getTables(userData.user.merchantId);
             setSelectedTable({})
             if (status != 'SUCCESS') throw message;
-            setTableList(data)
+            setTableList(data.sort(prev => prev.occupied == true))
             setRefreshingTable(false)
         } catch (err) {
             log(err)
@@ -44,7 +45,7 @@ export default () => {
                 setTableError('MEJA_NOT_FOUND')
                 return false;
             }
-            setFilteredTables(tmpTable)
+            setFilteredTables(tmpTable.sort(prev => prev.occupied == true))
             tmpTable = [];
         } catch (err) {
             global.showToast(err);
@@ -64,6 +65,7 @@ export default () => {
             global.showToast(err);
         }
     }, [filteredTables, selectedTable, searchValue])
+
     return {
         _getTables,
         tableList,
@@ -76,5 +78,7 @@ export default () => {
         _clearFiltered,
         searchValue,
         _onChangeText,
+        refreshingTable,
+        setRefreshingTable,
     }
 }

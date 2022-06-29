@@ -3,14 +3,16 @@ import 'react-native-gesture-handler';
  * @format
  */
 import React from 'react';
-import { AppRegistry } from 'react-native';
+import { AppRegistry, LogBox } from 'react-native';
 import App from './src/App';
 import { name as appName } from './app.json';
 import { Provider as StoreProvider } from 'react-redux';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { THEME as PAPER_THEME } from '@Utils';
 import configureStore from '@Store';
-
+LogBox.ignoreLogs([
+    "exported from 'deprecated-react-native-prop-types'.",
+])
 const REDUX_STORE = configureStore();
 const AppProvider = () => (
     <PaperProvider theme={PAPER_THEME}>
