@@ -20,6 +20,7 @@ export default forwardRef((props, ref) => {
     const [animationType, setAnimationType] = useState('slide');
     const [imageSource, setImageSource] = useState(null);
     const [textTitle, setTextTitle] = useState('');
+    const [btnBackground, setBtnBackground] = useState(colors.cerulean);
     const [textDescription, setTextDescription] = useState('');
     const [loading, setLoading] = useState(false);
 
@@ -51,6 +52,7 @@ export default forwardRef((props, ref) => {
         setImageSource(modalType == 'accept' ? IC_ACCEPT : IC_REJECT);
         setTextTitle(modalType == 'accept' ? 'Terima Orderan?' : 'Tolak Orderan?');
         setTextDescription(modalType == 'accept' ? 'Jangan lupa pastikan kembali pesanannya' : 'Kamu yakin ingin menolak orderan ini?');
+        setBtnBackground(modalType == 'accept' ? colors.cerulean : colors.wildWaterMelon);
         setModalVisible(prevState => !prevState);
     }, [modalVisible, imageSource, textTitle, textDescription])
 
@@ -69,6 +71,7 @@ export default forwardRef((props, ref) => {
             setImageSource(null)
             setTextTitle('')
             setTextDescription('')
+            setBtnBackground(colors.cerulean);
             drawerHeight.value = { height: DOWN_SIZE }
             imageSize.value = { width: '100%', height: '50%' }
             props?.onConfirm()
@@ -109,7 +112,7 @@ export default forwardRef((props, ref) => {
                         disabled={loading}
                         loading={loading}
                         onPress={_onclick}
-                        style={styles.button}
+                        contentStyle={{ backgroundColor: btnBackground }}
                         label={'Oke'} />
                 </View>
                 <View style={{ flex: 1 }} />
