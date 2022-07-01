@@ -2,21 +2,21 @@ import { SET_USER } from '../../Actions/types'
 
 const initialState = {
     user: {
-        id: "-",
-        name: "-",
-        username: "-",
+        email: "",
+        id: "",
         image: {
-            title: "-",
-            name: "-",
-            url: "-",
+            name: "",
+            title: "",
+            url: ""
         },
-        email: "-",
-        role: "-",
-        merchantId: "-",
+        merchantId: "",
+        name: "",
+        role: "",
+        username: ""
     },
     token: {
-        access_token: "-",
-        refresh_token: "-",
+        access_token: "",
+        refresh_token: "",
     }
 }
 

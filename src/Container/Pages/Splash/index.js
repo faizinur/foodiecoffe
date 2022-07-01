@@ -13,7 +13,7 @@ export default memo(({ navigation: { replace } }) => {
             if (userData != null) {
                 let resultRefresh = await _refreshToken(userData);
                 if (resultRefresh == 'OK') {
-                    setTimeout(() => replace('Home'), 1000)
+                    replace('Home')
                 } else {
                     throw "GAGAL PERBAHARUI TOKEN";
                 }

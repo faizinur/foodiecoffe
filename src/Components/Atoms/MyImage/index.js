@@ -19,13 +19,13 @@ export default memo(({ height = 100, width = 100, source = BLANK_IMAGE, radius =
             borderTopRightRadius: radius[1],
             borderBottomLeftRadius: radius[3],
             borderBottomRightRadius: radius[2],
-            width,
-            height
+            width: '100%',
+            height: '100%',
         }]
     })
     const setLoad = () => setLoaded(true)
     return (
-        <View style={{ width, width }}>
+        <View style={{ width, height }}>
             <Animated.Image
                 onLoadEnd={setLoad}
                 source={source}

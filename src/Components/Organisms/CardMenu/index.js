@@ -10,7 +10,7 @@ export default memo(props => {
     const { colors } = useTheme();
     return (
         <TouchableOpacity activeOpacity={.9} onPress={() => props?.onPress(props.item)} style={styles.cardContainer}>
-            <View style={styles.imgProduct} >
+            <View style={styles.imgProduct}>
                 <MyImage source={{ uri: props.item.image.url }} height={80} width={80} />
             </View>
             <View style={styles.imgDescription}>

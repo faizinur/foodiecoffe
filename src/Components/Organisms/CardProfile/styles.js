@@ -35,20 +35,17 @@ export default StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center'
     },
+    textRole: {
+        minWidth: 30
+    },
     roleName: {
         height: 26,
-        width: 50,
+        minWidth: 50,
+        paddingHorizontal: 8,
         backgroundColor: colors.cerulean,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 6
-    },
-    rating: {
-        width: 20,
-        height: 20,
-        borderRadius: 10,
-        backgroundColor: colors.lightningYellow,
-        marginHorizontal: 12
     },
     buttonEdit: {
         width: 30,
@@ -58,4 +55,7 @@ export default StyleSheet.create({
         borderRadius: 15,
         alignSelf: 'flex-start'
     },
+    icPencil: {
+        marginHorizontal: 5
+    }
 })

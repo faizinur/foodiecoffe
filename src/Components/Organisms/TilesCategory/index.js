@@ -11,10 +11,8 @@ export default memo(props => {
             <TouchableOpacity
                 onPress={() => props?.onPress(props?.merchant)}
                 activeOpacity={.8}>
-                <View style={styles.imageWrapper}>
-                    <MyImage source={{ uri: props?.merchant?.image?.url }} height={98} width={98} resizeMode={'cover'} />
-                </View>
-                <MyText bold center black>{props?.merchant?.name}</MyText>
+                <MyImage source={{ uri: props?.merchant?.image?.url }} height={98} width={98} resizeMode={'cover'} />
+                <MyText bold center black numberOfLines={1}>{props?.merchant?.name}</MyText>
             </TouchableOpacity>
         </View>
     )

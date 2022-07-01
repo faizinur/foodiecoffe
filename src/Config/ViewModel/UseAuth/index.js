@@ -11,6 +11,10 @@ export default () => {
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
 
+    const _saveProfile = () => {
+        log('_saveProfile')
+    }
+
     const _submitLogin = useCallback(async userData => {
         try {
             setLoading(true)
@@ -18,7 +22,7 @@ export default () => {
             const { status, data, message } = await authUser(userData);
             if (status != 'SUCCESS') throw message;
             const { user, token } = data;
-            if (user.id === '' && token.access_token === '') throw `Login FAILED. ${message}`
+            if (user.id === '' && token.access_token === '') throw `Login FAILED. ${message}`;
             dispatch(setUser({ user, token }));
             setLoading(false)
             await setUserData({ user, token });
@@ -47,6 +51,7 @@ export default () => {
     const _getUserData = async () => {
         let data = await getUserData();
         if (data == null) return Promise.reject(null);
+        dispatch(setUser(data));
         return Promise.resolve(data);
     }
 
@@ -114,6 +119,7 @@ export default () => {
         _getUserData,
         _refreshToken,
         _logOut,
+        _saveProfile,
     }
 }
 

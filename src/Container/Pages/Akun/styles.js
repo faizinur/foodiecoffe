@@ -32,14 +32,7 @@ export default StyleSheet.create({
     container: {
         backgroundColor: colors.white,
         flex: 1,
-        paddingHorizontal: "5%"
-    },
-    buttonContainer:
-    {
-        width: '100%',
-        height: 80,
-        paddingHorizontal: '5%',
-        justifyContent: 'center',
+        paddingHorizontal: "5%",
     },
     avatarSection: {
         justifyContent: 'center',
@@ -52,7 +45,7 @@ export default StyleSheet.create({
         width: 100,
         height: 100,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     avatarImg: {
         borderRadius: 40,

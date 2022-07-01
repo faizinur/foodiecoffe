@@ -7,8 +7,11 @@ import { MyText } from '@Atoms';
 import { CardProfile, CardTransaksi, CardTraffic } from '@Organisms';
 import AkunModals from './AkunModals';
 import { ListTransaksi, ListTraffic } from '@Data';
+import { UseAuth } from '@ViewModel';
 import styles from './styles';
+import { useSelector } from 'react-redux';
 export default memo(() => {
+    const { _saveProfile } = UseAuth();
     const { colors } = useTheme();
     const refAkunModals = useRef(<AkunModals />)
     const _onEditProfilePress = useCallback(() => {
@@ -20,6 +23,7 @@ export default memo(() => {
     }, [])
     const _renderCardTransaksi = ({ item, index }) => <CardTransaksi {...item} index={index} />
     const _renderCardTraffic = ({ item, index }) => <CardTraffic {...item} index={index} />
+    const userData = useSelector(state => state.userReducers.user);
 
     useEffect(() => {
         log('Mount Akun');
@@ -31,7 +35,7 @@ export default memo(() => {
         <View style={styles.pages}>
             <TitleBar title={'profil'} />
             <View style={styles.akunContainer}>
-                <CardProfile onEditProfilePress={_onEditProfilePress} />
+                <CardProfile onEditProfilePress={_onEditProfilePress} userData={userData} />
 
                 <View style={styles.cardTansaksiWrapper}>
                     <View style={styles.titleSection}>
@@ -76,7 +80,7 @@ export default memo(() => {
                 </View>
             </View>
             <ExitBar />
-            <AkunModals ref={refAkunModals} />
+            <AkunModals ref={refAkunModals} submitProfile={_saveProfile} userData={userData} />
         </View >
     )
 })

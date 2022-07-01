@@ -14,8 +14,6 @@ export default StyleSheet.create({
     },
     imgProduct: {
         alignSelf: 'center',
-        height: 80,
-        width: 80,
         marginRight: 16,
     },
     imgDescription: {

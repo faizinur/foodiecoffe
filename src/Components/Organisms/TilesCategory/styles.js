@@ -10,10 +10,6 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     }),
-    imageWrapper: {
-        height: 100,
-        backgroundColor: colors.white,
-    },
     cardImage: {
         height: 100,
         width: 100,
