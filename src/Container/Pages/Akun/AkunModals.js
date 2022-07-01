@@ -47,6 +47,7 @@ export default forwardRef((props, ref) => {
                     </TouchableOpacity>
                     <MyText center style={styles.decriptionText}>Yuk pasang foto barumu, pasang foto {'\n'}yang menarik oke!</MyText>
                 </View>
+                <MyText center color={colors.valencia} bold fontSize={22}>INPUT ITEM BELUM FORMS</MyText>
                 <InputItems.MyTextInput placeholder={'Nama Depan'} />
                 <InputItems.MyTextInput placeholder={'Nama Belakang'} />
                 <InputItems.MyTextInput placeholder={'Email'} />
@@ -54,12 +55,10 @@ export default forwardRef((props, ref) => {
                 <InputItems.MyTextInput placeholder={'Kata sandi'} secureTextEntry />
                 <InputItems.MyTextInput placeholder={'Nama kamu'} />
                 <InputItems.MyRadioInput placeholder={'Jenis Kelamin'}
-                    config={{
-                        data: [
-                            { code: 'L', description: 'Laki-Laki' },
-                            { code: 'P', description: 'Perempuan' },
-                        ]
-                    }} />
+                    data={[
+                        { code: 'L', description: 'Laki-Laki' },
+                        { code: 'P', description: 'Perempuan' }
+                    ]} />
             </ScrollView>
             <View style={styles.buttonContainer}>
                 <InputItems.MyButton

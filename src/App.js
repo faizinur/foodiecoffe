@@ -11,7 +11,7 @@ import { View, StatusBar, StyleSheet, AppState } from 'react-native';
 import MainStackNavigator from '@Pages';
 import { enableFreeze } from 'react-native-screens';
 import Toast from "react-native-toast-notifications";
-enableFreeze(true)
+enableFreeze(true);
 const App = () => {
 	const appState = useRef(AppState.currentState);
 	const refToast = useRef(<Toast />);

@@ -99,10 +99,12 @@ export default memo(({ navigation }) => {
                         icon="plus"
                         style={{
                             position: 'absolute',
-                            margin: 16,
-                            right: 20,
-                            bottom: 90,
+                            margin: 0,
+                            right: 24,
+                            bottom: 84,
+                            backgroundColor: colors.cerulean
                         }}
+                        color={colors.white}
                         onPress={_onFABClick}
                     />
                 </View>

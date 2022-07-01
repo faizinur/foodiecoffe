@@ -35,7 +35,6 @@ export default memo(forwardRef(({ navigation: { navigate }, merchantList, loadin
             <View style={styles.drawerIndicator} />
             <View style={styles.sectionContainer}>
                 <View style={{ paddingTop: 24, paddingBottom: 32 }}>
-                    {/* <InputItems.MyTextInput placeholder={'Kamu mau pesan apa?'} value={text} onChangeText={setText} returnKeyType='search' onResetField={() => setText('')} /> */}
                     <Searchbar
                         placeholder="Search"
                         onChangeText={setSearchQuery}

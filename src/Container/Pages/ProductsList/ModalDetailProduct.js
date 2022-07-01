@@ -61,7 +61,9 @@ export default forwardRef((props, ref) => {
                     {modalType == 'CHANGE' &&
                         <>
                             <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-                                <MyImage source={{ uri: product?.image?.url }} height={150} width={'100%'} resizeMode={'center'} />
+                                <View style={{ height: 150, width: '100%' }}>
+                                    <MyImage source={{ uri: product?.image?.url }} height={150} width={'100%'} resizeMode={'center'} />
+                                </View>
                                 <MyText left medium black style={{ marginVertical: 6 }}>{product?.name}</MyText>
                                 <MyText left black style={{ marginVertical: 6 }}>Rp{product?.price}<MyText strikeThrough>Rp 999.999</MyText></MyText>
                                 <MyText left black style={{ marginVertical: 6 }} >{product?.description}</MyText>

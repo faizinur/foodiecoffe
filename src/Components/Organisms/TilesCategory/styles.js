@@ -10,9 +10,8 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     }),
-    cardContainer: {
-        height: 120,
-        width: 100,
+    imageWrapper: {
+        height: 100,
         backgroundColor: colors.white,
     },
     cardImage: {

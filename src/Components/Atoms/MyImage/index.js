@@ -2,6 +2,7 @@ import { View, StyleSheet } from 'react-native'
 import { BLANK_IMAGE } from '@Atoms/Icons'
 import React, { memo, useState } from 'react';
 import Animated, { useAnimatedStyle, withTiming, } from 'react-native-reanimated';
+import { Skeleton } from '@Atoms'
 
 export default memo(({ height = 100, width = 100, source = BLANK_IMAGE, radius = [12, 12, 12, 12], resizeMode = 'cover', resizeMethod = 'resize' }) => {
     const [loaded, setLoaded] = useState(false);
@@ -24,7 +25,7 @@ export default memo(({ height = 100, width = 100, source = BLANK_IMAGE, radius =
     })
     const setLoad = () => setLoaded(true)
     return (
-        <View style={{ width, height }}>
+        <View style={{ width, width }}>
             <Animated.Image
                 onLoadEnd={setLoad}
                 source={source}
@@ -32,7 +33,7 @@ export default memo(({ height = 100, width = 100, source = BLANK_IMAGE, radius =
                 resizeMode={resizeMode}
                 resizeMethod={resizeMethod}
             />
-            {!loaded && <View style={styles.defaultStyle} />}
+            {!loaded && <Skeleton.Image style={{ ...styles.defaultStyle }} />}
         </View>
     )
 })

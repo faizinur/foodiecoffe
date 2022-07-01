@@ -9,10 +9,11 @@ export default memo(props => {
     return (
         <View style={styles.cardWrapper(props?.numColumns)}>
             <TouchableOpacity
-                activeOpacity={.8}
                 onPress={() => props?.onPress(props?.merchant)}
-                style={styles.cardContainer}>
-                <MyImage source={{ uri: props?.merchant?.image?.url }} height={98} width={98} resizeMode={'cover'} />
+                activeOpacity={.8}>
+                <View style={styles.imageWrapper}>
+                    <MyImage source={{ uri: props?.merchant?.image?.url }} height={98} width={98} resizeMode={'cover'} />
+                </View>
                 <MyText bold center black>{props?.merchant?.name}</MyText>
             </TouchableOpacity>
         </View>

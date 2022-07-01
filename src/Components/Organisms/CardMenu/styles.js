@@ -16,7 +16,6 @@ export default StyleSheet.create({
         alignSelf: 'center',
         height: 80,
         width: 80,
-        borderRadius: 12,
         marginRight: 16,
     },
     imgDescription: {
