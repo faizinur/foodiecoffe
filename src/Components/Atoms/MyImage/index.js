@@ -28,7 +28,13 @@ export default memo(({ height = 100, width = 100, source = BLANK_IMAGE, radius =
         <View style={{ width, height }}>
             <Animated.Image
                 onLoadEnd={setLoad}
-                source={source}
+                source={{
+                    ...source,
+                    method: 'POST',
+                    headers: {
+                        Pragma: 'no-cache'
+                    },
+                }}
                 style={[styles.defaultStyle, animatedImageStyle]}
                 resizeMode={resizeMode}
                 resizeMethod={resizeMethod}
