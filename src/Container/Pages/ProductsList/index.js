@@ -25,11 +25,11 @@ export default memo(({ navigation, route: { params } }) => {
     const refModalDetailProduct = useRef(<ModalDetailProduct />)
     const navBarPosY = useSharedValue({ bottom: -80 })
     const navBarPosYStyle = useAnimatedStyle(() => ({
-        bottom: withSpring(navBarPosY.value.bottom, CONSTANT.SPRING_CONFIG),
+        bottom: withSpring(categoryList.filter(({ count }) => count > 0).length > 0 ? 0 : navBarPosY.value.bottom, CONSTANT.SPRING_CONFIG),
     }))
     const footerHeight = useSharedValue({ height: 0 })
     const footerHeightStyle = useAnimatedStyle(() => ({
-        height: withSpring(footerHeight.value.height, CONSTANT.SPRING_CONFIG),
+        height: withSpring(categoryList.filter(({ count }) => count > 0).length > 0 ? 80 : footerHeight.value.height, CONSTANT.SPRING_CONFIG),
     }))
 
     const _onChangeBucket = (type, product) => refModalDetailProduct?.current?.toggle(type, product)
@@ -80,7 +80,7 @@ export default memo(({ navigation, route: { params } }) => {
             />
             <View style={styles.container}>
                 <View style={{ backgroundColor: colors.white, flex: 1 }}>
-                    <FlatList
+                    {/* <FlatList
                         refreshControl={
                             <RefreshControl
                                 refreshing={merchantLoading}
@@ -98,7 +98,7 @@ export default memo(({ navigation, route: { params } }) => {
                         nestedScrollEnabled={true}
                         ListEmptyComponent={<MyText large bold black>Oops, Kategori Masih kosong nih...!</MyText>}
                         ListFooterComponent={<Animated.View style={footerHeightStyle} />}
-                    />
+                    /> */}
                 </View>
                 <Animated.View style={[navBarPosYStyle, { position: 'absolute', left: 0, height: 80, width: '100%', backgroundColor: colors.white, borderTopColor: colors.athensGray, borderTopWidth: 1, padding: 16, justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }]}>
                     <View style={{ justifyContent: 'center', flexDirection: 'row' }}>

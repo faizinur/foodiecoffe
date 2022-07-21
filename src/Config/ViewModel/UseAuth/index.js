@@ -6,7 +6,7 @@ import { setUser } from '@Actions';
 import { reset } from '@RootNavigation';
 import { log } from '@Utils';
 export default () => {
-    const { authUser, refreshToken, getUserData, setUserData, logOut } = Auth;
+    const { authUser, refreshToken, getUserData, setUserData, logOut, updateUserData } = Auth;
     const [authError, setAuthError] = useState('');
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
@@ -55,25 +55,20 @@ export default () => {
         return Promise.resolve(data);
     }
 
-    const _refreshToken = useCallback(async (userData) => {
+    const _refreshToken = async oldToken => {
         try {
-            let { status, message, data } = await refreshToken(userData.token);
-
-            if (status != 200) throw 'rerfreshing token error';
-
-            if (data == null) {
-                return Promise.resolve('OK')
-            }
-            global.showToast(message);
-            let newUserData = userData.token.access_token = data;
-            await setUserData(newUserData);
-            dispatch(setUser(newUserData));
+            const { data: token } = await refreshToken(oldToken);
+            if (token == null) return Promise.resolve('TOKEN BELUM EXPIRED');
+            const userData = await getUserData();
+            global.showToast('token di perbaharui');
+            await updateUserData({ ...userData, token: token });
+            dispatch(setUser({ ...userData, token }));
             return Promise.resolve('OK')
         } catch (err) {
-            global.showToast(err);
+            // global.showToast(JSON.stringify(err));
             return Promise.reject('FAILED');
         }
-    }, [])
+    }
 
     const _logOut = () => {
         log('_onLogOut : ');

@@ -10,16 +10,8 @@ export default memo(({ navigation: { replace } }) => {
     const _onMount = useCallback(async () => {
         try {
             let userData = await _getUserData();
-            if (userData != null) {
-                let resultRefresh = await _refreshToken(userData);
-                if (resultRefresh == 'OK') {
-                    replace('Home')
-                } else {
-                    throw "GAGAL PERBAHARUI TOKEN";
-                }
-            } else {
-                throw "MASUK DULU";
-            }
+            if (userData != null) replace('Home')
+            // await _refreshToken(userData.token);
         } catch (e) {
             log('Splash on mount', e)
             setTimeout(() => replace('Login'), 1000)

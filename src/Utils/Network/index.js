@@ -32,6 +32,8 @@ const POST = async (url = '', payload = {}) => {
     // log(`POST TO ${BASE_URL}${url}`)
     try {
         let { data, status } = await myAxiosInstance.post(url, payload);
+        if (url == 'auth/refresh' && status == 400) return Promise.resolve(null)
+
         switch (status) {
             case 200:
             case 400:
@@ -50,6 +52,7 @@ const GET = async (url = '') => {
     if (url == '') return Promise.reject()
     // log(`GET TO ${BASE_URL}${url}`)
     try {
+        await REFRESH_TOKEN()
         let Authorization = '';
         let appConfig = await MyRealm.selectData(APP_CONFIG);
         Authorization = `Bearer ${appConfig.length > 0 ? JSON.parse(appConfig[0]?.value)?.token?.access_token : ''}`;
@@ -57,9 +60,16 @@ const GET = async (url = '') => {
         switch (status) {
             case 200:
             case 400:
+                return Promise.resolve(data);
             case 401:
             case 403:
-                return Promise.resolve(data)
+                log('masuk sini')
+                // if (data.status == 'expired') {
+                //     await REFRESH_TOKEN(url);
+                //     return Promise.resolve([]);
+                // }
+                // GET(url)
+                break;
             default: throw (status)
         }
 
@@ -68,5 +78,21 @@ const GET = async (url = '') => {
         return Promise.reject(err)
     }
 };
+
+const REFRESH_TOKEN = async () => {
+    try {
+        let appConfig = await MyRealm.selectData(APP_CONFIG);
+        let { data } = await myAxiosInstance.post('auth/refresh', JSON.parse(appConfig[0]?.value)?.token);
+        let appConfigValues = JSON.parse(appConfig[0].value)
+        appConfigValues.token.access_token = data.token.access_token
+        await MyRealm.updateData(APP_CONFIG, { id: appConfig[0].configId, value: JSON.stringify(appConfigValues.token.access_token) });
+        // log('refreshed : ', data.token.access_token)
+        let newAppConfig = await MyRealm.selectData(APP_CONFIG);
+        // log('new select : ', newAppConfig[0].value)
+    } catch (err) {
+        log('ERROR POST CATCH :', err)
+        return Promise.reject(err)
+    }
+}
 
 export { POST, GET };

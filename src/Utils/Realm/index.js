@@ -13,6 +13,7 @@ const insertData = payload => {
         try {
             const realm = await Realm.open(dbOptions);
             realm.write(() => {
+                log(payload.value)
                 let appConfigCount = realm.objects(APP_CONFIG).filtered(`key == "${payload.key}"`);
                 if (appConfigCount.length > 0) {
                     realm.delete(appConfigCount);
@@ -92,9 +93,15 @@ const updateData = (key, updatedValue) => {
     return new Promise(async (resolve, reject) => {
         try {
             const realm = await Realm.open(dbOptions);
-            let foundData = realm.objectForPrimaryKey(key, updatedValue.id);
+            let foundData = await realm.objectForPrimaryKey(key, updatedValue.id);
+            let iteratedValue = { ...updatedValue };
+            delete iteratedValue['id'];
+
             if (typeof (foundData) !== 'undefined') {
-                Object.keys(foundData).map(key => foundData[key] = updatedValue[key])
+                Object.keys(iteratedValue).map(key => {
+                    log('update : ', key, iteratedValue[key])
+                    foundData[key] = updatedValue[key]
+                })
                 resolve(foundData);
             } else {
                 reject(`Primary key ${updatedValue.productId} Not Found`);

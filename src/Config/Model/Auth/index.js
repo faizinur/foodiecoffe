@@ -24,20 +24,12 @@ const registerUser = data => {
     }
 };
 
-const refreshToken = async (token) => {
-    try {
-        let refreshed = await POST('auth/refresh', token);
-        return {
-            status: 200,
-            message: 'token' in refreshed ? 'Got New Token' : '',
-            data: 'token' in refreshed ? refreshed.token : null,
-        }
-    } catch (err) {
-        return {
-            status: "FAILED",
-            message: `MODEL AUTH ${e}`,
-            data: null,
-        }
+const refreshToken = async token => {
+    let data = await POST('auth/refresh', token);
+    return {
+        status: 200,
+        message: 'MODEL refreshToken',
+        data,
     }
 }
 
@@ -51,9 +43,19 @@ const getUserData = async () => {
     }
 }
 
-const setUserData = async ({ user, token }) => {
+const setUserData = async userData => {
     try {
-        await MyRealm.insertData({ key: 'userData', value: JSON.stringify({ user, token }) })
+        await MyRealm.insertData({ key: 'userData', value: JSON.stringify(userData) })
+        return true;
+    } catch (err) {
+        return err;
+    }
+}
+
+const updateUserData = async userData => {
+    try {
+        const [{ configId }] = await MyRealm.selectData(APP_CONFIG)
+        await MyRealm.updateData(APP_CONFIG, { id: configId, value: JSON.stringify(userData) })
         return true;
     } catch (err) {
         return err;
@@ -77,4 +79,5 @@ export {
     registerUser,
     refreshToken,
     logOut,
+    updateUserData,
 }
