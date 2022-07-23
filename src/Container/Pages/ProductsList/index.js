@@ -4,7 +4,7 @@ import { log, CONSTANT } from '@Utils';
 import { useTheme } from 'react-native-paper';
 import { TitleBar, InputItems } from '@Molecules';
 import { MyText } from '@Atoms';
-import { CardProduct, Forms } from '@Organisms';
+import { CardProduct } from '@Organisms';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Animated, {
     useSharedValue,
@@ -55,7 +55,7 @@ export default memo(({ navigation, route: { params } }) => {
 
     useEffect(() => {
         log('Mount ProductsList');
-        _getCategoryList(params);
+        _getCategoryList(params.categoryId);
         return () => {
             log('Unmount ProductsList')
         }
@@ -80,7 +80,7 @@ export default memo(({ navigation, route: { params } }) => {
             />
             <View style={styles.container}>
                 <View style={{ backgroundColor: colors.white, flex: 1 }}>
-                    {/* <FlatList
+                    <FlatList
                         refreshControl={
                             <RefreshControl
                                 refreshing={merchantLoading}
@@ -98,7 +98,7 @@ export default memo(({ navigation, route: { params } }) => {
                         nestedScrollEnabled={true}
                         ListEmptyComponent={<MyText large bold black>Oops, Kategori Masih kosong nih...!</MyText>}
                         ListFooterComponent={<Animated.View style={footerHeightStyle} />}
-                    /> */}
+                    />
                 </View>
                 <Animated.View style={[navBarPosYStyle, { position: 'absolute', left: 0, height: 80, width: '100%', backgroundColor: colors.white, borderTopColor: colors.athensGray, borderTopWidth: 1, padding: 16, justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }]}>
                     <View style={{ justifyContent: 'center', flexDirection: 'row' }}>

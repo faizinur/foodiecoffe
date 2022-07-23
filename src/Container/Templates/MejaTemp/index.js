@@ -10,12 +10,11 @@ import styles from './styles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MejaModals from './MejaModals';
 import MejaFilterModal from './MejaFilterModal';
-import MenuCategoryModal from './MenuCategoryModal';
-import { UseAuth, UseMerchant } from '@ViewModel';
+import { UseAuth } from '@ViewModel';
 import Animated, { useAnimatedStyle, withTiming, } from 'react-native-reanimated';
 let searchState = false;
 const { BASE_URL } = CONSTANT;
-export default memo(({ navigation, animateNavbar }) => {
+export default memo(({ onChooseMeja = null }) => {
     const { _getUserData } = UseAuth();
     const {
         _getTables,
@@ -31,28 +30,15 @@ export default memo(({ navigation, animateNavbar }) => {
         refreshingTable,
         setRefreshingTable,
     } = UseTable();
-    const {
-        _getMerchant,
-        merchantList,
-        merchantLoading,
-        merchantError,
-        searchQuery,
-        setSearchQuery,
-        _filterCategory,
-        filteredCategory,
-        _clearFilteredCategory,
-    } = UseMerchant()
     const { colors } = useTheme();
     const refTextinputContainer = useRef(<View />)
     const refTextTitleContainer = useRef(<View />)
-    const refMenuCategoryModal = useRef(<MenuCategoryModal />)
     const refMejaModals = useRef(<MejaModals />)
     const refMejaFilterModal = useRef(<MejaFilterModal />)
 
     const navbarButtonStyle = useAnimatedStyle(() => ({
         transform: [{ translateY: withTiming(Object.keys(selectedTable).length > 0 ? 0 : 80, { duration: 100 }) }]
     }))
-
 
     const _onClickSearch = () => {
         if (searchState) _clearFiltered()
@@ -71,31 +57,36 @@ export default memo(({ navigation, animateNavbar }) => {
         <Icon name={props.iconName} size={26} black />
     </TouchableOpacity>)
 
+
     const _onPressQR = async props => {
         const { user: { merchantId } } = await _getUserData()
         const qrURI = `${BASE_URL}${merchantId || 'B1778H'}/qr/${props.qr.name}`;
-        setSelectedTable(props)
         refMejaModals.current?.toggle({ ...props, qr: { uri: qrURI } })
     }
 
     const _selectTable = useCallback(meja => {
         if (selectedTable?.id == meja?.id) {
             setSelectedTable({})
-            animateNavbar(0, 1)
         } else {
             setSelectedTable(meja)
-            animateNavbar(-66, 0)
         }
         log(selectedTable?.id)
     }, [selectedTable])
 
-    const _onPilihMejaPress = useCallback(() => refMenuCategoryModal.current?.toggle(), [])
+    const _onPilihMejaPress = useCallback(() => onChooseMeja(selectedTable), [selectedTable])
 
-    const _renderTilesMeja = ({ item }) => <TilesMeja seat={item} numColumns={2} onPress={_selectTable} _onPressQR={_onPressQR} selectedTable={selectedTable} />
+    const _renderTilesMeja = ({ item }) => <TilesMeja seat={item} numColumns={2}
+        onPress={seat => {
+            if (onChooseMeja == null) {
+                _onPressQR(seat)
+            } else {
+                _selectTable(seat)
+            }
+        }}
+        selectedTable={selectedTable} />
     useEffect(() => {
         log('Mount MejaTemp');
         _getTables();
-        _getMerchant();
         return () => {
             log('Unmount MejaTemp')
         }
@@ -166,17 +157,6 @@ export default memo(({ navigation, animateNavbar }) => {
                     label={'Pilih Menu'}
                     labelStyle={{ fontSize: 14 }} />
             </Animated.View>
-            <MenuCategoryModal
-                ref={refMenuCategoryModal}
-                navigation={navigation}
-                merchantList={merchantList}
-                loading={merchantLoading}
-                merchantError={merchantError}
-                searchQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
-                filterCategory={_filterCategory}
-                filteredCategory={filteredCategory}
-                clearFilteredCategory={_clearFilteredCategory} />
             <MejaModals ref={refMejaModals} />
             <MejaFilterModal
                 ref={refMejaFilterModal}

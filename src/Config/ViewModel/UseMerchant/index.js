@@ -30,7 +30,7 @@ export default () => {
         }
     }, [merchantList])
 
-    const _getCategoryList = useMemo(() => async (params) => {
+    const _getCategoryList = useMemo(() => async (selectedCategoryId) => {
         try {
             setMerchantLoading(true)
             setMerchantError('')
@@ -39,7 +39,7 @@ export default () => {
                 data
                     .map(item => ({ ...item, ...{ notes: null, count: 0 } }))
                     .sort((prev, next) => prev.id < next.id)
-                    .filter(({ categoryId }) => categoryId == params.id)
+                    .filter(({ categoryId }) => categoryId == selectedCategoryId)
             )
             setMerchantLoading(false)
         } catch (err) {

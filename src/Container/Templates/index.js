@@ -1,11 +1,13 @@
 import HomeTemp from "./HomeTemp";
-import TransTemp from "./TransTemp";
-import MenuTemp from "./MenuTemp";
 import MejaTemp from "./MejaTemp";
+import MenuTemp from "./MenuTemp";
+import MerchantTemp from './MerchantTemp'
+import TransTemp from "./TransTemp";
 
 export {
     HomeTemp,
-    TransTemp,
-    MenuTemp,
     MejaTemp,
+    MenuTemp,
+    MerchantTemp,
+    TransTemp,
 }

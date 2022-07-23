@@ -26,11 +26,6 @@ export default forwardRef((props, ref) => {
     const _onCloseModal = useCallback(() => {
         setModalVisible(prevState => !prevState);
     }, [modalVisible]);
-    const _onGoogleVisionBarcodesDetected = useCallback(({ barcodes }) => {
-        if (barcodes.length > 0) {
-            log('barcodes : ', barcodes);
-        }
-    }, [])
     const FloatingQRMarker = useCallback(() => (<View style={styles.qrWrapper}>
         <View style={styles.qrMarker}>
             <Image source={meja.qr} style={{ height: '100%', width: '100%' }} />

@@ -58,6 +58,7 @@ export default () => {
     const _refreshToken = async oldToken => {
         try {
             const { data: token } = await refreshToken(oldToken);
+            log('_refreshToken', token)
             if (token == null) return Promise.resolve('TOKEN BELUM EXPIRED');
             const userData = await getUserData();
             global.showToast('token di perbaharui');

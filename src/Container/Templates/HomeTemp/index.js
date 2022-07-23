@@ -8,10 +8,10 @@ import styles from './styles';
 import { CardOrder } from '@Organisms';
 import { TopTabbar, EmptyOrderScreen } from '@Molecules';
 import { MyToolBar } from '@Organisms';
-import { UseOrder, UseMerchant } from '@ViewModel';
+import { UseOrder } from '@ViewModel';
 import HomeModals from './HomeModals'
 const INITIAL_PAGE = 0;
-export default memo(({ navigation }) => {
+export default memo(({ navigation: { navigate } }) => {
     const {
         _getOrders,
         _subscribeOrders,
@@ -21,17 +21,6 @@ export default memo(({ navigation }) => {
         setRefreshingOrder,
         orderError,
     } = UseOrder()
-    const {
-        _getMerchant,
-        merchantList,
-        merchantLoading,
-        merchantError,
-        searchQuery,
-        setSearchQuery,
-        _filterCategory,
-        filteredCategory,
-        _clearFilteredCategory,
-    } = UseMerchant()
     const { colors } = useTheme();
     const refPagerViewChild = useRef(<PagerView />);
     const refHomeModals = useRef(<HomeModals />);
@@ -53,13 +42,19 @@ export default memo(({ navigation }) => {
 
     const _onTabChange = useCallback((index) => refPagerViewChild.current?.setPage(index), [])
     const _onConfirmCalendar = useCallback(data => log('_onPressCalendar Pressed', data), [])
-    const _onFABClick = () => refHomeModals?.current?.toggle()
-    const _renderCardOrder = useCallback(({ item }) => <CardOrder order={item} onPress={() => navigation.navigate('DetailOrder', { order: { ...item } })} />, []);
+    const _onFABClick = () => {
+        log('_onFABClick')
+        refHomeModals?.current?.toggle()
+    }
+    const _renderCardOrder = useCallback(({ item }) => <CardOrder order={item} onPress={() => navigate('DetailOrder', { order: { ...item } })} />, []);
+
+    const _onSelectedMejaCategory = (payload) => {
+        navigate('ProductsList', { ...payload })
+    }
 
     useEffect(() => {
         log('Mount HomeTemp');
         _subscribeOrders()
-        _getMerchant()
         return () => {
             log('Unmount HomeTemp')
             _unSubscribeOrders();
@@ -130,15 +125,8 @@ export default memo(({ navigation }) => {
             </PagerView>
             <HomeModals
                 ref={refHomeModals}
-                navigation={navigation}
-                merchantList={merchantList}
-                loading={merchantLoading}
-                merchantError={merchantError}
-                searchQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
-                filterCategory={_filterCategory}
-                filteredCategory={filteredCategory}
-                clearFilteredCategory={_clearFilteredCategory} />
+                onSelectedMejaCategory={_onSelectedMejaCategory}
+            />
         </View>
     )
 })

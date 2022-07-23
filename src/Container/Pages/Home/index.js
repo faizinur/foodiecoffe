@@ -11,7 +11,6 @@ export default props => {
     const refNavbar = useRef(<Navbar />);
     const { colors } = useTheme()
     const _onNavbarChange = (index) => refPagerView.current?.setPageWithoutAnimation(index)
-    const _animateNavbar = (...args) => refNavbar?.current?.toggle(...args)
     const [appReady, setAppReady] = useState(false);
     useEffect(() => {
         setTimeout(() => setAppReady(true), 500);
@@ -28,7 +27,7 @@ export default props => {
                 <HomeTemp  {...props} key={0} />
                 <TransTemp {...props} key={1} />
                 <MenuTemp {...props} key={2} />
-                <MejaTemp {...props} key={3} animateNavbar={_animateNavbar} />
+                <MejaTemp {...props} key={3} />
             </PagerView>
             <Navbar {...props} ref={refNavbar} onChange={_onNavbarChange} INITIAL_PAGE={INITIAL_PAGE} />
         </>

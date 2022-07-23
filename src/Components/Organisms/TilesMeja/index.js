@@ -20,9 +20,9 @@ export default memo(props => {
                 style={[styles.cardShadow, styles.container(props?.selectedTable?.id == props?.seat.id ? colors.cerulean : colors.white)]}>
                 <View style={styles.qrWrapper}>
                     <MyText large bold color={textColor}>{props?.seat?.number || 'xx'}</MyText>
-                    <TouchableOpacity activeOpacity={.9} disabled={disabled} onPress={() => props?._onPressQR(props?.seat)} style={styles.qr}>
+                    <View style={styles.qr}>
                         <Icon name={iconName} size={25} color={iconColor} />
-                    </TouchableOpacity>
+                    </View>
                 </View>
                 <MyText left small bold color={textColor}>Lantai {props?.seat?.floor || 'Lantai xx'}</MyText>
                 <MyText left light color={textColor}>{props?.seat?.seat || 'x - x'} Orang</MyText>

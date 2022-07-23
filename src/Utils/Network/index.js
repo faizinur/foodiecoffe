@@ -50,7 +50,6 @@ const POST = async (url = '', payload = {}) => {
 };
 
 const GET = async (url = '') => {
-    log('masuk sini GET', url)
     if (url == '') return Promise.reject()
     // log(`GET TO ${BASE_URL}${url}`)
     try {
@@ -60,16 +59,15 @@ const GET = async (url = '') => {
         let { data, status } = await myAxiosInstance.get(url, { headers: { Authorization, } });
         switch (status) {
             case 200:
-            case 400:
-                log('token masih aktif kok... ada', data.length)
+                // log(url, 'token masih aktif kok... ada', data.length)
                 return Promise.resolve(data);
+            case 400:
             case 401:
             case 403:
                 global.showToast('minta token baru dulu ya...')
-                log('minta token baru dulu ya...')
+                // log('minta token baru dulu ya...')
                 await REFRESH_TOKEN(appConfig);
-                GET(url)
-                break;
+                return GET(url)
             default: throw (status)
         }
 
@@ -93,10 +91,10 @@ const REFRESH_TOKEN = async appConfig => {
             }
         }
         await MyRealm.updateData(APP_CONFIG, { id: appConfig.configId, value: JSON.stringify(appConfig.value) })
-        return Promise.resolve(true);
+        return true;
     } catch (err) {
         log('ERROR POST CATCH REFRESH_TOKEN :', err)
-        return Promise.reject(false)
+        return false
     }
 }
 

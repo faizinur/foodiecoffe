@@ -1,11 +1,9 @@
-import { View, Image, TouchableOpacity } from 'react-native'
+import { View, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { MyText, MyImage } from '@Atoms'
 import { useTheme, Chip } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { IC_PRODUCT } from '@Atoms/Icons';
-import styles from './styles'
-import { log } from '@Utils'
+
 export default (props) => {
     const { colors } = useTheme()
     return (
@@ -17,10 +15,10 @@ export default (props) => {
                     <MyText left light black>Rp.{props?.item?.price}</MyText>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                         <View style={{ justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', width: 80, height: 40, }}>
-                            <TouchableOpacity activeOpacuty={.9} onPress={props?.onAdd} style={{ width: 24, height: 24, borderRadius: 12, borderWidth: 1, borderColor: colors.wildWaterMelon, justifyContent: 'center', alignItems: 'center' }}>
-                                <Icon name={'minus'} size={20} color={colors.wildWaterMelon} />
+                            <TouchableOpacity activeOpacuty={.9} onPress={props?.onAdd} disabled={props?.item?.count < 1} style={{ width: 24, height: 24, borderRadius: 12, borderWidth: 1, borderColor: props?.item?.count < 1 ? colors.silverChalice : colors.wildWaterMelon, justifyContent: 'center', alignItems: 'center' }}>
+                                <Icon name={'minus'} size={20} color={props?.item?.count < 1 ? colors.silverChalice : colors.wildWaterMelon} />
                             </TouchableOpacity>
-                            <MyText left light black center>{props?.item?.count}</MyText>
+                            <MyText left light color={props?.item?.count < 1 ? colors.silverChalice : colors.black} center>{props?.item?.count}</MyText>
                             <TouchableOpacity activeOpacuty={.9} onPress={props?.onRemove} style={{ width: 24, height: 24, borderRadius: 12, borderWidth: 1, borderColor: colors.wildWaterMelon, justifyContent: 'center', alignItems: 'center' }}>
                                 <Icon name={'plus'} size={20} color={colors.wildWaterMelon} />
                             </TouchableOpacity>

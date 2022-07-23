@@ -28,24 +28,30 @@ export default StyleSheet.create({
         alignItems: 'center',
     },
 
-    drawerIndicator: {
-        height: 4,
-        width: 30,
-        alignSelf: 'center',
-        backgroundColor: colors.athensGray,
-        borderRadius: 100,
-        marginBottom: 6
-    },
-
-    contentContainerStyle: {
+    contentModalContainerStyle: {
         padding: 5,
         flex: 1,
         backgroundColor: colors.white,
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
     },
-
-    sectionContainer: {
-        paddingHorizontal: '5%'
+    FAB: {
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        position: 'absolute',
+        height: 58,
+        width: 58,
+        borderRadius: 30,
+        backgroundColor: colors.cerulean,
+        top: 84,
+        right: 24,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })
