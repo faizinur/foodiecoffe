@@ -59,23 +59,22 @@ export default memo(({ navigation }) => {
     useEffect(() => {
         log('Mount HomeTemp');
         _subscribeOrders()
-        // _getMerchant()
+        _getMerchant()
         return () => {
             log('Unmount HomeTemp')
-            // _unSubscribeOrders();
+            _unSubscribeOrders();
         }
     }, [])
     return (
         <View style={styles.container}>
-            <TopTabbar onTabChange={_onTabChange} badgeCounts={[orderList.length,]} />
+            <TopTabbar onTabChange={_onTabChange} badgeCounts={[orderList?.length || 0,]} />
             <PagerView
                 ref={refPagerViewChild}
                 style={styles.pagerContainer}
                 initialPage={INITIAL_PAGE}
                 scrollEnabled={false}>
                 <View key='0' style={{ flex: 1, paddingHorizontal: '5%', paddingBottom: 60 }}>
-                    <MyText>{JSON.stringify(orderList)}</MyText>
-                    {/* {orderError == '' &&
+                    {orderError == '' &&
                         <FlatList
                             ListHeaderComponent={<MyText medium bold left black>List Pesanan</MyText>}
                             refreshControl={
@@ -93,7 +92,7 @@ export default memo(({ navigation }) => {
                             keyExtractor={({ id }) => id}
                             showsVerticalScrollIndicator={false}
                             ListFooterComponent={<View style={{ height: 100 }} />}
-                            ListEmptyComponent={orderList.length > 0 ? <MyText light bold black>tunggu</MyText> : <EmptyOrderScreen />}
+                            ListEmptyComponent={orderList?.length > 0 ? <MyText light bold black>tunggu</MyText> : <EmptyOrderScreen />}
                         />
                         || <MyText light bold style={{ textAlign: 'center' }} black>upss kita ada kendala nih... {`\n\n`}{orderError}</MyText>}
                     <FAB
@@ -107,7 +106,7 @@ export default memo(({ navigation }) => {
                         }}
                         color={colors.white}
                         onPress={_onFABClick}
-                    /> */}
+                    />
                 </View>
                 <View key='1' style={styles.pagerInnerContainer}>
                     <MyToolBar

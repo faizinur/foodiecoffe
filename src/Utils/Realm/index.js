@@ -31,7 +31,7 @@ const insertData = payload => {
     })
 }
 
-const selectData = async (key) => {
+const selectData = async (key, callback = null) => {
     if (key == '') return Promise.reject('key kosong')
     return new Promise(async (resolve, reject) => {
         try {
@@ -42,7 +42,7 @@ const selectData = async (key) => {
                 selectedData = JSON.parse(JSON.stringify(realm.objects(key)));
             });
             //realm.close();
-            resolve(selectedData);
+            resolve(callback != null ? callback(selectedData) : selectedData);
         } catch (error) {
             reject(error);
         }
@@ -90,26 +90,45 @@ const insertProduct = products => {
     })
 }
 const updateData = (key, updatedValue) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            const realm = await Realm.open(dbOptions);
-            let foundData = await realm.objectForPrimaryKey(key, updatedValue.id);
-            let iteratedValue = { ...updatedValue };
-            delete iteratedValue['id'];
 
-            if (typeof (foundData) !== 'undefined') {
-                Object.keys(iteratedValue).map(key => {
-                    log('update : ', key, iteratedValue[key])
-                    foundData[key] = updatedValue[key]
-                })
-                resolve(foundData);
-            } else {
-                reject(`Primary key ${updatedValue.productId} Not Found`);
-            }
-        } catch (e) {
-            reject(e)
-        }
+    return new Promise(async (resolve, reject) => {
+        if (updatedValue.id == '') reject('primaryKey empty');
+        Realm.open(dbOptions).then(realm => {
+            realm.write(() => {
+                let objData = realm.objectForPrimaryKey(key, updatedValue.id);
+                delete updatedValue['id'];
+                if (typeof (objData) !== 'undefined') {
+                    Object.keys(updatedValue).map(key => objData[key] = updatedValue[key])
+                    resolve('OK');
+                } else {
+                    reject(`Primary key ${updatedValue.id} Not Found`);
+                }
+            });
+        });
     })
+
+    ///ERRORR!
+    // return new Promise(async (resolve, reject) => {
+    //     try {
+    //         const realm = await Realm.open(dbOptions);
+    //         let foundData = await realm.objectForPrimaryKey(key, updatedValue.id);
+    //         let iteratedValue = { ...updatedValue };
+    //         delete iteratedValue['id'];
+
+    //         if (typeof (foundData) !== 'undefined') {
+    //             log(Object.keys(iteratedValue))
+    //             Object.keys(iteratedValue).map(key => {
+    //                 log('update : ', key, iteratedValue[key])
+    //                 foundData[key] = updatedValue[key]
+    //             })
+    //             resolve(foundData);
+    //         } else {
+    //             reject(`Primary key ${updatedValue.productId} Not Found`);
+    //         }
+    //     } catch (e) {
+    //         reject(e)
+    //     }
+    // })
 }
 
 const closeConnection = async () => {

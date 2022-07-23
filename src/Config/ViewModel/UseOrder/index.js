@@ -30,17 +30,17 @@ export default () => {
         const userData = await getUserData();
         if (userData == null) return Promise.reject(`userData null`);
         const { status, data, message } = await getOrders(userData.user.merchantId);
-        // if (status == 'SUCCESS') {
-        //     setOrderList(data)
-        // } else {
-        //     log('_subscribeOrders : ', message)
-        // }
+        if (status == 'SUCCESS') {
+            setOrderList(data)
+        } else {
+            log('_subscribeOrders : ', message)
+        }
 
-        // await new Promise(resolve => {
-        //     _unSubscribeOrders();
-        //     SUBSCRIBE_TIMEOUT = setTimeout(resolve, CONSTANT.CONNECT_RETRIES)
-        // });
-        // await _subscribeOrders();
+        await new Promise(resolve => {
+            _unSubscribeOrders();
+            SUBSCRIBE_TIMEOUT = setTimeout(resolve, CONSTANT.CONNECT_RETRIES)
+        });
+        await _subscribeOrders();
     }, []);
 
     const _unSubscribeOrders = () => {

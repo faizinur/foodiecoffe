@@ -26,10 +26,9 @@ export default props => {
                 initialPage={INITIAL_PAGE}
                 scrollEnabled={false}>
                 <HomeTemp  {...props} key={0} />
-                {/* 
                 <TransTemp {...props} key={1} />
                 <MenuTemp {...props} key={2} />
-                <MejaTemp {...props} key={3} animateNavbar={_animateNavbar} /> */}
+                <MejaTemp {...props} key={3} animateNavbar={_animateNavbar} />
             </PagerView>
             <Navbar {...props} ref={refNavbar} onChange={_onNavbarChange} INITIAL_PAGE={INITIAL_PAGE} />
         </>

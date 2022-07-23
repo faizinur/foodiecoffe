@@ -3,6 +3,7 @@ import { log, MyRealm } from '@Utils';
 import { BASE_URL, NETWORK_TIMEOUT } from '../CONSTANT'
 import axios from 'axios';
 import { APP_CONFIG } from '@Utils/Realm/types';
+
 // const controller = new AbortController();
 
 // const CancelToken = axios.CancelToken;
@@ -49,49 +50,53 @@ const POST = async (url = '', payload = {}) => {
 };
 
 const GET = async (url = '') => {
+    log('masuk sini GET', url)
     if (url == '') return Promise.reject()
     // log(`GET TO ${BASE_URL}${url}`)
     try {
-        await REFRESH_TOKEN()
         let Authorization = '';
-        let appConfig = await MyRealm.selectData(APP_CONFIG);
-        Authorization = `Bearer ${appConfig.length > 0 ? JSON.parse(appConfig[0]?.value)?.token?.access_token : ''}`;
+        let appConfig = await MyRealm.selectData(APP_CONFIG, ([dbres]) => ({ ...dbres, value: JSON.parse(dbres.value) }));
+        Authorization = `Bearer ${appConfig?.value?.token?.access_token || ''}`;
         let { data, status } = await myAxiosInstance.get(url, { headers: { Authorization, } });
         switch (status) {
             case 200:
             case 400:
+                log('token masih aktif kok... ada', data.length)
                 return Promise.resolve(data);
             case 401:
             case 403:
-                log('masuk sini')
-                // if (data.status == 'expired') {
-                //     await REFRESH_TOKEN(url);
-                //     return Promise.resolve([]);
-                // }
-                // GET(url)
+                global.showToast('minta token baru dulu ya...')
+                log('minta token baru dulu ya...')
+                await REFRESH_TOKEN(appConfig);
+                GET(url)
                 break;
             default: throw (status)
         }
 
     } catch (err) {
-        log('ERROR GET')
+        log('ERROR GET', url, ' ', err)
         return Promise.reject(err)
     }
 };
 
-const REFRESH_TOKEN = async () => {
+const REFRESH_TOKEN = async appConfig => {
     try {
-        let appConfig = await MyRealm.selectData(APP_CONFIG);
-        let { data } = await myAxiosInstance.post('auth/refresh', JSON.parse(appConfig[0]?.value)?.token);
-        let appConfigValues = JSON.parse(appConfig[0].value)
-        appConfigValues.token.access_token = data.token.access_token
-        await MyRealm.updateData(APP_CONFIG, { id: appConfig[0].configId, value: JSON.stringify(appConfigValues.token.access_token) });
-        // log('refreshed : ', data.token.access_token)
-        let newAppConfig = await MyRealm.selectData(APP_CONFIG);
-        // log('new select : ', newAppConfig[0].value)
+        let { data: { token: { access_token } } } = await myAxiosInstance.post('auth/refresh', appConfig.value.token);
+        appConfig = {
+            ...appConfig,
+            value: {
+                ...appConfig.value,
+                token: {
+                    ...appConfig.value.token,
+                    access_token,
+                }
+            }
+        }
+        await MyRealm.updateData(APP_CONFIG, { id: appConfig.configId, value: JSON.stringify(appConfig.value) })
+        return Promise.resolve(true);
     } catch (err) {
-        log('ERROR POST CATCH :', err)
-        return Promise.reject(err)
+        log('ERROR POST CATCH REFRESH_TOKEN :', err)
+        return Promise.reject(false)
     }
 }
 
