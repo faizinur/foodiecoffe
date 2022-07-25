@@ -1,4 +1,3 @@
-import { UseTable } from '@ViewModel';
 import { View, TouchableOpacity, FlatList, RefreshControl } from 'react-native';
 import React, { useEffect, memo, useRef, useCallback } from 'react';
 import { log, CONSTANT } from '@Utils';
@@ -10,7 +9,7 @@ import styles from './styles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MejaModals from './MejaModals';
 import MejaFilterModal from './MejaFilterModal';
-import { UseAuth } from '@ViewModel';
+import { UseAuth, UseTable } from '@ViewModel';
 import Animated, { useAnimatedStyle, withTiming, } from 'react-native-reanimated';
 let searchState = false;
 const { BASE_URL } = CONSTANT;
@@ -20,7 +19,6 @@ export default memo(({ onChooseMeja = null }) => {
         _getTables,
         tableList,
         selectedTable,
-        setSelectedTable,
         _searchTable,
         filteredTables,
         _clearFiltered,
@@ -29,6 +27,8 @@ export default memo(({ onChooseMeja = null }) => {
         tableError,
         refreshingTable,
         setRefreshingTable,
+        _selectTable,
+        _updateTableOccupied,
     } = UseTable();
     const { colors } = useTheme();
     const refTextinputContainer = useRef(<View />)
@@ -64,14 +64,7 @@ export default memo(({ onChooseMeja = null }) => {
         refMejaModals.current?.toggle({ ...props, qr: { uri: qrURI } })
     }
 
-    const _selectTable = useCallback(meja => {
-        if (selectedTable?.id == meja?.id) {
-            setSelectedTable({})
-        } else {
-            setSelectedTable(meja)
-        }
-        log(selectedTable?.id)
-    }, [selectedTable])
+
 
     const _onPilihMejaPress = useCallback(() => onChooseMeja(selectedTable), [selectedTable])
 
@@ -157,7 +150,7 @@ export default memo(({ onChooseMeja = null }) => {
                     label={'Pilih Menu'}
                     labelStyle={{ fontSize: 14 }} />
             </Animated.View>
-            <MejaModals ref={refMejaModals} />
+            <MejaModals ref={refMejaModals} onChange={_updateTableOccupied} />
             <MejaFilterModal
                 ref={refMejaFilterModal}
                 onApplyFilter={(_floor, _seat) => _searchTable(({ floor, seat }) => parseInt(_floor) == parseInt(floor) && parseInt(_seat) < parseInt(seat))}

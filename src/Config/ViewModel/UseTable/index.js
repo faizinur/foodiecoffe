@@ -66,6 +66,26 @@ export default () => {
         }
     }, [filteredTables, selectedTable, searchValue])
 
+
+    const _selectTable = useCallback(meja => {
+        if (selectedTable?.id == meja?.id) {
+            setSelectedTable({})
+        } else {
+            setSelectedTable(meja)
+        }
+        log(selectedTable?.id)
+    }, [selectedTable])
+
+    const _updateTableOccupied = useCallback(meja => {
+        let foundIndex = tableList.findIndex(({ id }) => id == meja.id);
+        if (foundIndex < 0) return false;
+        let tmpTableList = [...tableList]
+        tmpTableList[foundIndex] = meja;
+        setTableList(tmpTableList);
+        setSelectedTable(meja);
+        tmpTableList = [];
+    }, [selectedTable, tableList])
+
     return {
         _getTables,
         tableList,
@@ -80,5 +100,7 @@ export default () => {
         _onChangeText,
         refreshingTable,
         setRefreshingTable,
+        _selectTable,
+        _updateTableOccupied,
     }
 }

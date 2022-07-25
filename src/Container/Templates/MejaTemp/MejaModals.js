@@ -6,9 +6,8 @@ import { MyText, MySwitch, MyModal } from '@Atoms';
 import { InputItems } from '@Molecules';
 import styles from './styles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-export default forwardRef((props, ref) => {
+export default forwardRef(({ onChange }, ref) => {
     const { colors } = useTheme();
-    const [isSwitch, setIsSwitch] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [meja, setMeja] = useState('');
     useImperativeHandle(ref, () => ({
@@ -34,7 +33,11 @@ export default forwardRef((props, ref) => {
         <View style={styles.qrMarkerTopLeft} />
         <View style={styles.qrMarkerBottomRight} />
         <View style={styles.qrMarkerBottomLeft} />
-    </View>), [meja])
+    </View>), [meja]);
+    const _updateOccupied = useCallback(occupied => {
+        setMeja(prevState => ({ ...prevState, occupied }));
+        onChange({ ...meja, occupied })
+    }, [meja]);
     return (
         <MyModal
             animationType={'fade'}
@@ -62,10 +65,10 @@ export default forwardRef((props, ref) => {
                 </View>
                 <View style={styles.dashed} />
                 <View style={styles.sectionList}>
-                    <MyText light>Status :: <MyText bold color={isSwitch ? colors.emerald : colors.black}>
+                    <MyText light>Status :: <MyText bold color={meja?.occupied ? colors.emerald : colors.black}>
                         {meja?.occupied ? 'Terisi' : 'Ditempati'} </MyText>::
                     </MyText>
-                    <MySwitch color={colors.emerald} value={meja?.occupied} onValueChange={data => log(data)} />
+                    <MySwitch color={colors.emerald} value={meja?.occupied} onChange={_updateOccupied} />
                 </View>
             </View>
             <View style={styles.buttonContainer}>

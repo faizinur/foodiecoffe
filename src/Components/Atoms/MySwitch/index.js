@@ -20,7 +20,7 @@ export default props => {
     return (
         <TouchableOpacity
             activeOpacity={.8}
-            onPress={() => props.onChange(!props?.value)}>
+            onPress={() => props?.onChange(!props?.value)}>
             <Animated.View
                 style={[trackStyle, styles.track]}>
                 <Animated.View style={[thumbStyle, styles.thumb]} />
