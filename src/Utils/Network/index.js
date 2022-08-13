@@ -32,9 +32,13 @@ const myAxiosInstance = axios.create({
 const POST = async (url = '', payload = {}) => {
     // log(`POST TO ${BASE_URL}${url}`)
     try {
-        let { data, status } = await myAxiosInstance.post(url, payload);
+        let Authorization = '';
+        if (url != 'auth/login') {
+            let appConfig = await MyRealm.selectData(APP_CONFIG, ([dbres]) => ({ ...dbres, value: JSON.parse(dbres.value) }));
+            Authorization = `Bearer ${appConfig?.value?.token?.access_token || ''}`;
+        }
+        let { data, status } = await myAxiosInstance.post(url, payload, { headers: { Authorization, } });
         if (url == 'auth/refresh' && status == 400) return Promise.resolve(null)
-
         switch (status) {
             case 200:
             case 400:

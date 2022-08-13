@@ -48,6 +48,17 @@ export default () => {
         }
     }
 
+    const _getProduct = async menuId => {
+        try {
+            const product = await MyRealm.selectData("PRODUCT", data => data.filter(({ id }) => id == menuId));
+            if (product.length == 0) return null;
+            return product[0]?.image?.url || 'https://via.placeholder.com/150';
+        } catch (err) {
+            log('useProduct _getProduct', err)
+            return null;
+        }
+    }
+
     return {
         productError,
         loadingProduct,
@@ -56,5 +67,6 @@ export default () => {
         setProductError,
         setLoadingProduct,
         _setProductavalability,
+        _getProduct,
     }
 }

@@ -20,6 +20,7 @@ export default memo(({ navigation: { navigate } }) => {
         refreshingOrder,
         setRefreshingOrder,
         orderError,
+        _onReachEnd,
     } = UseOrder()
     const { colors } = useTheme();
     const refPagerViewChild = useRef(<PagerView />);
@@ -46,7 +47,10 @@ export default memo(({ navigation: { navigate } }) => {
         log('_onFABClick')
         refHomeModals?.current?.toggle()
     }
-    const _renderCardOrder = useCallback(({ item }) => <CardOrder order={item} onPress={() => navigate('DetailOrder', { order: { ...item } })} />, []);
+    const _renderCardOrder = useCallback(({ item }) => {
+        log(JSON.stringify(item, null, 3))
+        return <CardOrder order={item} onPress={() => navigate('DetailOrder', { order: { ...item } })} />
+    }, []);
 
     const _onSelectedMejaCategory = (payload) => {
         navigate('ProductsList', { ...payload })
@@ -60,6 +64,7 @@ export default memo(({ navigation: { navigate } }) => {
             _unSubscribeOrders();
         }
     }, [])
+
     return (
         <View style={styles.container}>
             <TopTabbar onTabChange={_onTabChange} badgeCounts={[orderList?.length || 0,]} />
@@ -88,8 +93,9 @@ export default memo(({ navigation: { navigate } }) => {
                             showsVerticalScrollIndicator={false}
                             ListFooterComponent={<View style={{ height: 100 }} />}
                             ListEmptyComponent={orderList?.length > 0 ? <MyText light bold black>tunggu</MyText> : <EmptyOrderScreen />}
+                            onEndReached={_onReachEnd}
                         />
-                        || <MyText light bold style={{ textAlign: 'center' }} black>upss kita ada kendala nih... {`\n\n`}{orderError}</MyText>}
+                        || <MyText light bold black style={{ textAlign: 'center' }}>upss kita ada kendala nih... {`\n\n`}{orderError}</MyText>}
                     <FAB
                         icon="plus"
                         style={{

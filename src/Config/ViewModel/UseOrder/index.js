@@ -1,7 +1,8 @@
 import { Order, Auth } from '@Model';
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { log, CONSTANT } from '@Utils';
 let SUBSCRIBE_TIMEOUT = null;
+let page = 1;
 export default () => {
     const { getOrders } = Order;
     const { getUserData } = Auth;
@@ -9,43 +10,81 @@ export default () => {
     const [orderError, setOrderError] = useState('');
     const [refreshingOrder, setRefreshingOrder] = useState(false);
 
-    const _getOrders = useMemo(() => async () => {
+    const _getOrders = useCallback(async () => {
         try {
             setRefreshingOrder(true)
             setOrderError('')
             const userData = await getUserData();
             if (userData == null) return Promise.reject(`userData null`);
-            const { status, data, message } = await getOrders(userData.user.merchantId);
+            const { status, data, message } = await getOrders(userData?.user?.merchantId, 1);
             if (status != 'SUCCESS') throw message;
-            setOrderList(data)
+            if (data.length > 0) {
+                setOrderList(data)
+                page = 1;
+            }
             setRefreshingOrder(false)
         } catch (err) {
             setOrderError(`error Merchant ${err}`)
             setRefreshingOrder(false)
             global.showToast(err);
         }
-    }, [orderList]);
-
-    const _subscribeOrders = useMemo(() => async () => {
-        const userData = await getUserData();
-        if (userData == null) return Promise.reject(`userData null`);
-        const { status, data, message } = await getOrders(userData.user.merchantId);
-        if (status == 'SUCCESS') {
-            setOrderList(data)
-        } else {
-            log('_subscribeOrders : ', message)
-        }
-
-        await new Promise(resolve => {
-            _unSubscribeOrders();
-            SUBSCRIBE_TIMEOUT = setTimeout(resolve, CONSTANT.CONNECT_RETRIES)
-        });
-        await _subscribeOrders();
     }, []);
 
+    const _subscribeOrders = useCallback(async () => {
+        try {
+            const userData = await getUserData();
+            if (userData == null) return Promise.reject(`userData null`);
+            const { status, data, message } = await getOrders(userData.user.merchantId, 1);
+            if (status == 'SUCCESS') {
+                if (data.length > 0) memoizedOrderList(data)
+            }
+            await new Promise(resolve => {
+                _unSubscribeOrders();
+                SUBSCRIBE_TIMEOUT = setTimeout(resolve, CONSTANT.CONNECT_RETRIES)
+            });
+            await _subscribeOrders();
+        } catch (err) {
+            await _subscribeOrders();
+        }
+    }, [])
+
     const _unSubscribeOrders = () => {
-        clearTimeout(SUBSCRIBE_TIMEOUT)
+        clearTimeout(SUBSCRIBE_TIMEOUT);
     }
+
+    const memoizedOrderList = useCallback((data) => {
+        setOrderList(prevState => {
+            data.map(order => {
+                if (prevState.filter(({ id }) => id == order.id) == 0) {
+                    prevState = [...prevState, order]
+                }
+            })
+            return prevState;
+        })
+    }, [orderList])
+
+    const _onReachEnd = useCallback(async () => {
+        try {
+            setRefreshingOrder(true)
+            setOrderError('')
+            const userData = await getUserData();
+            if (userData == null) return Promise.reject(`userData null`);
+            const { status, data, message } = await getOrders(userData?.user?.merchantId, page);
+            if (status != 'SUCCESS') throw message;
+            if (data.length > 0) {
+                memoizedOrderList(data);
+                page = page + 1;
+            }
+            setRefreshingOrder(false)
+        } catch (err) {
+            setOrderError(`error Merchant ${err}`);
+            setRefreshingOrder(false);
+            global.showToast(err);
+            page = page - 1;
+        }
+    }, [])
+
+
     return {
         _getOrders,
         _subscribeOrders,
@@ -54,5 +93,6 @@ export default () => {
         refreshingOrder,
         setRefreshingOrder,
         orderError,
+        _onReachEnd,
     }
 }

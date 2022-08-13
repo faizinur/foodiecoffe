@@ -1,8 +1,8 @@
-import { log, GET } from '@Utils';
+import { log, POST } from '@Utils';
 
 const getMerchantCategory = async merchantId => {
     try {
-        let loginData = await GET(`${merchantId}/category/all`)
+        let loginData = await POST(`${merchantId}/category/all`)
         return {
             status: 'SUCCESS',
             message: 'API SUCCESS!',

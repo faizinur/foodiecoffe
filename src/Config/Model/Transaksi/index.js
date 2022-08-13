@@ -1,8 +1,8 @@
-import { log, GET } from '@Utils';
+import { log, POST } from '@Utils';
 
 const getDaftarTransaksi = async () => {
     try {
-        let transaksiData = await GET('transaction/all');
+        let transaksiData = await POST('transaction/all?page=1&limit=5');
         return {
             status: transaksiData.status,
             message: transaksiData.message,

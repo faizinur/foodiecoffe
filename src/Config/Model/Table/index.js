@@ -1,8 +1,8 @@
-import { log, GET } from '@Utils';
+import { log, POST } from '@Utils';
 
 const getTables = async merchantId => {
     try {
-        let tables = await GET(`${merchantId}/table/all`)
+        let tables = await POST(`${merchantId}/table/all`)
         return {
             status: 'SUCCESS',
             message: 'API SUCCESS!',

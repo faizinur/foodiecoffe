@@ -1,9 +1,9 @@
-import { log, GET, MyRealm } from '@Utils';
+import { log, GET, POST, MyRealm } from '@Utils';
 import { PRODUCT } from '@Utils/Realm/types';
 
 const getListProduct = async merchantId => {
     try {
-        let productData = await GET(`${merchantId}/menu/all`)
+        let productData = await POST(`${merchantId}/menu/all`)
         return {
             status: 'SUCCESS',
             message: 'API SUCCESS!',

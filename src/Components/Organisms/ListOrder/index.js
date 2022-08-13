@@ -6,6 +6,7 @@ import { useTheme, List } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { log } from '@Utils'
 import styles from './styles'
+
 export default (props) => {
     const { colors } = useTheme()
     return (
@@ -16,9 +17,8 @@ export default (props) => {
                 titleStyle={{ color: colors.black, fontSize: 15, fontWeight: 'bold', fontFamily: 'ReadexProMedium' }}>
                 {props?.orders?.map((item, index) => (
                     <View key={`order-${index}`}>
-                        {log(item)}
                         <View style={styles.listContainer}>
-                            <Image source={IC_PRODUCT} style={styles.img} />
+                            <Image source={{ uri: item?.image?.url || 'https://via.placeholder.com/150' }} style={styles.img} />
                             <View style={styles.productDetail}>
                                 <View style={styles.innerContainer}>
                                     <MyText fontSize={14} black>{item?.menuName}</MyText>
@@ -26,13 +26,17 @@ export default (props) => {
                                         <Icon name='check' size={17} color={colors.emerald} />
                                     </View>
                                 </View>
-                                <MyText numberOfLines={2} left style={styles.notes} black fontSize={10}>
-                                    <MyText bold black>Catatan :</MyText>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                <MyText numberOfLines={10} left style={styles.notes} black fontSize={10}>
+                                    {item?.options.map(({ name: optionName, value: { name, price } }) => <MyText key={`key-options-${name}`}><MyText bold>{optionName} : </MyText> {name} ({price}){`\n`}</MyText>)}
+                                    <MyText bold >Addons : <MyText> {Object.values(item?.addons.map(({ name }) => (name))).toString()}</MyText>{`\n`}
+                                    </MyText>
+
+                                    <MyText bold >Catatan : </MyText>
+                                    {item?.information || '-'}
                                 </MyText>
                                 <View style={styles.innerContainer}>
                                     <View style={styles.orderTable}>
-                                        <MyText light bold color={colors.cerulean}>x{item?.qty}</MyText>
+                                        <MyText light bold color={colors.cerulean}>x{item?.qty || 1}</MyText>
                                     </View>
                                     <MyText bold light black><MyText strikeThrough>{item?.discount > 0 ? `Rp${item?.price}` : ''}</MyText>  Rp{parseInt(item?.price) - parseInt(item?.discount)}</MyText>
                                 </View>

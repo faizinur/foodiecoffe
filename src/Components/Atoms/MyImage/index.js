@@ -30,7 +30,7 @@ export default memo(({ height = 100, width = 100, source = BLANK_IMAGE, radius =
                 onLoadEnd={setLoad}
                 source={{
                     ...source,
-                    method: 'POST',
+                    method: 'GET',
                     headers: {
                         Pragma: 'no-cache'
                     },

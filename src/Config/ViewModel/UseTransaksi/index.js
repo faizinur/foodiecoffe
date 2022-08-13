@@ -17,7 +17,7 @@ export default () => {
             const { status, data, message } = await getDaftarTransaksi();
 
             if (status != 'SUCCESS' || status != '') throw message;
-            setTransactionList(data)//.filter(({ paid }) => paid == transactionType));
+            // setTransactionList(data)//.filter(({ paid }) => paid == transactionType));
             setTransactionLoading(false);
         } catch (e) {
             setErrorTransaksi(e);

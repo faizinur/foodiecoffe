@@ -12,7 +12,7 @@ export default memo(({ navigation: { navigate } }) => {
     const { colors } = useTheme()
     const refForms = useRef(<Forms />)
     const defaultValue = {
-        email: "micashier1@gmail.com",
+        email: "inurfaizi@gmail.com",
         password: "foodiecoffee123",
     }
     const _onClickRegister = useCallback(() => {

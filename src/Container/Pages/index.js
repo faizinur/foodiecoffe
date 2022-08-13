@@ -11,6 +11,7 @@ import Register from "./Register";
 import Akun from "./Akun";
 import ProductsList from './ProductsList';
 import DetailOrder from './DetailOrder';
+import Experimental from './Experimental';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +28,9 @@ export default stackProps => (
             initialRouteName={"Splash"}
             mode={"card"}
             ScreenOptions={{}}>
+            <Stack.Screen name="Experimental" options={() => (animationSlide)}>
+                {props => <Experimental  {...props} {...stackProps} />}
+            </Stack.Screen>
             <Stack.Screen name="Splash" options={() => (animationSlide)}>
                 {props => <Splash  {...props} {...stackProps} />}
             </Stack.Screen>
@@ -59,4 +63,5 @@ export {
     Akun,
     ProductsList,
     DetailOrder,
+    Experimental,
 }

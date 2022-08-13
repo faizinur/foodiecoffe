@@ -11,7 +11,10 @@ export default StyleSheet.create({
     },
     img: {
         alignSelf: 'center',
-        marginRight: 16
+        marginRight: 16,
+        width: 80,
+        height: 80,
+        borderRadius: 10,
     },
     productDetail: {
         flex: 1,
@@ -31,7 +34,7 @@ export default StyleSheet.create({
     },
     notes: {
         width: '100%',
-        marginBottom:5,
+        marginBottom: 5,
     },
     orderTable: {
         width: 31,
