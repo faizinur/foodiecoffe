@@ -47,10 +47,7 @@ export default memo(({ navigation: { navigate } }) => {
         log('_onFABClick')
         refHomeModals?.current?.toggle()
     }
-    const _renderCardOrder = useCallback(({ item }) => {
-        log(JSON.stringify(item, null, 3))
-        return <CardOrder order={item} onPress={() => navigate('DetailOrder', { order: { ...item } })} />
-    }, []);
+    const _renderCardOrder = useCallback(({ item }) => <CardOrder order={item} onPress={() => navigate('DetailOrder', { order: { ...item } })} />, []);
 
     const _onSelectedMejaCategory = (payload) => {
         navigate('ProductsList', { ...payload })

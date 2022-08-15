@@ -7,19 +7,21 @@ import styles from './styles';
 const MyTextInput = (props) => {
     const { colors } = useTheme();
     // color
-    const defaultColor = props.error ? colors.wildWaterMelon : colors.cerulean;
-    const defaultPlaceholderColor = props.error ? colors.wildWaterMelon : colors.lightgray;
-    const defaultTextColor = props.error ? colors.wildWaterMelon : colors.black;
-    const defaultIconColor = props.error ? colors.wildWaterMelon : JSON.stringify(value) === '""' ? colors.lightgray : colors.cerulean;
-    const defaultDropdownIconColor = props.error ? colors.wildWaterMelon : JSON.stringify(value) === '""' ? colors.lightgray : colors.black;
-    // color
-
     const placeholder = props.placeholder || 'placeholder'
     let keyboardType = 'keyboardType' in props ? props.keyboardType : 'default';
     const [secureTextEntry, setSecureTextEntry] = useState('secureTextEntry' in props);
     let disabled = props.disabled || false;
     let value = typeof props.value === 'undefined' ? '' : props.value;
     let returnKeyType = props.returnKeyType || null;
+
+    // color
+    const defaultColor = props.error ? colors.wildWaterMelon : colors.cerulean;
+    const defaultPlaceholderColor = props.error ? colors.wildWaterMelon : colors.lightgray;
+    const defaultTextColor = props.error ? colors.wildWaterMelon : colors.black;
+    const defaultIconColor = props.error ? colors.wildWaterMelon : JSON.stringify(value) === '""' ? colors.lightgray : colors.cerulean;
+    const defaultDropdownIconColor = props.error ? colors.wildWaterMelon : JSON.stringify(value) === '""' ? colors.lightgray : colors.black;
+
+
 
     // RIGHT BUTTON
     const PasswordRightIcon = () => (<View style={styles.rightIconContainer}>

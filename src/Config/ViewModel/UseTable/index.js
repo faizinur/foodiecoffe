@@ -21,7 +21,7 @@ export default () => {
             const { status, data, message } = await getTables(userData.user.merchantId);
             setSelectedTable({})
             if (status != 'SUCCESS') throw message;
-            setTableList(data.sort(prev => prev.occupied == true))
+            setTableList(data.sort(prev => prev?.occupied == true))
             setRefreshingTable(false)
         } catch (err) {
             log(err)
@@ -45,7 +45,7 @@ export default () => {
                 setTableError('MEJA_NOT_FOUND')
                 return false;
             }
-            setFilteredTables(tmpTable.sort(prev => prev.occupied == true))
+            setFilteredTables(tmpTable.sort(prev => prev?.occupied == true))
             tmpTable = [];
         } catch (err) {
             global.showToast(err);

@@ -2,6 +2,7 @@ import { TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import { useTheme } from 'react-native-paper';
 import styles from './styles';
+
 import Animated, {
     useAnimatedStyle,
     withTiming,

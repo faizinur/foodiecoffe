@@ -4,8 +4,8 @@ const getDaftarTransaksi = async () => {
     try {
         let transaksiData = await POST('transaction/all?page=1&limit=5');
         return {
-            status: transaksiData.status,
-            message: transaksiData.message,
+            status: 'SUCCESS',
+            message: 'SUCCESS',
             data: transaksiData,
         }
     } catch (e) {

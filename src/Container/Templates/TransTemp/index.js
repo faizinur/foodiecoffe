@@ -3,26 +3,27 @@ import React, { useEffect, memo, useCallback } from 'react';
 import { log } from '@Utils';
 import { useTheme } from 'react-native-paper';
 import { MyText } from '@Atoms';
-import { CardOrder, MyToolBar } from '@Organisms';
+import { CardTransaksi, MyToolBar } from '@Organisms';
 import { UseTransaksi } from '@ViewModel';
 import styles from './styles';
-export default memo(({ navigation }) => {
+export default memo(() => {
     const {
         errorTransaksi,
         loading,
         transactionList,
+        memoizedTransactionList,
         activeTransationList,
         _getTransaksiList,
-        ORDER_TYPES,
         _filterTransaksi,
+        _onChangeTransactionList,
     } = UseTransaksi();
 
     const { colors } = useTheme();
     const _onPressCalendar = useCallback(() => log('_onPressCalendar Pressed'), [])
-    const renderCardOrder = ({ item }) => <CardOrder order={item} />
+    const renderCardOrder = ({ item }) => <CardTransaksi item={item} onPress={() => { }} />
     useEffect(() => {
         log('Mount TransTemp');
-        // _getTransaksiList()
+        _getTransaksiList()
         return () => {
             log('Unmount TransTemp')
         }
@@ -30,26 +31,25 @@ export default memo(({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
-                <MyText medium bold left black>Daftar Transaksi</MyText>
+                <MyText medium bold left black>Daftar Transaksi </MyText>
             </View>
             <MyToolBar
-                tool={[
+                data={[
                     {
-                        label: 'Di bayar',
+                        label: `Berhasil`,
                         icon: 'check-bold',
-                        type: ORDER_TYPES[0],
+                        type: 'success',
                         color: colors.emerald
                     },
                     {
-                        label: 'Ngutang',
+                        label: `Gagal`,
                         icon: 'close-thick',
-                        type: ORDER_TYPES[1],
+                        type: 'failed',
                         color: colors.wildWaterMelon
                     },
                 ]}
                 activeOrderList={activeTransationList}
-                listCount={transactionList.length}
-                // onPressChips={_getTransaksiList}
+                onPressChips={_onChangeTransactionList}
                 onPressCalendar={_onPressCalendar}
                 loading={loading}
                 onChoosenCalendar={_filterTransaksi}
@@ -57,12 +57,12 @@ export default memo(({ navigation }) => {
             <View style={styles.content}>
                 <FlatList
                     contentContainerStyle={styles.contentContainerStyle}
-                    data={loading ? [] : transactionList}
+                    data={loading ? [] : memoizedTransactionList}
                     renderItem={renderCardOrder}
                     snapToInterval={150}
                     keyExtractor={({ id }) => id}
                     showsVerticalScrollIndicator={false}
-                    ListEmptyComponent={() => <MyText light bold black>{JSON.stringify(errorTransaksi) !== '""' ? errorTransaksi : 'Harap Tunggu...'}</MyText>}
+                    ListEmptyComponent={() => <MyText light bold black>{JSON.stringify(errorTransaksi) !== '""' ? errorTransaksi : (memoizedTransactionList.length == 0 ? `Ups... sepertinya transaksi ini masih kosong` : 'Harap Tunggu...')}</MyText>}
                 />
             </View>
         </View>
