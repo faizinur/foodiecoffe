@@ -25,7 +25,7 @@ export default (props) => {
                 </View>
             </View>
             <View style={styles.listOrder}>
-                <MyText fontSize={12} lineHeight={15} bold numberOfLines={1} black center style={{ width: '85%' }}> • {props?.order?.items[0]?.menuName} ...</MyText>
+                <MyText fontSize={12} lineHeight={15} bold numberOfLines={1} black center style={{ width: '85%' }}> • {props.order.menuName}</MyText>
                 <View style={styles.orderCount}>
                     <MyText fontSize={12} lineHeight={14} center color={colors.cerulean} bold>+{props?.order?.items?.length}</MyText>
                 </View>
@@ -33,7 +33,7 @@ export default (props) => {
             <View style={styles.dashedLine} />
             <View style={styles.listPayment}>
                 <View style={styles.tableNumber(colors.cerulean)}>
-                    <MyText fontSize={10} lineHeight={12} center color={colors.white} bold numberOfLines={1} style={{ width: '80%' }}>Table {props?.order?.tableNumber}</MyText>
+                    <MyText fontSize={10} color={colors.white} bold>Table {props?.order?.tableNumber}</MyText>
                 </View>
                 <MyText fontSize={14} lineHeight={18} center bold black>Rp{props?.order?.total}</MyText>
             </View>

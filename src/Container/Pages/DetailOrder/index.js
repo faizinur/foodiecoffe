@@ -13,7 +13,7 @@ export default memo(({ navigation: { goBack }, route: { params } }) => {
     const refDetailOrderModal = useRef(<refDetailOrderModal />)
     return (
         <View style={styles.container}>
-            <TitleBar title={'Konfirmasi Terima'} />
+            <TitleBar title={params?.title || 'title'} />
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 style={{ backgroundColor: colors.white, flex: 1, paddingHorizontal: '5%' }}>
@@ -42,18 +42,20 @@ export default memo(({ navigation: { goBack }, route: { params } }) => {
                     </View>
                 </View>
             </ScrollView>
-            <View style={{ height: 80, backgroundColor: colors.white, borderTopWidth: 1, borderTopColor: colors.athensGray, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', paddingHorizontal: '5%' }}>
-                <InputItems.MyButton
-                    secondary
-                    onPress={() => refDetailOrderModal?.current?.toggle('reject')}
-                    style={{ flexGrow: 1, marginRight: 3 }}
-                    label={'Tolak'} />
-                <InputItems.MyButton
-                    onPress={() => refDetailOrderModal?.current?.toggle('accept')}
-                    style={{ flexGrow: 1, marginLeft: 3 }}
-                    label={'Terima'} />
-            </View>
+            {!['success', 'process', 'failed', 'refund'].includes(params?.order?.status) &&
+                < View style={{ height: 80, backgroundColor: colors.white, borderTopWidth: 1, borderTopColor: colors.athensGray, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', paddingHorizontal: '5%' }}>
+                    <InputItems.MyButton
+                        secondary
+                        onPress={() => refDetailOrderModal?.current?.toggle('reject')}
+                        style={{ flexGrow: 1, marginRight: 3 }}
+                        label={'Tolak'} />
+                    <InputItems.MyButton
+                        onPress={() => refDetailOrderModal?.current?.toggle('accept')}
+                        style={{ flexGrow: 1, marginLeft: 3 }}
+                        label={'Terima'} />
+                </View>
+            }
             <DetailOrderModal ref={refDetailOrderModal} onConfirm={goBack} />
-        </View>
+        </View >
     )
 })

@@ -1,7 +1,7 @@
 import { Order, Auth } from '@Model';
 import { useState, useMemo, useCallback } from 'react';
 import { log, CONSTANT } from '@Utils';
-let SUBSCRIBE_TIMEOUT = null;
+let SUBSCRIBE_ORDER_TIMEOUT = null;
 let page = 1;
 export default () => {
     const { getOrders } = Order;
@@ -34,13 +34,13 @@ export default () => {
         try {
             const userData = await getUserData();
             if (userData == null) return Promise.reject(`userData null`);
-            const { status, data, message } = await getOrders(userData.user.merchantId, 1);
+            const { status, data } = await getOrders(userData.user.merchantId, 1);
             if (status == 'SUCCESS') {
                 if (data.length > 0) memoizedOrderList(data)
             }
             await new Promise(resolve => {
                 _unSubscribeOrders();
-                SUBSCRIBE_TIMEOUT = setTimeout(resolve, CONSTANT.CONNECT_RETRIES)
+                SUBSCRIBE_ORDER_TIMEOUT = setTimeout(resolve, CONSTANT.CONNECT_RETRIES)
             });
             await _subscribeOrders();
         } catch (err) {
@@ -49,7 +49,7 @@ export default () => {
     }, [])
 
     const _unSubscribeOrders = () => {
-        clearTimeout(SUBSCRIBE_TIMEOUT);
+        clearTimeout(SUBSCRIBE_ORDER_TIMEOUT);
     }
 
     const memoizedOrderList = useCallback((data) => {

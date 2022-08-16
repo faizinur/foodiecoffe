@@ -1,17 +1,19 @@
-import { View, FlatList } from 'react-native';
+import { View, FlatList, RefreshControl } from 'react-native';
 import React, { useEffect, memo, useCallback } from 'react';
 import { log } from '@Utils';
 import { useTheme } from 'react-native-paper';
 import { MyText } from '@Atoms';
-import { CardTransaksi, MyToolBar } from '@Organisms';
+import { CardOrder, MyToolBar } from '@Organisms';
 import { UseTransaksi } from '@ViewModel';
 import styles from './styles';
-export default memo(() => {
+export default memo(({ navigation: { navigate } }) => {
     const {
         errorTransaksi,
         loading,
-        transactionList,
+        transactionLoading,
+        setTransactionLoading,
         memoizedTransactionList,
+        memoizedTransactionTypeCount,
         activeTransationList,
         _getTransaksiList,
         _filterTransaksi,
@@ -20,7 +22,8 @@ export default memo(() => {
 
     const { colors } = useTheme();
     const _onPressCalendar = useCallback(() => log('_onPressCalendar Pressed'), [])
-    const renderCardOrder = ({ item }) => <CardTransaksi item={item} onPress={() => { }} />
+    const renderCardOrder = useCallback(({ item }) => <CardOrder order={{ ...item, menuName: item.items.map(({ menuName }) => ` ${menuName}`).toString(), tableNumber: '1' }} onPress={() => navigate('DetailOrder', { order: { ...item, tableNumber: '1' }, title: 'Pesanan Selesai' })} />, [])
+
     useEffect(() => {
         log('Mount TransTemp');
         _getTransaksiList()
@@ -31,18 +34,18 @@ export default memo(() => {
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
-                <MyText medium bold left black>Daftar Transaksi </MyText>
+                <MyText medium bold left black>Daftar Transaksi</MyText>
             </View>
             <MyToolBar
                 data={[
                     {
-                        label: `Berhasil`,
+                        label: `Berhasil ${memoizedTransactionTypeCount[0] > 0 ? `(${memoizedTransactionTypeCount[0]})` : ''}`,
                         icon: 'check-bold',
                         type: 'success',
                         color: colors.emerald
                     },
                     {
-                        label: `Gagal`,
+                        label: `Gagal ${memoizedTransactionTypeCount[1] > 0 ? `(${memoizedTransactionTypeCount[1]})` : ''}`,
                         icon: 'close-thick',
                         type: 'failed',
                         color: colors.wildWaterMelon
@@ -56,6 +59,15 @@ export default memo(() => {
             />
             <View style={styles.content}>
                 <FlatList
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={transactionLoading}
+                            onRefresh={() => {
+                                _getTransaksiList(activeTransationList);
+                                setTransactionLoading(true);
+                                setTimeout(() => setTransactionLoading(false), 3000);
+                            }}
+                        />}
                     contentContainerStyle={styles.contentContainerStyle}
                     data={loading ? [] : memoizedTransactionList}
                     renderItem={renderCardOrder}

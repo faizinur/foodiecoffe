@@ -32,7 +32,7 @@ export default StyleSheet.create({
         flex: 1
     },
     contentContainerStyle: {
-        padding: 5,
+        padding: 0,
         paddingBottom: 120,
         paddingTop: 10
     },

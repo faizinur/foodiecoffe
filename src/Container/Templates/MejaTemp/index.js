@@ -35,9 +35,14 @@ export default memo(({ onChooseMeja = null }) => {
     const refTextTitleContainer = useRef(<View />)
     const refMejaModals = useRef(<MejaModals />)
     const refMejaFilterModal = useRef(<MejaFilterModal />)
+    const refMejaFlatList = useRef(<FlatList />)
 
     const navbarButtonStyle = useAnimatedStyle(() => ({
         transform: [{ translateY: withTiming(Object.keys(selectedTable).length > 0 ? 0 : 80, { duration: 100 }) }]
+    }))
+
+    const navbarSeparatorStyle = useAnimatedStyle(() => ({
+        height: withTiming(Object.keys(selectedTable).length > 0 ? 140 : 90, { duration: 100 })
     }))
 
     const _onClickSearch = () => {
@@ -64,12 +69,11 @@ export default memo(({ onChooseMeja = null }) => {
         refMejaModals.current?.toggle({ ...props, qr: { uri: qrURI } })
     }
 
-
-
     const _onPilihMejaPress = useCallback(() => onChooseMeja(selectedTable), [selectedTable])
 
-    const _renderTilesMeja = ({ item }) => <TilesMeja seat={item} numColumns={2}
+    const _renderTilesMeja = ({ item, index }) => <TilesMeja seat={item} numColumns={2}
         onPress={seat => {
+            // refMejaFlatList?.current?.scrollToOffset({ animated: true, offset: index })
             if (onChooseMeja == null) {
                 _onPressQR(seat)
             } else {
@@ -106,6 +110,7 @@ export default memo(({ onChooseMeja = null }) => {
             />
             {tableError != 'MEJA_NOT_FOUND' &&
                 <FlatList
+                    ref={refMejaFlatList}
                     style={styles.flatList}
                     ListHeaderComponent={
                         (tableList.length > 0 && <View style={styles.jumbotron}>
@@ -129,15 +134,18 @@ export default memo(({ onChooseMeja = null }) => {
                     keyExtractor={({ id }) => id}
                     numColumns={2}
                     ListEmptyComponent={tableList.length > 0 && tableError == '' ? <MyText large bold black>Oops, Meja Penuh nih...!</MyText> : <MyText large bold black>Tunggu ya...!</MyText>}
-                    ListFooterComponent={<View style={styles.separator} />}
+                    ListFooterComponent={<Animated.View style={navbarSeparatorStyle} />}
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
                     nestedScrollEnabled={true}
+                    getItemLayout={(data, index) => (
+                        { length: 125, offset: 125 * index, index }
+                    )}
                 />
                 ||
                 <EmptySearchResult title={'Oops,'} subTitle={'Meja yang kamu cari sepertinya tidak tersedia'} />
             }
-            <Animated.View style={[navbarButtonStyle, { width: '100%', paddingHorizontal: '5%', paddingVertical: 5, justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', backgroundColor: colors.white, borderTopColor: colors.athensGray, borderTopWidth: 1 }]}>
+            <Animated.View style={[navbarButtonStyle, styles.navbarButton]}>
                 <InputItems.MyButton
                     secondary
                     onPress={() => _selectTable(selectedTable)}

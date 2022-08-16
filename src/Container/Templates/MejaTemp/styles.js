@@ -33,14 +33,13 @@ export default StyleSheet.create({
     flatList: {
         flex: 1,
         width: '100%',
-        marginBottom: 60
     },
     flatListContent: {
         justifyContent: 'center',
         alignItems: 'flex-start'
     },
     separator: {
-        height: 60
+        // height: 60
     },
     contentContainerStyle: {
         flex: 1,
@@ -184,8 +183,7 @@ export default StyleSheet.create({
     },
     jumbotron: {
         paddingHorizontal: '5%',
-        marginBottom: 24,
-        marginTop: 24,
+        marginVertical: 24
     },
     drawerIndicator: {
         height: 4,
@@ -206,5 +204,19 @@ export default StyleSheet.create({
 
     sectionContainer: {
         paddingHorizontal: '5%'
+    },
+
+    navbarButton: {
+        position: 'absolute',
+        bottom: 0,
+        backgroundColor: 'red',
+        width: '100%',
+        paddingHorizontal: '5%',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexDirection: 'row',
+        backgroundColor: colors.white,
+        borderTopColor: colors.athensGray,
+        borderTopWidth: 1
     }
 })

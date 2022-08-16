@@ -47,7 +47,8 @@ export default memo(({ navigation: { navigate } }) => {
         log('_onFABClick')
         refHomeModals?.current?.toggle()
     }
-    const _renderCardOrder = useCallback(({ item }) => <CardOrder order={item} onPress={() => navigate('DetailOrder', { order: { ...item } })} />, []);
+    const _renderCardOrder = useCallback(({ item }) => <CardOrder order={{ ...item, menuName: item.items.map(({ menuName }) => ` ${menuName}`).toString() }} onPress={() => navigate('DetailOrder', { order: { ...item }, title: 'Konfirmasi Terima' })} />, []);
+
 
     const _onSelectedMejaCategory = (payload) => {
         navigate('ProductsList', { ...payload })

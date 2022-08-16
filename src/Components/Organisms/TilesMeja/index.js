@@ -19,7 +19,7 @@ export default memo(props => {
                 onPress={() => props?.onPress(props?.seat)}
                 style={[styles.cardShadow, styles.container(props?.selectedTable?.id == props?.seat.id ? colors.cerulean : colors.white)]}>
                 <View style={styles.qrWrapper}>
-                    <MyText large bold color={textColor}>{props?.seat?.number || 'xx'}</MyText>
+                    <MyText fontSize={18} bold color={textColor} numberOfLines={1} style={{ width: '70%' }}>{props?.seat?.number || 'xx'}</MyText>
                     <View style={styles.qr}>
                         <Icon name={iconName} size={25} color={iconColor} />
                     </View>
@@ -30,17 +30,3 @@ export default memo(props => {
         </View>
     )
 })
-
-// {
-//     "id": "C1779O",
-//     "number": "MC2",
-//     "floor": "2",
-//     "seat": 4,
-//     "qr": {
-//         "title": "MC2",
-//         "name": "QR_C1779O.png"
-//     },
-//     "occupied": true,
-//     "merchantId": "B1778H",
-//     "merchantName": "Mcdonalds"
-// },

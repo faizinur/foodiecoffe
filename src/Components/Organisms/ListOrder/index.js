@@ -15,7 +15,7 @@ export default (props) => {
                 title={`Pesanan ${props?.orders?.length > 0 ? `(${props?.orders?.length})` : ''}`}
                 style={{ backgroundColor: colors.white, padding: 0, marginHorizontal: -8, }}
                 titleStyle={{ color: colors.black, fontSize: 15, fontWeight: 'bold', fontFamily: 'ReadexProMedium' }}>
-                {props?.orders?.map((item, index) => (
+                {props?.orders.map((item, index) => (
                     <View key={`order-${index}`}>
                         <View style={styles.listContainer}>
                             <Image source={{ uri: item?.image?.url || 'https://via.placeholder.com/150' }} style={styles.img} />
@@ -26,14 +26,16 @@ export default (props) => {
                                         <Icon name='check' size={17} color={colors.emerald} />
                                     </View>
                                 </View>
+
                                 <MyText numberOfLines={10} left style={styles.notes} black fontSize={10}>
-                                    {item?.options.map(({ name: optionName, value: { name, price } }) => <MyText key={`key-options-${name}`}><MyText bold>{optionName} : </MyText> {name} ({price}){`\n`}</MyText>)}
+                                    {item?.options && item?.options.map(({ name: optionName, value: { name, price } }) => <MyText key={`key-options-${name}`}><MyText bold>{optionName} : </MyText> {name} ({price}){`\n`}</MyText>)}
                                     <MyText bold >Addons : <MyText> {Object.values(item?.addons.map(({ name }) => (name))).toString()}</MyText>{`\n`}
                                     </MyText>
 
                                     <MyText bold >Catatan : </MyText>
                                     {item?.information || '-'}
                                 </MyText>
+
                                 <View style={styles.innerContainer}>
                                     <View style={styles.orderTable}>
                                         <MyText light bold color={colors.cerulean}>x{item?.qty || 1}</MyText>

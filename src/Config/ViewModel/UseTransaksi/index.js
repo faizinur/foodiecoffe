@@ -14,9 +14,8 @@ export default () => {
             setErrorTransaksi('')
             setActiveTransationList(transactionType)
             const { status, data, message } = await getDaftarTransaksi();
-
             if (status != 'SUCCESS') throw message;
-            setTransactionList(data);
+            setTransactionList(data.map(transaction => ({ ...transaction, items: transaction.summaryItem })));
             setTransactionLoading(false);
         } catch (e) {
             setErrorTransaksi(e);
@@ -33,17 +32,23 @@ export default () => {
     }, [activeTransationList])
 
 
-    const memoizedTransactionList = useMemo(() => {
-        let transaction = transactionList.filter(({ status }) => status == activeTransationList)
-        log('hayoo kesini gak?', activeTransationList, transaction.length)
-        return transaction
-    }, [activeTransationList])
+    const memoizedTransactionList = useMemo(() =>
+        transactionList.filter(({ status }) => status == activeTransationList),
+        [transactionList, activeTransationList])
+
+    const memoizedTransactionTypeCount = useMemo(() =>
+        [transactionList.filter(({ status }) => status == 'success').length,
+        transactionList.filter(({ status }) => status == 'failed').length]
+        , [transactionList])
+
 
     return {
         errorTransaksi,
         transactionLoading,
+        setTransactionLoading,
         transactionList,
         memoizedTransactionList,
+        memoizedTransactionTypeCount,
         activeTransationList,
         _getTransaksiList,
         _filterTransaksi,

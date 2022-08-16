@@ -5,7 +5,7 @@ import { PagerView } from 'react-native-pager-view';
 import { Skeleton } from '@Atoms';
 import { HomeTemp, TransTemp, MenuTemp, MejaTemp } from '@Templates';
 import styles from './styles';
-const INITIAL_PAGE = 1;
+const INITIAL_PAGE = 0;
 export default props => {
     const refPagerView = useRef(<PagerView />);
     const refNavbar = useRef(<Navbar />);
