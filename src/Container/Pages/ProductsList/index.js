@@ -18,24 +18,23 @@ import styles from './styles';
 import { UseMerchant } from '@ViewModel';
 
 export default memo(({ navigation, route: { params } }) => {
-    const { _getCategoryList, categoryList, merchantLoading, setMerchantLoading, setcategoryList, _onBucketChanged } = UseMerchant()
+    const { _getCategoryList, categoryList, merchantLoading, setMerchantLoading, memoizedTotalPrice, memoizedCartCategoryList, _onBucketChanged } = UseMerchant()
     const { colors } = useTheme();
     const refModalProductList = useRef(<ModalProductList />)
     const refModalFilterProduct = useRef(<ModalFilterProduct />)
     const refModalDetailProduct = useRef(<ModalDetailProduct />)
     const navBarPosY = useSharedValue({ bottom: -80 })
     const navBarPosYStyle = useAnimatedStyle(() => ({
-        bottom: withSpring(categoryList.filter(({ count }) => count > 0).length > 0 ? 0 : navBarPosY.value.bottom, CONSTANT.SPRING_CONFIG),
+        bottom: withSpring(memoizedTotalPrice > 0 ? 0 : navBarPosY.value.bottom, CONSTANT.SPRING_CONFIG),
     }))
     const footerHeight = useSharedValue({ height: 0 })
     const footerHeightStyle = useAnimatedStyle(() => ({
-        height: withSpring(categoryList.filter(({ count }) => count > 0).length > 0 ? 80 : footerHeight.value.height, CONSTANT.SPRING_CONFIG),
+        height: withSpring(memoizedTotalPrice > 0 ? 80 : footerHeight.value.height, CONSTANT.SPRING_CONFIG),
     }))
 
     const _onChangeBucket = (type, product) => refModalDetailProduct?.current?.toggle(type, product)
 
-
-    const _onDetailBucketPress = () => refModalDetailProduct?.current?.toggle('DETAIL');
+    const _onDetailBucketPress = () => refModalDetailProduct?.current?.toggle('DETAIL', [memoizedCartCategoryList, memoizedTotalPrice]);
 
     const _onAddNotes = (product) => {
         log('_onPesanPress addons : ')
@@ -52,6 +51,11 @@ export default memo(({ navigation, route: { params } }) => {
     }
 
     const _renderCardProduct = useCallback(({ item }) => <CardProduct item={item} onAdd={() => _onChangeBucket('CHANGE', item)} onRemove={() => _onChangeBucket('CHANGE', item)} addNotes={() => _onAddNotes(item)} />, [])
+
+    const _clickOrder = () => {
+        if (memoizedTotalPrice == 0) return false;
+        log(memoizedTotalPrice, memoizedCartCategoryList)
+    }
 
     useEffect(() => {
         log('Mount ProductsList');
@@ -104,12 +108,13 @@ export default memo(({ navigation, route: { params } }) => {
                     <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
                         <View>
                             <MyText left light>1 Pesanan</MyText>
-                            <MyText left medium black style={{ width: 90 }} numberOfLines={1}>Rp80.0090</MyText>
+                            <MyText left medium black style={{ minWidth: 70, maxWidth: 120 }} numberOfLines={1}>{memoizedTotalPrice > 0 && new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(memoizedTotalPrice)}</MyText>
                         </View>
                         <Icon name={'chevron-up'} size={30} style={{ alignSelf: 'center' }} black onPress={_onDetailBucketPress} />
                     </View>
                     <View>
                         <InputItems.MyButton
+                            onPress={_clickOrder}
                             style={styles.button}
                             label={'pesan'}
                             labelStyle={{ fontSize: 16 }} />

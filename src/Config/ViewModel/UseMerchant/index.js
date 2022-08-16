@@ -8,7 +8,7 @@ export default () => {
     const [merchantList, setMerchantList] = useState([])
     const [merchantError, setMerchantError] = useState('');
     const [merchantLoading, setMerchantLoading] = useState(false);
-    const [categoryList, setcategoryList] = useState([]);
+    const [categoryList, setCategoryList] = useState([]);
     const [filteredCategory, setFilteredCategory] = useState([]);
     const [searchQuery, setSearchQuery] = React.useState('');
 
@@ -35,9 +35,8 @@ export default () => {
             setMerchantLoading(true)
             setMerchantError('')
             const data = await getProductList();
-            setcategoryList(
-                data
-                    .map(item => ({ ...item, ...{ notes: null, count: 0 } }))
+            setCategoryList(
+                data.map(item => ({ ...item, ...{ notes: null, count: 0 } }))
                     .sort((prev, next) => prev.id < next.id)
                     .filter(({ categoryId }) => categoryId == selectedCategoryId)
             )
@@ -50,6 +49,16 @@ export default () => {
         }
     }, [categoryList])
 
+    const memoizedTotalPrice = useMemo(() => {
+        return categoryList.filter(({ count }) => count > 0)
+            .map(({ count, price }) => ({ sumPrice: parseInt(count) * parseFloat(price) }))
+            .reduce((acc, { sumPrice }) => acc + sumPrice, 0)
+    }, [categoryList])
+
+    const memoizedCartCategoryList = useMemo(() => {
+        return categoryList.filter(({ count }) => count > 0)
+            .map(({ count, price, name, notes }) => ({ count, sumPrice: parseInt(count) * parseFloat(price), name, notes }))
+    }, [categoryList])
 
     const _filterCategory = useCallback(({ nativeEvent: { text } }) => {
         if (text == '') return false;
@@ -76,11 +85,17 @@ export default () => {
 
     }, [searchQuery, filteredCategory])
 
-    const _onBucketChanged = useCallback((product) => {
-        let index = categoryList.findIndex(({ id }) => id === product.id)
+    const _onBucketChanged = useCallback((updatedValue) => {
+        let index = categoryList.findIndex(({ id }) => id === updatedValue.id);
+        if (index < 0) return false;
+        delete updatedValue.id;
         let tmpCategoryList = [...categoryList]
-        tmpCategoryList[index] = product;
-        setcategoryList(tmpCategoryList)
+        log(updatedValue)
+        Object.keys(updatedValue).map(key => {
+            tmpCategoryList[index][key] = updatedValue[key]
+        })
+        log('_onBucketChanged', tmpCategoryList[index].notes)
+        setCategoryList(tmpCategoryList)
     }, [categoryList])
 
     return {
@@ -88,7 +103,7 @@ export default () => {
         _getCategoryList,
         merchantList,
         categoryList,
-        setcategoryList,
+        setCategoryList,
         merchantLoading,
         setMerchantLoading,
         merchantError,
@@ -97,7 +112,9 @@ export default () => {
         _filterCategory,
         filteredCategory,
         _clearFilteredCategory,
-        _onBucketChanged
+        _onBucketChanged,
+        memoizedTotalPrice,
+        memoizedCartCategoryList,
     }
 }
 

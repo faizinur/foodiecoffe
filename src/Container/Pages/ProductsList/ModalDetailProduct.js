@@ -13,13 +13,15 @@ export default forwardRef((props, ref) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [animationType, setAnimationType] = useState('slide');
     const [modalType, setModalType] = useState('CHANGE');
-    const [product, setProduct] = useState({})
+    const [product, setProduct] = useState({});
+    const [cart, setCart] = useState([]);
 
     const toggle = useCallback((type = 'CHANGE', data = {}) => {
         setProduct(data)
         log('_toggle : ')
         setModalType(type)
         if (type == 'DETAIL') {
+            setCart(data)
         }
         setModalVisible(prevState => !prevState);
     }, [modalVisible, modalType, product])
@@ -30,8 +32,8 @@ export default forwardRef((props, ref) => {
     }, [modalVisible, animationType]);
 
     const _onClickPesan = () => {
+        props.onChangeBucket({ id: product.id, count: product.count })
         _onCloseModal()
-        props.onChangeBucket(product)
     }
     useImperativeHandle(ref, () => ({
         toggle,
@@ -95,19 +97,20 @@ export default forwardRef((props, ref) => {
                         <>
                             <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
                                 <MyText left medium black style={{ marginVertical: 6 }}>List Belanja</MyText>
-                                <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6 }}>
-                                    <MyText left black >Caffe Americano Grande</MyText>
-                                    <MyText left black >Rp 99.999</MyText>
+                                {cart[0].map(({ count, sumPrice, name }, index) => <View key={`cart-${index}`} style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6 }}>
+                                    <MyText left black >{name} {count > 0 && `x(${count})`}</MyText>
+                                    <MyText left black >{new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(sumPrice)}</MyText>
                                 </View>
+                                )}
                                 <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6 }}>
                                     <MyText left black ><Icon name={'brightness-percent'} color={colors.wildWaterMelon} /> Diskon</MyText>
-                                    <MyText left >- Rp 19.999</MyText>
+                                    <MyText left >0</MyText>
                                 </View>
                             </ScrollView>
                             <View style={{ height: 2, backgroundColor: colors.athensGray }} />
                             <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, marginTop: 10 }}>
                                 <MyText left bold black >Total Pembayaran</MyText>
-                                <MyText left bold black >Rp 80.000</MyText>
+                                <MyText left bold black >{new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(cart[1])}</MyText>
                             </View>
                         </>
                     }

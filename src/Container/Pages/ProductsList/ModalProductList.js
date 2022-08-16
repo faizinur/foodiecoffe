@@ -30,8 +30,9 @@ export default memo(forwardRef((props, ref) => {
     const _submit = useCallback(notes => {
         setProduct(prevState => ({
             ...prevState,
-            notes
+            notes: { ...notes }
         }))
+        props.onChangeBucket({ id: product.id, notes: { ...notes } })
         setModalVisible(prevState => !prevState);
     }, [product, modalVisible])
     return (
@@ -41,20 +42,23 @@ export default memo(forwardRef((props, ref) => {
             statusBarTranslucent={false}
             visible={modalVisible}
             onRequestClose={_onCloseModal}>
-            <KeyboardAwareScrollView
-                style={{ backgroundColor: 'rgba(0,0,0,.05)' }}
-                contentContainerStyle={{}}
-                showsVerticalScrollIndicator={false}>
-                <View style={{ paddingHorizontal: '5%', paddingBottom: '5%', paddingTop: '2.5%', flex: 1, backgroundColor: colors.white, marginTop: 10, borderTopStartRadius: 16, borderTopEndRadius: 16 }}>
+            <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,.05)' }}>
+                <View style={{ flex: 1 }} />
+                <View style={{ paddingHorizontal: '5%', paddingBottom: '5%', paddingTop: '2.5%', backgroundColor: colors.white, marginTop: 10, borderTopStartRadius: 16, borderTopEndRadius: 16 }}>
                     <View style={{ width: 30, height: 4, backgroundColor: colors.athensGray, borderRadius: 10, alignSelf: 'center', marginBottom: 25 }} />
-                    <Forms
-                        formname={FORM_NAME}
-                        inputList={FORM_INPUT_LIST}
-                        onFormSubmit={_submit}
-                        submitLabel={'Simpan'}
-                    />
+                    <KeyboardAwareScrollView
+                        style={{ backgroundColor: 'rgba(0,0,0,.05)' }}
+                        contentContainerStyle={{ backgroundColor: colors.white }}
+                        showsVerticalScrollIndicator={false}>
+                        <Forms
+                            formname={FORM_NAME}
+                            inputList={FORM_INPUT_LIST}
+                            onFormSubmit={_submit}
+                            submitLabel={'Simpan'}
+                        />
+                    </KeyboardAwareScrollView>
                 </View>
-            </KeyboardAwareScrollView>
+            </View>
         </Modal>
     )
 }))
