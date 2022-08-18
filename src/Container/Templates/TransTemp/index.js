@@ -5,6 +5,7 @@ import { useTheme } from 'react-native-paper';
 import { MyText } from '@Atoms';
 import { CardOrder, MyToolBar } from '@Organisms';
 import { UseTransaksi } from '@ViewModel';
+import { UsePolling } from '@CustomHooks';
 import styles from './styles';
 export default memo(({ navigation: { navigate } }) => {
     const {
@@ -18,7 +19,10 @@ export default memo(({ navigation: { navigate } }) => {
         _getTransaksiList,
         _filterTransaksi,
         _onChangeTransactionList,
+        _pollingTransaksiList,
     } = UseTransaksi();
+
+    const [startSubscribePollingTransaksiList, stopSubscribePollingTransaksiList] = UsePolling(_pollingTransaksiList)
 
     const { colors } = useTheme();
     const _onPressCalendar = useCallback(() => log('_onPressCalendar Pressed'), [])
@@ -26,9 +30,10 @@ export default memo(({ navigation: { navigate } }) => {
 
     useEffect(() => {
         log('Mount TransTemp');
-        _getTransaksiList()
+        startSubscribePollingTransaksiList()
         return () => {
             log('Unmount TransTemp')
+            stopSubscribePollingTransaksiList()
         }
     }, [])
     return (

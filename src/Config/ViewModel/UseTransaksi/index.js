@@ -23,6 +23,12 @@ export default () => {
         }
     }, [transactionList]);
 
+    const _pollingTransaksiList = useCallback(async () => {
+        const { status, data } = await getDaftarTransaksi();
+        if (status == 'SUCCESS') return false;
+        setTransactionList(data.map(transaction => ({ ...transaction, items: transaction.summaryItem })));
+    }, [transactionList])
+
     const _filterTransaksi = async (date) => {
         log('_filterTransaksi : ', date)
     }
@@ -51,6 +57,7 @@ export default () => {
         memoizedTransactionTypeCount,
         activeTransationList,
         _getTransaksiList,
+        _pollingTransaksiList,
         _filterTransaksi,
         _onChangeTransactionList,
     }
