@@ -68,10 +68,12 @@ const insertData = (key, data) => new Promise(async (resolve, reject) => {
         let payloads = (Array.isArray(data) ? [...data] : [data])
         realm.write(() => {
             Promise.all(payloads.map(payload => {
-                // let foundPayload = realm.objects(key).filtered(`id = '${payload.id}'`)
-                // if (foundPayload.length > 0) realm.delete(foundPayload)
-                // foundPayload = null;
-                payload.id = _newBSON()
+                if ('id' in payload) {
+                    let foundPayload = realm.objects(key).filtered(`id = '${payload.id}'`)
+                    if (foundPayload.length > 0) realm.delete(foundPayload)
+                    foundPayload = null;
+                }
+                payload = { ...payload, id: _newBSON() }
                 realm.create(key, payload)
             }))
         });

@@ -1,8 +1,12 @@
 import {
     APP_CONFIG,
     PRODUCT,
+    TRANSACTION,
+    TRANSACTION_ITEMS,
     ORDER,
     ORDER_ITEMS,
+    NEW_ORDER,
+    NEW_ORDER_ITEMS,
     PRODUCT_OPTION,
     PRODUCT_OPTION_LIST
 } from './types';
@@ -120,7 +124,107 @@ const orderProductItemsSchema = {
     },
 };
 
+const transactionSchema = {
+    name: TRANSACTION,
+    properties: {
+        createdAt: "string?",
+        discount: "int?",
+        id: "string?",
+        invoice: "string?",
+        items: {
+            type: 'list',
+            objectType: TRANSACTION_ITEMS
+        },
+        merchantId: "string?",
+        merchantName: "string?",
+        name: "string?",
+        paid: "int?",
+        payment: "string?",
+        phone: "string?",
+        ppn: "int?",
+        status: "string?",
+        subTotal: "int?",
+        tableNumber: "string?",
+        total: "int?",
+    },
+}
 
+const transactionItemsSchema = {
+    name: TRANSACTION_ITEMS,
+    embedded: true,
+    properties: {
+        menuId: "string?",
+        menuName: "string?",
+        price: "int?",
+        totalOptions: "int?",
+        totalAddons: "int?",
+        qty: "int?",
+        discount: "int?",
+        totalPrice: "int?",
+        options: {
+            type: 'list',
+            objectType: PRODUCT_OPTION
+        },
+        addons: {
+            type: 'list',
+            objectType: PRODUCT_OPTION
+        },
+    },
+}
+
+const newOrderSchema = {
+    name: NEW_ORDER,
+    properties: {
+        id: "string?",
+        invoice: "string?",
+        merchantId: "string?",
+        merchantName: "string?",
+        name: "string?",
+        phone: "string?",
+        payment: "string?",
+        subTotal: "int?",
+        discount: "int?",
+        ppn: "int?",
+        total: "int?",
+        paid: "int?",
+        createdAt: "string?",
+        status: "string?",
+        tableNumber: "string?",
+        type: "string?",
+        tableId: "string?",
+        items: {
+            type: 'list',
+            objectType: ORDER_ITEMS
+        },
+    },
+    primaryKey: "id",
+}
+
+const newOrderItemsSchema = {
+    name: NEW_ORDER_ITEMS,
+    embedded: true,
+    properties: {
+        menuId: "string?",
+        menuName: "string?",
+        image: '{}',
+        categoryId: "string?",
+        options: {
+            type: 'list',
+            objectType: PRODUCT_OPTION
+        },
+        addons: {
+            type: 'list',
+            objectType: PRODUCT_OPTION
+        },
+        information: "string?",
+        price: "int?",
+        totalOptions: "int?",
+        totalAddons: "int?",
+        totalPrice: "int?",
+        qty: "int?",
+        discount: "int?",
+    },
+};
 
 const migrationAppConfigSchema = (oldRealm, newRealm) => {
     const oldObjects = oldRealm.objects(APP_CONFIG);
@@ -194,6 +298,54 @@ const migrationOrderProductItemsSchema = (oldRealm, newRealm) => {
     }
 };
 
+const migrationTransactionSchema = (oldRealm, newRealm) => {
+    const oldObjects = oldRealm.objects(ORDER_ITEMS);
+    const newObjects = newRealm.objects(ORDER_ITEMS);
+    for (const objectIndex in oldObjects) {
+        const oldObject = oldObjects[objectIndex];
+        const newObject = newObjects[objectIndex];
+        for (let key in transactionSchema.properties) {
+            newObject[key] = oldObject[key];
+        }
+    }
+};
+
+const migrationTransactionItemsSchema = (oldRealm, newRealm) => {
+    const oldObjects = oldRealm.objects(ORDER_ITEMS);
+    const newObjects = newRealm.objects(ORDER_ITEMS);
+    for (const objectIndex in oldObjects) {
+        const oldObject = oldObjects[objectIndex];
+        const newObject = newObjects[objectIndex];
+        for (let key in transactionItemsSchema.properties) {
+            newObject[key] = oldObject[key];
+        }
+    }
+};
+
+const migrationNewOrderSchema = (oldRealm, newRealm) => {
+    const oldObjects = oldRealm.objects(ORDER_ITEMS);
+    const newObjects = newRealm.objects(ORDER_ITEMS);
+    for (const objectIndex in oldObjects) {
+        const oldObject = oldObjects[objectIndex];
+        const newObject = newObjects[objectIndex];
+        for (let key in newOrderSchema.properties) {
+            newObject[key] = oldObject[key];
+        }
+    }
+};
+
+const migrationNewOrderItemsSchema = (oldRealm, newRealm) => {
+    const oldObjects = oldRealm.objects(ORDER_ITEMS);
+    const newObjects = newRealm.objects(ORDER_ITEMS);
+    for (const objectIndex in oldObjects) {
+        const oldObject = oldObjects[objectIndex];
+        const newObject = newObjects[objectIndex];
+        for (let key in newOrderItemsSchema.properties) {
+            newObject[key] = oldObject[key];
+        }
+    }
+};
+
 export {
     AppConfigSchema,
     ProductSchema,
@@ -201,10 +353,18 @@ export {
     productOptionList,
     orderProductSchema,
     orderProductItemsSchema,
+    transactionSchema,
+    transactionItemsSchema,
+    newOrderSchema,
+    newOrderItemsSchema,
     migrationAppConfigSchema,
     migrationProductSchema,
     migrationProductOption,
     migrationProductOptionList,
     migrationOrderProductSchema,
     migrationOrderProductItemsSchema,
+    migrationTransactionSchema,
+    migrationTransactionItemsSchema,
+    migrationNewOrderSchema,
+    migrationNewOrderItemsSchema,
 }

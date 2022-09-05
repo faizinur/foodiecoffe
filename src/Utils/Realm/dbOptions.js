@@ -5,12 +5,18 @@ import {
     productOptionList,
     orderProductSchema,
     orderProductItemsSchema,
+    transactionSchema,
+    transactionItemsSchema,
+    newOrderSchema,
+    newOrderItemsSchema,
     migrationAppConfigSchema,
     migrationProductSchema,
     migrationProductOption,
     migrationProductOptionList,
     migrationOrderProductSchema,
     migrationOrderProductItemsSchema,
+    migrationTransactionSchema,
+    migrationTransactionItemsSchema,
 } from './schema';
 
 let key = new Int8Array(64);
@@ -35,6 +41,10 @@ export default dbOptions = {
         productOptionList,
         orderProductSchema,
         orderProductItemsSchema,
+        transactionSchema,
+        transactionItemsSchema,
+        newOrderSchema,
+        newOrderItemsSchema,
     ],
     schemaVersion: version,
     encryptionKey: key,
@@ -46,6 +56,10 @@ export default dbOptions = {
             migrationProductOptionList(oldRealm, newRealm);
             migrationOrderProductSchema(oldRealm, newRealm);
             migrationOrderProductItemsSchema(oldRealm, newRealm);
+            migrationTransactionSchema(oldRealm, newRealm);
+            migrationTransactionItemsSchema(oldRealm, newRealm);
+            migrationNewOrderSchema(oldRealm, newRealm);
+            migrationNewOrderItemsSchema(oldRealm, newRealm);
         }
     },
 }

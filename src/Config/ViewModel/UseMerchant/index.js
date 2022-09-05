@@ -82,10 +82,8 @@ export default (params = null) => {
 
     const _clickMerchantOrder = async () => {
         try {
-
             if (memoizedTotalPrice == 0) return false;
-            let merchantOrder = //await MyRealm.insertData(ORDER,
-            {
+            let merchantOrder = await MyRealm.insertData(ORDER, {
                 createdAt: moment().format('YYYY-MM-DD hh:mm:ss'),
                 discount: 0,
                 invoice: "INV/011/2212068155/2",
@@ -101,7 +99,7 @@ export default (params = null) => {
                 tableNumber: params?.tableId,
                 total: memoizedTotalPrice,
                 type: "dinein"
-            }// );
+            });
             navigate('DetailOrder', { order: { id: merchantOrder?.id, status: 'new' }, title: "Konfirmasi Pembayaran" })
         } catch (e) {
             log(`_clickMerchantOrder : ${e}`)

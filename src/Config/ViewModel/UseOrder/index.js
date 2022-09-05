@@ -1,6 +1,7 @@
 import { Order, Auth } from '@Model';
 import { useState, useMemo, useCallback } from 'react';
-import { log, CONSTANT } from '@Utils';
+import { log, CONSTANT, MyRealm } from '@Utils';
+import { NEW_ORDER } from '@Utils/Realm/types';
 let SUBSCRIBE_ORDER_TIMEOUT = null;
 let page = 1;
 export default () => {
@@ -20,6 +21,7 @@ export default () => {
             if (status != 'SUCCESS') throw message;
             if (data.length > 0) {
                 setOrderList(data)
+                await MyRealm.insertData(NEW_ORDER, data);
                 page = 1;
             }
             setRefreshingOrder(false)
@@ -36,7 +38,10 @@ export default () => {
             if (userData == null) return Promise.reject(`userData null`);
             const { status, data } = await getOrders(userData.user.merchantId, 1);
             if (status == 'SUCCESS') {
-                if (data.length > 0) memoizedOrderList(data)
+                if (data.length > 0) {
+                    memoizedOrderList(data)
+                    await MyRealm.insertData(NEW_ORDER, data);
+                }
             }
             await new Promise(resolve => {
                 _unSubscribeOrders();

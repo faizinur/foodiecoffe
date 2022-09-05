@@ -1,6 +1,7 @@
 import { Transaksi } from '@Model';
 const { getDaftarTransaksi } = Transaksi;
-import { log } from '@Utils';
+import { log, MyRealm } from '@Utils';
+import { TRANSACTION } from '@Utils/Realm/types';
 import { useState, useMemo, useCallback } from 'react';
 export default () => {
     const [errorTransaksi, setErrorTransaksi] = useState('');
@@ -15,7 +16,14 @@ export default () => {
             setActiveTransationList(transactionType)
             const { status, data, message } = await getDaftarTransaksi();
             if (status != 'SUCCESS') throw message;
-            setTransactionList(data.map(transaction => ({ ...transaction, items: transaction.summaryItem })));
+            let tmpTransaction = data.map(transaction => {
+                transaction.summaryItem.map(summaryItem => summaryItem.options = summaryItem.options == null ? [] : summaryItem.options)
+                transaction = { ...transaction, items: transaction.summaryItem, tableNumber: '??xx??' }
+                delete transaction['summaryItem']
+                return transaction;
+            });
+            setTransactionList(tmpTransaction);
+            await MyRealm.insertData(TRANSACTION, tmpTransaction)
             setTransactionLoading(false);
         } catch (e) {
             setErrorTransaksi(e);
@@ -26,7 +34,14 @@ export default () => {
     const _pollingTransaksiList = useCallback(async () => {
         const { status, data } = await getDaftarTransaksi();
         if (status == 'SUCCESS') return false;
-        setTransactionList(data.map(transaction => ({ ...transaction, items: transaction.summaryItem })));
+        let tmpTransaction = data.map(transaction => {
+            transaction.summaryItem.map(summaryItem => summaryItem.options = summaryItem.options == null ? [] : summaryItem.options)
+            transaction = { ...transaction, items: transaction.summaryItem, tableNumber: '??xx??' }
+            delete transaction['summaryItem']
+            return transaction;
+        });
+        setTransactionList(tmpTransaction);
+        await MyRealm.insertData(TRANSACTION, tmpTransaction)
     }, [transactionList])
 
     const _filterTransaksi = async (date) => {
