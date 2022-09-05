@@ -15,7 +15,7 @@ export default (props) => {
                 title={`Pesanan ${props?.orders?.length > 0 ? `(${props?.orders?.length})` : ''}`}
                 style={{ backgroundColor: colors.white, padding: 0, marginHorizontal: -8, }}
                 titleStyle={{ color: colors.black, fontSize: 15, fontWeight: 'bold', fontFamily: 'ReadexProMedium' }}>
-                {props?.orders.map((item, index) => (
+                {props?.orders && props?.orders.map((item, index) => (
                     <View key={`order-${index}`}>
                         <View style={styles.listContainer}>
                             <Image source={{ uri: item?.image?.url || 'https://via.placeholder.com/150' }} style={styles.img} />

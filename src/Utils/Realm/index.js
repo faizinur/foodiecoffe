@@ -6,143 +6,103 @@ import dbOptions from './dbOptions';
 import {
     APP_CONFIG,
     PRODUCT,
+    ORDER
 } from './types';
 
-const insertData = payload => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            const realm = await Realm.open(dbOptions);
-            realm.write(() => {
-                log(payload.value)
-                let appConfigCount = realm.objects(APP_CONFIG).filtered(`key == "${payload.key}"`);
-                if (appConfigCount.length > 0) {
-                    realm.delete(appConfigCount);
-                    appConfigCount = null;
-                } else {
-                    realm.create(APP_CONFIG, { ...payload, configId: new UUID().toHexString() });
-                }
-            });
-            //realm.close();
-            resolve(true)
-        } catch (e) {
-            log('reject insertdata ', e)
-            reject(e)
-        }
-    })
-}
+const _newBSON = () => new UUID().toHexString();
 
-const selectData = async (key, callback = null) => {
-    if (key == '') return Promise.reject('key kosong')
-    return new Promise(async (resolve, reject) => {
-        try {
-            let selectedData = '';
-            const realm = await Realm.open(dbOptions);
-            realm.write(() => {
-                // selectedData = realm.objects(key)
-                selectedData = JSON.parse(JSON.stringify(realm.objects(key)));
-            });
-            //realm.close();
-            resolve(callback != null ? callback(selectedData) : selectedData);
-        } catch (error) {
-            reject(error);
-        }
-    })
-}
-
-const deleteData = (key) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            const realm = await Realm.open(dbOptions);
-            realm.write(() => {
-                let foundData = realm.objects(key)
-                realm.delete(foundData)
-                foundData = null;
-            })
-            //realm.close();
-            resolve('OK');
-        } catch (e) {
-            reject(e);
-        }
-    })
-}
-
-
-const insertProduct = products => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            const realm = await Realm.open(dbOptions);
-            realm.write(() => {
-                products.map(product => {
-                    let foundProduct = realm.objects(PRODUCT).filtered(`id = '${product.id}'`)
-                    if (foundProduct.length > 0) realm.delete(foundProduct)
-                    foundProduct = null;
-                    realm.create(PRODUCT, {
-                        productId: new UUID().toHexString(),
-                        ...product,
-                    })
-                })
-            });
-            //realm.close();
-            resolve(true)
-        } catch (e) {
-            reject(e)
-        }
-    })
-}
-const updateData = (key, updatedValue) => {
-
-    return new Promise(async (resolve, reject) => {
-        if (updatedValue.id == '') reject('primaryKey empty');
-        Realm.open(dbOptions).then(realm => {
-            realm.write(() => {
-                let objData = realm.objectForPrimaryKey(key, updatedValue.id);
-                delete updatedValue['id'];
-                if (typeof (objData) !== 'undefined') {
-                    Object.keys(updatedValue).map(key => objData[key] = updatedValue[key])
-                    resolve('OK');
-                } else {
-                    reject(`Primary key ${updatedValue.id} Not Found`);
-                }
-            });
-        });
-    })
-
-    ///ERRORR!
-    // return new Promise(async (resolve, reject) => {
-    //     try {
-    //         const realm = await Realm.open(dbOptions);
-    //         let foundData = await realm.objectForPrimaryKey(key, updatedValue.id);
-    //         let iteratedValue = { ...updatedValue };
-    //         delete iteratedValue['id'];
-
-    //         if (typeof (foundData) !== 'undefined') {
-    //             log(Object.keys(iteratedValue))
-    //             Object.keys(iteratedValue).map(key => {
-    //                 log('update : ', key, iteratedValue[key])
-    //                 foundData[key] = updatedValue[key]
-    //             })
-    //             resolve(foundData);
-    //         } else {
-    //             reject(`Primary key ${updatedValue.productId} Not Found`);
-    //         }
-    //     } catch (e) {
-    //         reject(e)
-    //     }
-    // })
-}
-
-const closeConnection = async () => {
+const insertConfig = payload => new Promise(async (resolve, reject) => {
     try {
-        log('close realm')
+        const realm = await Realm.open(dbOptions);
+        realm.write(() => {
+            log(payload.value)
+            let appConfigCount = realm.objects(APP_CONFIG).filtered(`key == "${payload.key}"`);
+            if (appConfigCount.length > 0) {
+                realm.delete(appConfigCount);
+                appConfigCount = null;
+            } else {
+                realm.create(APP_CONFIG, { ...payload, configId: _newBSON() });
+            }
+        });
+        resolve(true)
     } catch (e) {
-        log('closeConnection ERR : ', e)
+        log('reject insertConfig ', e)
+        reject(e)
     }
-}
+})
+
+const selectData = async (key, callback = null) => new Promise(async (resolve, reject) => {
+    if (key == '') return reject('key kosong')
+    try {
+        let selectedData = '';
+        const realm = await Realm.open(dbOptions);
+        realm.write(() => {
+            selectedData = JSON.parse(JSON.stringify(realm.objects(key)));
+        });
+        resolve(callback != null ? callback(selectedData) : selectedData);
+    } catch (error) {
+        reject(error);
+    }
+})
+
+const deleteData = (key) => new Promise(async (resolve, reject) => {
+    if (key == '') return reject('key kosong')
+    try {
+        const realm = await Realm.open(dbOptions);
+        realm.write(() => {
+            let foundData = realm.objects(key)
+            realm.delete(foundData)
+            foundData = null;
+        })
+        resolve('OK');
+    } catch (e) {
+        reject(e);
+    }
+})
+
+
+const insertData = (key, data) => new Promise(async (resolve, reject) => {
+    if (key == '') return reject('key kosong')
+    try {
+        const realm = await Realm.open(dbOptions);
+        let payloads = (Array.isArray(data) ? [...data] : [data])
+        realm.write(() => {
+            Promise.all(payloads.map(payload => {
+                // let foundPayload = realm.objects(key).filtered(`id = '${payload.id}'`)
+                // if (foundPayload.length > 0) realm.delete(foundPayload)
+                // foundPayload = null;
+                payload.id = _newBSON()
+                realm.create(key, payload)
+            }))
+        });
+        resolve(payloads)
+    } catch (e) {
+        reject(e)
+    }
+})
+
+const updateData = (key, updatedValue) => new Promise(async (resolve, reject) => {
+    if (key == '') return reject('key kosong')
+    if (updatedValue?.id == '') reject('primaryKey empty');
+    Realm.open(dbOptions).then(realm => {
+        realm.write(() => {
+            let objData = realm.objectForPrimaryKey(key, updatedValue.id);
+            delete updatedValue['id'];
+            if (typeof (objData) !== 'undefined') {
+                Object.keys(updatedValue).map(key => objData[key] = updatedValue[key])
+                resolve('OK');
+            } else {
+                reject(`Primary key ${updatedValue.id} Not Found`);
+            }
+        });
+    });
+})
+
 export {
-    insertData,
+    _newBSON,
+    insertConfig,
     selectData,
     deleteData,
-    closeConnection,
-    insertProduct,
+    insertData,
     updateData,
 }

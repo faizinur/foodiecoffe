@@ -1,6 +1,8 @@
 import {
     APP_CONFIG,
     PRODUCT,
+    ORDER,
+    ORDER_ITEMS,
     PRODUCT_OPTION,
     PRODUCT_OPTION_LIST
 } from './types';
@@ -18,17 +20,13 @@ const AppConfigSchema = {
 const ProductSchema = {
     name: PRODUCT,
     properties: {
-        productId: 'string',
         id: "string?",
         name: "string?",
         categoryId: "string?",
         categoryName: "string?",
         description: "string?",
-        image: 'string?',
         image: '{}',
         price: "int?",
-        options: 'string?',
-        addons: 'string?',
         options: {
             type: 'list',
             objectType: PRODUCT_OPTION
@@ -39,7 +37,7 @@ const ProductSchema = {
         },
         merchantId: "string?"
     },
-    primaryKey: "productId",
+    primaryKey: "id",
 };
 
 const productOption = {
@@ -63,6 +61,66 @@ const productOptionList = {
         available: { type: 'bool', default: false },
     }
 }
+
+const orderProductSchema = {
+    name: ORDER,
+    properties: {
+        id: "string?",
+        createdAt: "string?",
+        discount: "int?",
+        invoice: "string?",
+        items: {
+            type: 'list',
+            objectType: ORDER_ITEMS
+        },
+        name: "string?",
+        paid: "int?",
+        payment: "string?",
+        phone: "string?",
+        ppn: "int?",
+        status: "string?",
+        subTotal: "int?",
+        tableId: "string?",
+        tableNumber: "string?",
+        total: "int?",
+        type: "string?",
+    },
+    primaryKey: "id",
+};
+
+const orderProductItemsSchema = {
+    name: ORDER_ITEMS,
+    embedded: true,
+    properties: {
+        id: "string?",
+        name: "string?",
+        categoryId: "string?",
+        categoryName: "string?",
+        description: "string?",
+        image: '{}',
+        price: "int?",
+        options: {
+            type: 'list',
+            objectType: PRODUCT_OPTION
+        },
+        addons: {
+            type: 'list',
+            objectType: PRODUCT_OPTION
+        },
+        merchantId: "string?",
+        notes: "string?",
+        qty: "int?",
+        discount: "int?",
+        information: "string?",
+        menuId: "string?",
+        menuName: "string?",
+        totalAddons: "int?",
+        totalOptions: "int?",
+        totalPrice: "int?",
+    },
+};
+
+
 
 const migrationAppConfigSchema = (oldRealm, newRealm) => {
     const oldObjects = oldRealm.objects(APP_CONFIG);
@@ -112,13 +170,41 @@ const migrationProductOptionList = (oldRealm, newRealm) => {
     }
 };
 
+const migrationOrderProductSchema = (oldRealm, newRealm) => {
+    const oldObjects = oldRealm.objects(ORDER);
+    const newObjects = newRealm.objects(ORDER);
+    for (const objectIndex in oldObjects) {
+        const oldObject = oldObjects[objectIndex];
+        const newObject = newObjects[objectIndex];
+        for (let key in orderProductSchema.properties) {
+            newObject[key] = oldObject[key];
+        }
+    }
+};
+
+const migrationOrderProductItemsSchema = (oldRealm, newRealm) => {
+    const oldObjects = oldRealm.objects(ORDER_ITEMS);
+    const newObjects = newRealm.objects(ORDER_ITEMS);
+    for (const objectIndex in oldObjects) {
+        const oldObject = oldObjects[objectIndex];
+        const newObject = newObjects[objectIndex];
+        for (let key in orderProductItemsSchema.properties) {
+            newObject[key] = oldObject[key];
+        }
+    }
+};
+
 export {
     AppConfigSchema,
     ProductSchema,
     productOption,
     productOptionList,
+    orderProductSchema,
+    orderProductItemsSchema,
     migrationAppConfigSchema,
     migrationProductSchema,
     migrationProductOption,
     migrationProductOptionList,
+    migrationOrderProductSchema,
+    migrationOrderProductItemsSchema,
 }

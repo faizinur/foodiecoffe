@@ -21,10 +21,7 @@ export default memo(({ onSelectCategory }) => {
         _clearFilteredCategory,
     } = UseMerchant()
 
-    const _onPressCategory = useCallback(merchant => {
-        onSelectCategory(merchant)
-    }, [])
-    const _renderTilesCategory = ({ item }) => <TilesCategory merchant={item} numColumns={3} onPress={_onPressCategory} />
+    const _renderTilesCategory = ({ item }) => <TilesCategory merchant={item} numColumns={3} onPress={onSelectCategory} />
 
     useEffect(() => {
         log('Mount MerchantTemp');
@@ -39,7 +36,7 @@ export default memo(({ onSelectCategory }) => {
             <View style={styles.sectionContainer}>
                 <View style={{ paddingTop: 24, paddingBottom: 32 }}>
                     <Searchbar
-                        placeholder="Search"
+                        placeholder="Main Course, Drinks, Combo..."
                         onChangeText={setSearchQuery}
                         onSubmitEditing={_filterCategory}
                         value={searchQuery}

@@ -1,6 +1,7 @@
 import { Product, Auth } from '@Model';
 const { getListProduct, setProductAvalability, getProductList } = Product;
 import { log, MyRealm } from '@Utils';
+import { PRODUCT } from '@Utils/Realm/types';
 import { useState } from 'react';
 export default () => {
     const { getUserData } = Auth;
@@ -14,8 +15,6 @@ export default () => {
             log('_getDaftarProduct')
             setLoadingProduct(true)
             setProductError('')
-            // cek apakah udah ada produk, kalau udah ada yaudah gak usah ambil ke backend, kalau mau data terbaru yaudah login ulang, 
-            // lagian pas di menu data bisa diupdate ke local db dan harusnya ke server juga
             if (products.length > 0) {
                 log('DATA PRODUCT UDAH ADA!')
                 setProductList(products.sort((prev, next) => prev.id < next.id));
@@ -26,7 +25,7 @@ export default () => {
                 const { status, data, message } = await getListProduct(userData.user.merchantId);
                 if (status != 'SUCCESS') throw message;
                 setProductList(data.sort((prev, next) => prev.id < next.id))
-                await MyRealm.insertProduct(data)
+                await MyRealm.insertData(PRODUCT, data)
             }
             setLoadingProduct(false)
         } catch (err) {

@@ -11,13 +11,14 @@ export default memo(({ navigation: { navigate } }) => {
     const { _submitLogin, loading, authError } = UseAuth();
     const { colors } = useTheme()
     const refForms = useRef(<Forms />)
+
     const defaultValue = {
         email: "inurfaizi@gmail.com",
         password: "foodiecoffee123",
     }
     const _onClickRegister = useCallback(() => {
         navigate('Register');
-    }, [])
+    }, []);
 
     useEffect(() => {
         log('Mount Login');
@@ -47,7 +48,7 @@ export default memo(({ navigation: { navigate } }) => {
                 ref={refForms}
                 formname={FORM_NAME}
                 inputList={INPUT_LIST}
-                defaultValue={defaultValue}
+                defaultValue={__DEV__ ? defaultValue : {}}
                 onFormSubmit={_submitLogin}
                 submitLabel={'masuk'}
                 loading={loading}

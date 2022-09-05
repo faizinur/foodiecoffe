@@ -30,6 +30,7 @@ export default memo(({ navigation: { navigate } }) => {
 
     useEffect(() => {
         log('Mount TransTemp');
+        _getTransaksiList();
         startSubscribePollingTransaksiList()
         return () => {
             log('Unmount TransTemp')

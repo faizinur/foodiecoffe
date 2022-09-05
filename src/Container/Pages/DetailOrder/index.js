@@ -10,7 +10,7 @@ import { ListCustomer, ListOrder } from '@Organisms';
 
 export default memo(({ navigation: { goBack }, route: { params } }) => {
     const { colors } = useTheme();
-    const refDetailOrderModal = useRef(<refDetailOrderModal />)
+    const refDetailOrderModal = useRef(<DetailOrderModal />)
     return (
         <View style={styles.container}>
             <TitleBar title={params?.title || 'title'} />

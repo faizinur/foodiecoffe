@@ -3,10 +3,14 @@ import {
     ProductSchema,
     productOption,
     productOptionList,
+    orderProductSchema,
+    orderProductItemsSchema,
     migrationAppConfigSchema,
     migrationProductSchema,
     migrationProductOption,
     migrationProductOptionList,
+    migrationOrderProductSchema,
+    migrationOrderProductItemsSchema,
 } from './schema';
 
 let key = new Int8Array(64);
@@ -28,7 +32,9 @@ export default dbOptions = {
         AppConfigSchema,
         ProductSchema,
         productOption,
-        productOptionList
+        productOptionList,
+        orderProductSchema,
+        orderProductItemsSchema,
     ],
     schemaVersion: version,
     encryptionKey: key,
@@ -38,6 +44,8 @@ export default dbOptions = {
             migrationProductSchema(oldRealm, newRealm);
             migrationProductOption(oldRealm, newRealm);
             migrationProductOptionList(oldRealm, newRealm);
+            migrationOrderProductSchema(oldRealm, newRealm);
+            migrationOrderProductItemsSchema(oldRealm, newRealm);
         }
     },
 }

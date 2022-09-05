@@ -25,7 +25,7 @@ export default (props) => {
                 </View>
             </View>
             <View style={styles.listOrder}>
-                <MyText fontSize={12} lineHeight={15} bold numberOfLines={1} black center style={{ width: '85%' }}> • {props.order.menuName}</MyText>
+                <MyText fontSize={12} lineHeight={15} bold numberOfLines={1} black center style={{ width: '85%' }}> • {props.order?.menuName}</MyText>
                 <View style={styles.orderCount}>
                     <MyText fontSize={12} lineHeight={14} center color={colors.cerulean} bold>+{props?.order?.items?.length}</MyText>
                 </View>

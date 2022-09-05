@@ -18,7 +18,17 @@ import styles from './styles';
 import { UseMerchant } from '@ViewModel';
 
 export default memo(({ navigation, route: { params } }) => {
-    const { _getCategoryList, categoryList, merchantLoading, setMerchantLoading, memoizedTotalPrice, memoizedCartCategoryList, _onBucketChanged } = UseMerchant()
+    const {
+        _getCategoryList,
+        categoryList,
+        merchantLoading,
+        memoizedTotalPrice,
+        memoizedCartCategoryList,
+        _onBucketChanged,
+        _clickMerchantOrder,
+        _onRefreshCategory,
+        _filterProduct,
+    } = UseMerchant(params)
     const { colors } = useTheme();
     const refModalProductList = useRef(<ModalProductList />)
     const refModalFilterProduct = useRef(<ModalFilterProduct />)
@@ -36,30 +46,16 @@ export default memo(({ navigation, route: { params } }) => {
 
     const _onDetailBucketPress = () => refModalDetailProduct?.current?.toggle('DETAIL', [memoizedCartCategoryList, memoizedTotalPrice]);
 
-    const _onAddNotes = (product) => {
-        log('_onPesanPress addons : ')
-        refModalProductList?.current?.toggle(product)
-    }
+    const _onAddNotes = product => refModalProductList?.current?.toggle(product)
 
-    const _onPressFilter = () => {
-        log('_onPressFilter : ')
-        refModalFilterProduct?.current?.toggle()
-    }
+    const _onPressFilter = () => refModalFilterProduct?.current?.toggle()
 
-    const _filterProduct = (sortType, discount) => {
-        log('_filterProduct : ', sortType, discount)
-    }
 
     const _renderCardProduct = useCallback(({ item }) => <CardProduct item={item} onAdd={() => _onChangeBucket('CHANGE', item)} onRemove={() => _onChangeBucket('CHANGE', item)} addNotes={() => _onAddNotes(item)} />, [])
 
-    const _clickOrder = () => {
-        if (memoizedTotalPrice == 0) return false;
-        log(memoizedTotalPrice, memoizedCartCategoryList)
-    }
-
     useEffect(() => {
         log('Mount ProductsList');
-        _getCategoryList(params.categoryId);
+        _getCategoryList(params?.categoryId);
         return () => {
             log('Unmount ProductsList')
         }
@@ -88,16 +84,12 @@ export default memo(({ navigation, route: { params } }) => {
                         refreshControl={
                             <RefreshControl
                                 refreshing={merchantLoading}
-                                onRefresh={() => {
-                                    _getCategoryList(params);
-                                    setMerchantLoading(true);
-                                    setTimeout(() => setMerchantLoading(false), 3000);
-                                }}
+                                onRefresh={_onRefreshCategory}
                             />}
                         data={categoryList}
                         renderItem={_renderCardProduct}
                         snapToInterval={150}
-                        keyExtractor={({ productId }) => productId}
+                        keyExtractor={({ id }) => id}
                         showsVerticalScrollIndicator={false}
                         nestedScrollEnabled={true}
                         ListEmptyComponent={<MyText large bold black>Oops, Kategori Masih kosong nih...!</MyText>}
@@ -114,7 +106,7 @@ export default memo(({ navigation, route: { params } }) => {
                     </View>
                     <View>
                         <InputItems.MyButton
-                            onPress={_clickOrder}
+                            onPress={_clickMerchantOrder}
                             style={styles.button}
                             label={'pesan'}
                             labelStyle={{ fontSize: 16 }} />

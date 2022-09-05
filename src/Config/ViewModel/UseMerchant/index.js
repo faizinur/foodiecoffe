@@ -1,7 +1,10 @@
 import { Merchant, Auth, Product } from '@Model';
 import React, { useState, useCallback, useMemo } from 'react';
-import { log } from '@Utils';
-export default () => {
+import { log, MyRealm } from '@Utils';
+import { ORDER } from '@Utils/Realm/types';
+import moment from 'moment';
+import { navigate } from '@RootNavigation';
+export default (params = null) => {
     const { getMerchantCategory } = Merchant;
     const { getProductList } = Product;
     const { getUserData } = Auth;
@@ -36,7 +39,7 @@ export default () => {
             setMerchantError('')
             const data = await getProductList();
             setCategoryList(
-                data.map(item => ({ ...item, ...{ notes: null, count: 0 } }))
+                data.map(item => ({ ...item, ...{ notes: null, qty: 0 } }))
                     .sort((prev, next) => prev.id < next.id)
                     .filter(({ categoryId }) => categoryId == selectedCategoryId)
             )
@@ -49,16 +52,65 @@ export default () => {
         }
     }, [categoryList])
 
+    const _onRefreshCategory = useCallback(() => {
+        _getCategoryList(params);
+        setMerchantLoading(true);
+        setTimeout(() => setMerchantLoading(false), 3000);
+    }, [merchantLoading])
+
     const memoizedTotalPrice = useMemo(() => {
-        return categoryList.filter(({ count }) => count > 0)
-            .map(({ count, price }) => ({ sumPrice: parseInt(count) * parseFloat(price) }))
-            .reduce((acc, { sumPrice }) => acc + sumPrice, 0)
+        return categoryList.filter(({ qty }) => qty > 0)
+            .map(({ qty, price }) => ({ totalPrice: parseInt(qty) * parseFloat(price) }))
+            .reduce((acc, { totalPrice }) => acc + totalPrice, 0)
     }, [categoryList])
 
     const memoizedCartCategoryList = useMemo(() => {
-        return categoryList.filter(({ count }) => count > 0)
-            .map(({ count, price, name, notes }) => ({ count, sumPrice: parseInt(count) * parseFloat(price), name, notes }))
+        return categoryList.filter(({ qty }) => qty > 0)
+            .map((category) => ({
+                ...category,
+                name: category?.name,
+                notes: category?.notes,
+                discount: 0,
+                information: '',
+                menuId: category?.id,
+                menuName: category?.name,
+                totalAddons: 0,
+                totalOptions: 0,
+                totalPrice: parseInt(category?.qty) * parseFloat(category?.price),
+            }))
     }, [categoryList])
+
+    const _clickMerchantOrder = async () => {
+        try {
+
+            if (memoizedTotalPrice == 0) return false;
+            let merchantOrder = // await MyRealm.insertData(ORDER,
+            {
+                createdAt: moment().format('YYYY-MM-DD hh:mm:ss'),
+                discount: 0,
+                invoice: "INV/011/2212068155/2",
+                items: memoizedCartCategoryList,
+                merchantId: "undefined yet",
+                merchantName: "undefined yet",
+                name: '',
+                paid: 0,
+                ppn: 0,
+                status: "undefined yet",
+                subTotal: 31000,
+                tableId: params?.tableId,
+                tableNumber: "MC2",
+                total: memoizedTotalPrice,
+                type: "dinein"
+            }
+            // );
+            navigate('DetailOrder', {
+                order: { ...merchantOrder },
+                title: "Konfirmasi Pembayaran",
+            })
+        } catch (e) {
+            log(`_clickMerchantOrder : ${e}`)
+        }
+    }
 
     const _filterCategory = useCallback(({ nativeEvent: { text } }) => {
         if (text == '') return false;
@@ -85,12 +137,16 @@ export default () => {
 
     }, [searchQuery, filteredCategory])
 
+    const _filterProduct = (sortType, discount) => {
+        log('_filterProduct : ', sortType, discount)
+    }
+
     const _onBucketChanged = useCallback((updatedValue) => {
         let index = categoryList.findIndex(({ id }) => id === updatedValue.id);
         if (index < 0) return false;
         delete updatedValue.id;
         let tmpCategoryList = [...categoryList]
-        log(updatedValue)
+        log('_onBucketChanged', updatedValue)
         Object.keys(updatedValue).map(key => {
             tmpCategoryList[index][key] = updatedValue[key]
         })
@@ -115,6 +171,9 @@ export default () => {
         _onBucketChanged,
         memoizedTotalPrice,
         memoizedCartCategoryList,
+        _clickMerchantOrder,
+        _onRefreshCategory,
+        _filterProduct,
     }
 }
 

@@ -15,15 +15,15 @@ export default (props) => {
                     <MyText left light black>Rp.{props?.item?.price}</MyText>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                         <View style={{ justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', width: 80, height: 40, }}>
-                            <TouchableOpacity activeOpacuty={.9} onPress={props?.onAdd} disabled={props?.item?.count < 1} style={{ width: 24, height: 24, borderRadius: 12, borderWidth: 1, borderColor: props?.item?.count < 1 ? colors.silverChalice : colors.wildWaterMelon, justifyContent: 'center', alignItems: 'center' }}>
-                                <Icon name={'minus'} size={20} color={props?.item?.count < 1 ? colors.silverChalice : colors.wildWaterMelon} />
+                            <TouchableOpacity activeOpacuty={.9} onPress={props?.onAdd} disabled={props?.item?.qty < 1} style={{ width: 24, height: 24, borderRadius: 12, borderWidth: 1, borderColor: props?.item?.qty < 1 ? colors.silverChalice : colors.wildWaterMelon, justifyContent: 'center', alignItems: 'center' }}>
+                                <Icon name={'minus'} size={20} color={props?.item?.qty < 1 ? colors.silverChalice : colors.wildWaterMelon} />
                             </TouchableOpacity>
-                            <MyText left light color={props?.item?.count < 1 ? colors.silverChalice : colors.black} center>{props?.item?.count}</MyText>
+                            <MyText left light color={props?.item?.qty < 1 ? colors.silverChalice : colors.black} center>{props?.item?.qty}</MyText>
                             <TouchableOpacity activeOpacuty={.9} onPress={props?.onRemove} style={{ width: 24, height: 24, borderRadius: 12, borderWidth: 1, borderColor: colors.wildWaterMelon, justifyContent: 'center', alignItems: 'center' }}>
                                 <Icon name={'plus'} size={20} color={colors.wildWaterMelon} />
                             </TouchableOpacity>
                         </View>
-                        {props?.item?.count > 0 && <Chip selectedColor={colors.jumbo} onPress={props?.addNotes} icon={'pencil'} textStyle={{ fontSize: 12, width: '100%' }} style={{ height: 33, width: 100, borderWidth: 1, backgroundColor: colors.white, borderColor: colors.athensGray }}>Catatan</Chip>}
+                        {props?.item?.qty > 0 && <Chip selectedColor={colors.jumbo} onPress={props?.addNotes} icon={'pencil'} textStyle={{ fontSize: 12, width: '100%' }} style={{ height: 33, width: 100, borderWidth: 1, backgroundColor: colors.white, borderColor: colors.athensGray }}>Catatan</Chip>}
                     </View>
                 </View>
             </View>

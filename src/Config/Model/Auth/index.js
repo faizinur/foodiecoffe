@@ -45,7 +45,7 @@ const getUserData = async () => {
 
 const setUserData = async userData => {
     try {
-        await MyRealm.insertData({ key: 'userData', value: JSON.stringify(userData) })
+        await MyRealm.insertConfig({ key: 'userData', value: JSON.stringify(userData) })
         return true;
     } catch (err) {
         return err;
@@ -66,7 +66,6 @@ const logOut = async () => {
     try {
         await MyRealm.deleteData(APP_CONFIG);
         await MyRealm.deleteData(PRODUCT);
-        await MyRealm.closeConnection()
         return true
     } catch (err) {
         return err

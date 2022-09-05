@@ -32,18 +32,18 @@ export default forwardRef((props, ref) => {
     }, [modalVisible, animationType]);
 
     const _onClickPesan = () => {
-        props.onChangeBucket({ id: product.id, count: product.count })
+        props.onChangeBucket({ id: product.id, qty: product.qty })
         _onCloseModal()
     }
     useImperativeHandle(ref, () => ({
         toggle,
     }));
 
-    const _changeCount = useCallback((type) => {
-        log('_changeCount : ', type)
+    const _changeqty = useCallback((type) => {
+        log('_changeqty : ', type)
         setProduct(prevState => ({
             ...prevState,
-            count: type == 'plus' ? prevState.count + 1 : (prevState.count > 0 ? prevState.count - 1 : 0)
+            qty: type == 'plus' ? prevState.qty + 1 : (prevState.qty > 0 ? prevState.qty - 1 : 0)
         }))
     }, [product])
 
@@ -72,15 +72,15 @@ export default forwardRef((props, ref) => {
                                 <View style={{ width: '40%', height: 48, backgroundColor: colors.magnolia, borderRadius: 12, padding: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
                                     <TouchableOpacity
                                         activeOpacity={.8}
-                                        disabled={product?.count <= 0}
-                                        onPress={() => _changeCount('minus')}
-                                        style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: product?.count <= 0 ? colors.lightgray : colors.wildWaterMelon, justifyContent: 'center', alignItems: 'center' }}>
+                                        disabled={product?.qty <= 0}
+                                        onPress={() => _changeqty('minus')}
+                                        style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: product?.qty <= 0 ? colors.lightgray : colors.wildWaterMelon, justifyContent: 'center', alignItems: 'center' }}>
                                         <Icon name={'minus'} color={colors.white} size={15} />
                                     </TouchableOpacity>
-                                    <MyText bold medium color={product?.count <= 0 ? colors.lightgray : colors.black}>{product?.count}</MyText>
+                                    <MyText bold medium color={product?.qty <= 0 ? colors.lightgray : colors.black}>{product?.qty}</MyText>
                                     <TouchableOpacity
                                         activeOpacity={.8}
-                                        onPress={() => _changeCount('plus')}
+                                        onPress={() => _changeqty('plus')}
                                         style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: colors.wildWaterMelon, justifyContent: 'center', alignItems: 'center' }}>
                                         <Icon name={'plus'} color={colors.white} size={15} />
                                     </TouchableOpacity>
@@ -97,9 +97,9 @@ export default forwardRef((props, ref) => {
                         <>
                             <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
                                 <MyText left medium black style={{ marginVertical: 6 }}>List Belanja</MyText>
-                                {cart[0].map(({ count, sumPrice, name }, index) => <View key={`cart-${index}`} style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6 }}>
-                                    <MyText left black >{name} {count > 0 && `x(${count})`}</MyText>
-                                    <MyText left black >{new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(sumPrice)}</MyText>
+                                {cart[0].map(({ qty, totalPrice, name }, index) => <View key={`cart-${index}`} style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6 }}>
+                                    <MyText left black >{name} {qty > 0 && `x(${qty})`}</MyText>
+                                    <MyText left black >{new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(totalPrice)}</MyText>
                                 </View>
                                 )}
                                 <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6 }}>

@@ -37,7 +37,7 @@ export default memo(({ navigation }) => {
         log('_onMenuPress : ')
         refMenuModals.current?.toggle(item)
     }, [])
-    const renderCardMenu = ({ item }) => <CardMenu item={item} onPress={_onMenuPress} />
+    const _renderCardMenu = ({ item }) => <CardMenu item={item} onPress={_onMenuPress} />
     const _onSave = async product => {
         await _setProductavalability(product)
         refMenuModalSuccess.current?.toggle()
@@ -57,25 +57,24 @@ export default memo(({ navigation }) => {
                 renderRight={() => <MyPressableIcon onClickSearch={_onClickSetting} iconName={'filter-outline'} />} />
             <View style={{ paddingHorizontal: '5%' }}>
 
-                {productError == '' &&
-                    <FlatList
-                        refreshControl={
-                            <RefreshControl
-                                refreshing={loadingProduct}
-                                onRefresh={() => {
-                                    _getDaftarProduct();
-                                    setLoadingProduct(true);
-                                    setTimeout(() => setLoadingProduct(false), 3000);
-                                }}
-                            />}
-                        contentContainerStyle={styles.contentContainerStyle}
-                        data={productList}
-                        renderItem={renderCardMenu}
-                        snapToInterval={150}
-                        keyExtractor={({ id }) => id}
-                        showsVerticalScrollIndicator={false}
-                        ListEmptyComponent={() => <MyText>Product Kosong</MyText>}
-                    /> || <MyText>productError {productError}</MyText>}
+                {productError == '' && <FlatList
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={loadingProduct}
+                            onRefresh={() => {
+                                _getDaftarProduct();
+                                setLoadingProduct(true);
+                                setTimeout(() => setLoadingProduct(false), 3000);
+                            }}
+                        />}
+                    contentContainerStyle={styles.contentContainerStyle}
+                    data={productList}
+                    renderItem={_renderCardMenu}
+                    snapToInterval={150}
+                    keyExtractor={({ id }) => id}
+                    showsVerticalScrollIndicator={false}
+                    ListEmptyComponent={() => <MyText>Product Kosong</MyText>}
+                /> || <MyText>productError {productError}</MyText>}
             </View>
             <MenuModals ref={refMenuModals} onSave={_onSave} />
             <MenuModalSuccess ref={refMenuModalSuccess} />
