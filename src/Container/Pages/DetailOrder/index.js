@@ -11,6 +11,23 @@ import { ListCustomer, ListOrder } from '@Organisms';
 export default memo(({ navigation: { goBack }, route: { params } }) => {
     const { colors } = useTheme();
     const refDetailOrderModal = useRef(<DetailOrderModal />)
+    useEffect(() => {
+        log('Mount DetailOrder');
+        switch (params?.order?.status) {
+            case "success":
+                log('ambil ke model transaksi/getDaftarTransaksi');
+                break;
+            case "incoming":
+                log('ambil ke model order/getOrders');
+                break;
+            case "new":
+                log('ambil ke db order');
+                break;
+        }
+        return () => {
+            log('Unmount DetailOrder')
+        }
+    }, [])
     return (
         <View style={styles.container}>
             <TitleBar title={params?.title || 'title'} />

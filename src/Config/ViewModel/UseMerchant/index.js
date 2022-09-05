@@ -84,29 +84,25 @@ export default (params = null) => {
         try {
 
             if (memoizedTotalPrice == 0) return false;
-            let merchantOrder = // await MyRealm.insertData(ORDER,
+            let merchantOrder = //await MyRealm.insertData(ORDER,
             {
                 createdAt: moment().format('YYYY-MM-DD hh:mm:ss'),
                 discount: 0,
                 invoice: "INV/011/2212068155/2",
                 items: memoizedCartCategoryList,
-                merchantId: "undefined yet",
-                merchantName: "undefined yet",
+                merchantId: params?.categoryId,
+                merchantName: params?.name,
                 name: '',
                 paid: 0,
                 ppn: 0,
-                status: "undefined yet",
+                status: "process",
                 subTotal: 31000,
                 tableId: params?.tableId,
-                tableNumber: "MC2",
+                tableNumber: params?.tableId,
                 total: memoizedTotalPrice,
                 type: "dinein"
-            }
-            // );
-            navigate('DetailOrder', {
-                order: { ...merchantOrder },
-                title: "Konfirmasi Pembayaran",
-            })
+            }// );
+            navigate('DetailOrder', { order: { id: merchantOrder?.id, status: 'new' }, title: "Konfirmasi Pembayaran" })
         } catch (e) {
             log(`_clickMerchantOrder : ${e}`)
         }

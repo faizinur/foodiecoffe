@@ -18,7 +18,7 @@ export default (props) => {
             </View>
             <View style={styles.tableContainer}>
                 <View style={styles.table}>
-                    <MyText center light bold numberOfLines={1} color={colors.white}>Table {props.tableNumber}</MyText>
+                    <MyText center light bold numberOfLines={1} color={colors.white}>Table {props?.tableNumber || '?'}</MyText>
                 </View>
                 <MyText light right><Icon name='clock-time-four-outline' /> {DateDiff(props.createdAt)}</MyText>
             </View>

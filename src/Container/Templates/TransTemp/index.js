@@ -26,7 +26,10 @@ export default memo(({ navigation: { navigate } }) => {
 
     const { colors } = useTheme();
     const _onPressCalendar = useCallback(() => log('_onPressCalendar Pressed'), [])
-    const renderCardOrder = useCallback(({ item }) => <CardOrder order={{ ...item, menuName: item.items.map(({ menuName }) => ` ${menuName}`).toString(), tableNumber: '1' }} onPress={() => navigate('DetailOrder', { order: { ...item, tableNumber: '1' }, title: 'Pesanan Selesai' })} />, [])
+    const renderCardOrder = useCallback(({ item }) => <CardOrder
+        order={{ ...item, menuName: item.items.map(({ menuName }) => ` ${menuName}`).toString() }}
+        onPress={() => navigate('DetailOrder', { order: { id: item?.id, status: 'success' }, title: 'Pesanan Selesai' })} />
+        , [])
 
     useEffect(() => {
         log('Mount TransTemp');

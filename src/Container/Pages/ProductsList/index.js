@@ -51,10 +51,15 @@ export default memo(({ navigation, route: { params } }) => {
     const _onPressFilter = () => refModalFilterProduct?.current?.toggle()
 
 
-    const _renderCardProduct = useCallback(({ item }) => <CardProduct item={item} onAdd={() => _onChangeBucket('CHANGE', item)} onRemove={() => _onChangeBucket('CHANGE', item)} addNotes={() => _onAddNotes(item)} />, [])
+    const _renderCardProduct = useCallback(({ item }) => <CardProduct
+        item={item}
+        onAdd={() => _onChangeBucket('CHANGE', item)}
+        onRemove={() => _onChangeBucket('CHANGE', item)}
+        addNotes={() => _onAddNotes(item)} />
+        , [])
 
     useEffect(() => {
-        log('Mount ProductsList');
+        log('Mount ProductsList', params);
         _getCategoryList(params?.categoryId);
         return () => {
             log('Unmount ProductsList')
