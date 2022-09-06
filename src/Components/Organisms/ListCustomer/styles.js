@@ -10,22 +10,7 @@ export default StyleSheet.create({
         flexDirection: 'row',
     },
     img: {
-        marginVertical: 16,
         marginRight: 16
-    },
-    customerInfo: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    nameWidth: {
-        width: '80%'
-    },
-    tableContainer: {
-        width: 100,
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginVertical: 16
     },
     table: {
         backgroundColor: colors.cerulean,
@@ -35,5 +20,15 @@ export default StyleSheet.create({
         borderRadius: 6,
         justifyContent: 'center',
         alignSelf: 'flex-end'
+    },
+    flexContainer: {
+        flex: 1
+    },
+    flexRow: {
+        flexDirection: 'row'
+    },
+    flexCenter: {
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })

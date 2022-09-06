@@ -2,7 +2,7 @@ import { Product, Auth } from '@Model';
 const { getListProduct, setProductAvalability, getProductList } = Product;
 import { log, MyRealm } from '@Utils';
 import { PRODUCT } from '@Utils/Realm/types';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 export default () => {
     const { getUserData } = Auth;
     const [productError, setProductError] = useState('');
@@ -57,6 +57,11 @@ export default () => {
             return null;
         }
     }
+    const _onRefreshProduct = useCallback(() => {
+        _getDaftarProduct();
+        setLoadingProduct(true);
+        setTimeout(() => setLoadingProduct(false), 3000);
+    }, [loadingProduct])
 
     return {
         productError,
@@ -67,5 +72,6 @@ export default () => {
         setLoadingProduct,
         _setProductavalability,
         _getProduct,
+        _onRefreshProduct,
     }
 }

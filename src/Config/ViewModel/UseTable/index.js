@@ -86,6 +86,12 @@ export default () => {
         tmpTableList = [];
     }, [selectedTable, tableList])
 
+    const _onRefreshTable = useCallback(() => {
+        _getTables();
+        setRefreshingTable(true);
+        setTimeout(() => setRefreshingTable(false), 3000);
+    }, [refreshingTable]);
+
     return {
         _getTables,
         tableList,
@@ -102,5 +108,6 @@ export default () => {
         setRefreshingTable,
         _selectTable,
         _updateTableOccupied,
+        _onRefreshTable,
     }
 }

@@ -147,6 +147,7 @@ const transactionSchema = {
         tableNumber: "string?",
         total: "int?",
     },
+    primaryKey: "id",
 }
 
 const transactionItemsSchema = {

@@ -36,7 +36,7 @@ export default () => {
         try {
             const userData = await getUserData();
             if (userData == null) return Promise.reject(`userData null`);
-            const { status, data } = await getOrders(userData.user.merchantId, 1);
+            const { status, data } = await getOrders(userData?.user?.merchantId, 1);
             if (status == 'SUCCESS') {
                 if (data.length > 0) {
                     memoizedOrderList(data)
@@ -89,6 +89,11 @@ export default () => {
         }
     }, [])
 
+    const _onRefreshOrder = useCallback(() => {
+        _getOrders();
+        setRefreshingOrder(true);
+        setTimeout(() => setRefreshingOrder(false), 3000);
+    }, [refreshingOrder])
 
     return {
         _getOrders,
@@ -99,5 +104,6 @@ export default () => {
         setRefreshingOrder,
         orderError,
         _onReachEnd,
+        _onRefreshOrder,
     }
 }

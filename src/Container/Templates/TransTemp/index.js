@@ -12,7 +12,6 @@ export default memo(({ navigation: { navigate } }) => {
         errorTransaksi,
         loading,
         transactionLoading,
-        setTransactionLoading,
         memoizedTransactionList,
         memoizedTransactionTypeCount,
         activeTransationList,
@@ -20,6 +19,7 @@ export default memo(({ navigation: { navigate } }) => {
         _filterTransaksi,
         _onChangeTransactionList,
         _pollingTransaksiList,
+        _onRefreshTransaction,
     } = UseTransaksi();
 
     const [startSubscribePollingTransaksiList, stopSubscribePollingTransaksiList] = UsePolling(_pollingTransaksiList)
@@ -71,12 +71,8 @@ export default memo(({ navigation: { navigate } }) => {
                     refreshControl={
                         <RefreshControl
                             refreshing={transactionLoading}
-                            onRefresh={() => {
-                                _getTransaksiList(activeTransationList);
-                                setTransactionLoading(true);
-                                setTimeout(() => setTransactionLoading(false), 3000);
-                            }}
-                        />}
+                            onRefresh={_onRefreshTransaction} />
+                    }
                     contentContainerStyle={styles.contentContainerStyle}
                     data={loading ? [] : memoizedTransactionList}
                     renderItem={renderCardOrder}

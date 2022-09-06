@@ -74,7 +74,7 @@ export default forwardRef((props, ref) => {
             setBtnBackground(colors.cerulean);
             drawerHeight.value = { height: DOWN_SIZE }
             imageSize.value = { width: '100%', height: '50%' }
-            props?.onConfirm()
+            props?.onConfirm({ status: modalType });
             return false;
         }
         setLoading(true);

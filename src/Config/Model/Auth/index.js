@@ -1,5 +1,5 @@
 import { log, POST, MyRealm } from '@Utils';
-import { APP_CONFIG, PRODUCT } from '@Utils/Realm/types';
+import { APP_CONFIG, PRODUCT, ORDER, TRANSACTION, NEW_ORDER } from '@Utils/Realm/types';
 const authUser = async userData => {
     try {
         let loginData = await POST('auth/login', userData)
@@ -64,8 +64,7 @@ const updateUserData = async userData => {
 
 const logOut = async () => {
     try {
-        await MyRealm.deleteData(APP_CONFIG);
-        await MyRealm.deleteData(PRODUCT);
+        await Promise.all([APP_CONFIG, PRODUCT, ORDER, TRANSACTION, NEW_ORDER].map(key => MyRealm.deleteData(key)))
         return true
     } catch (err) {
         return err

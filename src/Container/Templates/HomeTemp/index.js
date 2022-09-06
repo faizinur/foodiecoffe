@@ -13,14 +13,13 @@ import HomeModals from './HomeModals'
 const INITIAL_PAGE = 0;
 export default memo(({ navigation: { navigate } }) => {
     const {
-        _getOrders,
         _subscribeOrders,
         _unSubscribeOrders,
         orderList,
         refreshingOrder,
-        setRefreshingOrder,
         orderError,
         _onReachEnd,
+        _onRefreshOrder,
     } = UseOrder()
     const { colors } = useTheme();
     const refPagerViewChild = useRef(<PagerView />);
@@ -80,11 +79,7 @@ export default memo(({ navigation: { navigate } }) => {
                             refreshControl={
                                 <RefreshControl
                                     refreshing={refreshingOrder}
-                                    onRefresh={() => {
-                                        _getOrders();
-                                        setRefreshingOrder(true);
-                                        setTimeout(() => setRefreshingOrder(false), 3000);
-                                    }}
+                                    onRefresh={_onRefreshOrder}
                                 />}
                             data={orderList}
                             renderItem={_renderCardOrder}

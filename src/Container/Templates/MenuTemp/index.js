@@ -10,13 +10,13 @@ import MenuModals from './MenuModals';
 import MenuModalSuccess from './MenuModalSuccess';
 import { UseProduct } from '@ViewModel';
 import { MyText } from '@Atoms';
-export default memo(({ navigation }) => {
+export default memo(() => {
     const {
         productError,
         loadingProduct,
         productList,
         _getDaftarProduct,
-        setLoadingProduct,
+        _onRefreshProduct,
         _setProductavalability,
     } = UseProduct();
     const { colors } = useTheme();
@@ -33,11 +33,8 @@ export default memo(({ navigation }) => {
         <Icon name={props.iconName} size={26} black />
     </TouchableOpacity>)
 
-    const _onMenuPress = useCallback((item) => {
-        log('_onMenuPress : ')
-        refMenuModals.current?.toggle(item)
-    }, [])
-    const _renderCardMenu = ({ item }) => <CardMenu item={item} onPress={_onMenuPress} />
+    const _renderCardMenu = ({ item }) => <CardMenu item={item} onPress={refMenuModals.current?.toggle} />
+
     const _onSave = async product => {
         await _setProductavalability(product)
         refMenuModalSuccess.current?.toggle()
@@ -61,11 +58,7 @@ export default memo(({ navigation }) => {
                     refreshControl={
                         <RefreshControl
                             refreshing={loadingProduct}
-                            onRefresh={() => {
-                                _getDaftarProduct();
-                                setLoadingProduct(true);
-                                setTimeout(() => setLoadingProduct(false), 3000);
-                            }}
+                            onRefresh={_onRefreshProduct}
                         />}
                     contentContainerStyle={styles.contentContainerStyle}
                     data={productList}

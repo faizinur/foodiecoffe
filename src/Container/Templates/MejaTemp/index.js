@@ -26,9 +26,9 @@ export default memo(({ onChooseMeja = null }) => {
         searchValue,
         tableError,
         refreshingTable,
-        setRefreshingTable,
         _selectTable,
         _updateTableOccupied,
+        _onRefreshTable,
     } = UseTable();
     const { colors } = useTheme();
     const refTextinputContainer = useRef(<View />)
@@ -121,11 +121,7 @@ export default memo(({ onChooseMeja = null }) => {
                     refreshControl={
                         <RefreshControl
                             refreshing={refreshingTable}
-                            onRefresh={() => {
-                                _getTables();
-                                setRefreshingTable(true);
-                                setTimeout(() => setRefreshingTable(false), 3000);
-                            }}
+                            onRefresh={_onRefreshTable}
                         />}
                     contentContainerStyle={styles.flatListContent}
                     data={filteredTables.length > 0 ? filteredTables : tableList}

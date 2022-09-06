@@ -5,13 +5,12 @@ import { log } from '@Utils';
 import { IC_SPLASH } from '@Atoms/Icons';
 import { useTheme } from 'react-native-paper';
 export default memo(({ navigation: { replace } }) => {
-    const { _getUserData, _refreshToken } = UseAuth();
+    const { _getUserData } = UseAuth();
     const { colors } = useTheme();
     const _onMount = useCallback(async () => {
         try {
             let userData = await _getUserData();
             if (userData != null) replace('Home')
-            // await _refreshToken(userData.token);
         } catch (e) {
             log('Splash on mount', e)
             setTimeout(() => replace('Login'), 1000)

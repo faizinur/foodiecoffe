@@ -1,9 +1,9 @@
 import { Merchant, Auth, Product } from '@Model';
 import React, { useState, useCallback, useMemo } from 'react';
 import { log, MyRealm } from '@Utils';
-import { ORDER } from '@Utils/Realm/types';
+import { ORDER, TRANSACTION, PRODUCT, NEW_ORDER } from '@Utils/Realm/types';
 import moment from 'moment';
-import { navigate } from '@RootNavigation';
+import { navigate, reset } from '@RootNavigation';
 export default (params = null) => {
     const { getMerchantCategory } = Merchant;
     const { getProductList } = Product;
@@ -13,7 +13,8 @@ export default (params = null) => {
     const [merchantLoading, setMerchantLoading] = useState(false);
     const [categoryList, setCategoryList] = useState([]);
     const [filteredCategory, setFilteredCategory] = useState([]);
-    const [searchQuery, setSearchQuery] = React.useState('');
+    const [searchQuery, setSearchQuery] = useState('');
+    const [orderDetail, setOrderDetail] = useState({})
 
     const _getMerchant = useMemo(() => async () => {
         try {
@@ -84,6 +85,7 @@ export default (params = null) => {
         try {
             if (memoizedTotalPrice == 0) return false;
             let merchantOrder = await MyRealm.insertData(ORDER, {
+                id: MyRealm._newBSON(),
                 createdAt: moment().format('YYYY-MM-DD hh:mm:ss'),
                 discount: 0,
                 invoice: "INV/011/2212068155/2",
@@ -98,9 +100,9 @@ export default (params = null) => {
                 tableId: params?.tableId,
                 tableNumber: params?.tableId,
                 total: memoizedTotalPrice,
-                type: "dinein"
+                type: "dinein",
             });
-            navigate('DetailOrder', { order: { id: merchantOrder?.id, status: 'new' }, title: "Konfirmasi Pembayaran" })
+            navigate('DetailOrder', { order: { id: merchantOrder[0]?.id, status: 'new' }, title: "Konfirmasi Pembayaran" })
         } catch (e) {
             log(`_clickMerchantOrder : ${e}`)
         }
@@ -148,6 +150,55 @@ export default (params = null) => {
         setCategoryList(tmpCategoryList)
     }, [categoryList])
 
+    const _getDetailMerchantOrder = useCallback(async () => {
+        let selectedData = {};
+        const filteredSelect = products => products.filter(({ id }) => id == params?.order?.id)
+        switch (params?.order?.status) {
+            case "success":
+                log('ambil ke model transaksi/getDaftarTransaksi');
+                selectedData = await MyRealm.selectData(TRANSACTION, filteredSelect);
+                setOrderDetail(selectedData[0] || {});
+                break;
+            case "incoming":
+                log('ambil ke model order/getOrders');
+                selectedData = await MyRealm.selectData(NEW_ORDER, filteredSelect);
+                setOrderDetail(selectedData[0] || {});
+                break;
+            case "new":
+                log('ambil ke db order');
+                selectedData = await MyRealm.selectData(ORDER, filteredSelect);
+                setOrderDetail(selectedData[0] || {});
+                break;
+        }
+        selectedData = {};
+    }, [orderDetail]);
+
+    const _onConfirm = useCallback(async (status) => {
+        try {
+            reset('Home')
+            if (status == 'reject') {
+                await MyRealm.deleteData(ORDER, params?.order?.id);
+            } else {
+                log('update namanya ')
+            }
+            setOrderDetail({})
+        } catch (e) {
+            log(`_onConfirm ERR : ${e}`)
+        }
+    }, [orderDetail])
+
+    const _onOrderChangeName = async name => {
+        try {
+            await MyRealm.updateData(ORDER, {
+                id: params?.order?.id,
+                name,
+            });
+        } catch (e) {
+            log(`_onConfirm ERR : ${e}`)
+        }
+    }
+
+
     return {
         _getMerchant,
         _getCategoryList,
@@ -168,6 +219,10 @@ export default (params = null) => {
         _clickMerchantOrder,
         _onRefreshCategory,
         _filterProduct,
+        _getDetailMerchantOrder,
+        orderDetail,
+        _onConfirm,
+        _onOrderChangeName,
     }
 }
 

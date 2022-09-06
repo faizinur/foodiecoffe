@@ -11,7 +11,7 @@ import { UseAuth } from '@ViewModel';
 import styles from './styles';
 import { useSelector } from 'react-redux';
 export default memo(() => {
-    const { _saveProfile } = UseAuth();
+    const { _saveProfile, _logOut } = UseAuth();
     const { colors } = useTheme();
     const refAkunModals = useRef(<AkunModals />)
     const _onEditProfilePress = useCallback(() => {
@@ -79,7 +79,7 @@ export default memo(() => {
                     />
                 </View>
             </View>
-            <ExitBar />
+            <ExitBar logout={_logOut} />
             <AkunModals ref={refAkunModals} submitProfile={_saveProfile} userData={userData} />
         </View >
     )

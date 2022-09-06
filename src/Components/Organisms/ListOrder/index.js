@@ -28,10 +28,9 @@ export default (props) => {
                                 </View>
 
                                 <MyText numberOfLines={10} left style={styles.notes} black fontSize={10}>
-                                    {item?.options && item?.options.map(({ name: optionName, value: { name, price } }) => <MyText key={`key-options-${name}`}><MyText bold>{optionName} : </MyText> {name} ({price}){`\n`}</MyText>)}
-                                    <MyText bold >Addons : <MyText> {Object.values(item?.addons.map(({ name }) => (name))).toString()}</MyText>{`\n`}
-                                    </MyText>
-
+                                    {/* {item?.options && item?.options.map(({ name: optionName, value: { name, price } }) => <MyText key={`key-options-${name}`}><MyText bold>{optionName} : </MyText> {name} ({price}){`\n`}</MyText>)} */}
+                                    {/* <MyText bold >Addons : <MyText> {Object.values(item?.addons.map(({ name }) => (name))).toString()}</MyText>{`\n`}
+                                    </MyText> */}
                                     <MyText bold >Catatan : </MyText>
                                     {item?.information || '-'}
                                 </MyText>

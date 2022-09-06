@@ -5,8 +5,6 @@ const { UUID } = Realm.BSON;
 import dbOptions from './dbOptions';
 import {
     APP_CONFIG,
-    PRODUCT,
-    ORDER
 } from './types';
 
 const _newBSON = () => new UUID().toHexString();
@@ -45,14 +43,15 @@ const selectData = async (key, callback = null) => new Promise(async (resolve, r
     }
 })
 
-const deleteData = (key) => new Promise(async (resolve, reject) => {
+const deleteData = (key, payload = null) => new Promise(async (resolve, reject) => {
     if (key == '') return reject('key kosong')
     try {
         const realm = await Realm.open(dbOptions);
         realm.write(() => {
-            let foundData = realm.objects(key)
-            realm.delete(foundData)
-            foundData = null;
+            log('deleteData : ', key)
+            let foundPayload = payload == null ? realm.Object(key) : realm.objects(key).filtered("id = '" + payload + "'");
+            realm.delete(foundPayload)
+            foundPayload = null;
         })
         resolve('OK');
     } catch (e) {
@@ -69,12 +68,14 @@ const insertData = (key, data) => new Promise(async (resolve, reject) => {
         realm.write(() => {
             Promise.all(payloads.map(payload => {
                 if ('id' in payload) {
-                    let foundPayload = realm.objects(key).filtered(`id = '${payload.id}'`)
+                    //check if exist delete!
+                    let foundPayload = realm.objects(key).filtered("id = '" + payload.id + "'");
                     if (foundPayload.length > 0) realm.delete(foundPayload)
                     foundPayload = null;
+                    realm.create(key, payload)
+                } else {
+                    log('gak punya id nih! ', payload)
                 }
-                payload = { ...payload, id: _newBSON() }
-                realm.create(key, payload)
             }))
         });
         resolve(payloads)

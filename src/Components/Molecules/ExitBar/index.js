@@ -4,14 +4,12 @@ import { useTheme } from 'react-native-paper';
 import { MyText } from '@Atoms';
 import styles from './styles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { UseAuth } from '@ViewModel';
-export default memo(() => {
-    const { _logOut } = UseAuth();
+export default memo((props) => {
     const { colors } = useTheme();
     return (
         <TouchableOpacity
             activeOpacity={.8}
-            onPress={_logOut}
+            onPress={props.logout}
             style={styles.exitBarContainer}>
             <Icon name='location-exit' size={30} color={colors.cerulean} style={styles.iconExit} />
             <View style={styles.container}>

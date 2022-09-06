@@ -62,6 +62,11 @@ export default () => {
         transactionList.filter(({ status }) => status == 'failed').length]
         , [transactionList])
 
+    const _onRefreshTransaction = useCallback(() => {
+        _getTransaksiList(activeTransationList);
+        setTransactionLoading(true);
+        setTimeout(() => setTransactionLoading(false), 3000);
+    }, [transactionLoading]);
 
     return {
         errorTransaksi,
@@ -75,5 +80,6 @@ export default () => {
         _pollingTransaksiList,
         _filterTransaksi,
         _onChangeTransactionList,
+        _onRefreshTransaction,
     }
 }
