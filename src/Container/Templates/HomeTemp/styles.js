@@ -36,22 +36,10 @@ export default StyleSheet.create({
         borderTopRightRadius: 15,
     },
     FAB: {
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
         position: 'absolute',
-        height: 58,
-        width: 58,
-        borderRadius: 30,
-        backgroundColor: colors.cerulean,
-        top: 84,
+        margin: 0,
         right: 24,
-        justifyContent: 'center',
-        alignItems: 'center'
+        bottom: 84,
+        backgroundColor: colors.cerulean
     }
 })

@@ -1,9 +1,9 @@
 import { Merchant, Auth, Product } from '@Model';
-import React, { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { log, MyRealm } from '@Utils';
-import { ORDER, TRANSACTION, PRODUCT, NEW_ORDER } from '@Utils/Realm/types';
+import { ORDER, TRANSACTION, NEW_ORDER } from '@Utils/Realm/types';
 import moment from 'moment';
-import { navigate, reset } from '@RootNavigation';
+import { navigate, reset, back } from '@RootNavigation';
 export default (params = null) => {
     const { getMerchantCategory } = Merchant;
     const { getProductList } = Product;
@@ -155,37 +155,20 @@ export default (params = null) => {
         const filteredSelect = products => products.filter(({ id }) => id == params?.order?.id)
         switch (params?.order?.status) {
             case "success":
-                log('ambil ke model transaksi/getDaftarTransaksi');
                 selectedData = await MyRealm.selectData(TRANSACTION, filteredSelect);
                 setOrderDetail(selectedData[0] || {});
                 break;
             case "incoming":
-                log('ambil ke model order/getOrders');
                 selectedData = await MyRealm.selectData(NEW_ORDER, filteredSelect);
                 setOrderDetail(selectedData[0] || {});
                 break;
             case "new":
-                log('ambil ke db order');
                 selectedData = await MyRealm.selectData(ORDER, filteredSelect);
                 setOrderDetail(selectedData[0] || {});
                 break;
         }
         selectedData = {};
     }, [orderDetail]);
-
-    const _onConfirm = useCallback(async (status) => {
-        try {
-            reset('Home')
-            if (status == 'reject') {
-                await MyRealm.deleteData(ORDER, params?.order?.id);
-            } else {
-                log('update namanya ')
-            }
-            setOrderDetail({})
-        } catch (e) {
-            log(`_onConfirm ERR : ${e}`)
-        }
-    }, [orderDetail])
 
     const _onOrderChangeName = async name => {
         try {
@@ -198,6 +181,38 @@ export default (params = null) => {
         }
     }
 
+    const _onConfirm = useCallback(async (status) => {
+        try {
+            if (status == 'reject') {
+                if (params?.order?.status == 'new') await MyRealm.deleteData(ORDER, params?.order?.id);
+            } else {
+                log('update namanya ')
+            }
+            setOrderDetail({})
+        } catch (e) {
+            log(`_onConfirm ERR : ${e}`)
+        } finally {
+            params?.order?.status == 'incoming' ? back() : reset('Home');
+        }
+    }, [orderDetail])
+
+    const _acceptAction = async () => {
+        try {
+            log('sedang melakukan sesuatu selama 10 detik')
+            await new Promise(resolve => setTimeout(resolve, 10000));
+        } catch (e) {
+            log('_acceptAction', e)
+        }
+    }
+
+    const _rejectAction = async () => {
+        try {
+            log('sedang melakukan sesuatu selama 1.5 detik')
+            await new Promise(resolve => setTimeout(resolve, 1500));
+        } catch (e) {
+            log('_rejectAction', e)
+        }
+    }
 
     return {
         _getMerchant,
@@ -223,6 +238,8 @@ export default (params = null) => {
         orderDetail,
         _onConfirm,
         _onOrderChangeName,
+        _acceptAction,
+        _rejectAction,
     }
 }
 

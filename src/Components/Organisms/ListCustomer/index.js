@@ -40,7 +40,7 @@ export default (props) => {
                             value={inputValue}
                             onChangeText={setInputValue}
                             onBlur={onBlurText}
-                            theme={{ fonts: { regular: { fontFamily: 'ReadexProLight' } } }}
+                            theme={{ fonts: { regular: { fontFamily: 'ReadexProLight' } }, roundness: 12 }}
                             returnKeyType="next"
                         />
                     </View>

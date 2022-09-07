@@ -5,14 +5,12 @@ import { useTheme, } from 'react-native-paper';
 import { MyText, MyModal } from '@Atoms';
 import { InputItems } from '@Molecules';
 import { IC_ACCEPT, IC_REJECT, } from '@Atoms/Icons';
-import styles, { width, height } from './styles';
+import { height } from './styles';
 import Animated, {
     useSharedValue,
     useAnimatedStyle,
     withSpring,
 } from 'react-native-reanimated';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
 let modalType = '';
 export default forwardRef((props, ref) => {
     const { colors } = useTheme();
@@ -47,7 +45,6 @@ export default forwardRef((props, ref) => {
     }))
 
     const toggle = useCallback((type = 'accept') => {
-        log('_toggle : ')
         modalType = type;
         setImageSource(modalType == 'accept' ? IC_ACCEPT : IC_REJECT);
         setTextTitle(modalType == 'accept' ? 'Terima Orderan?' : 'Tolak Orderan?');
@@ -57,13 +54,14 @@ export default forwardRef((props, ref) => {
     }, [modalVisible, imageSource, textTitle, textDescription])
 
     const _onCloseModal = useCallback(() => {
-        setAnimationType('fade')
-        setModalVisible(prevState => !prevState);
-        drawerHeight.value = { height: DOWN_SIZE }
-        imageSize.value = { width: '100%', height: '50%' }
+        // setAnimationType('fade')
+        // setModalVisible(prevState => !prevState);
+        // drawerHeight.value = { height: DOWN_SIZE }
+        // imageSize.value = { width: '100%', height: '50%' }
+        return false;
     }, [modalVisible, animationType]);
 
-    const _onclick = useCallback(() => {
+    const _onclick = useCallback(async () => {
         log('_onclick : ');
         if (drawerHeight.value.height == UP_SIZE) {
             setAnimationType('fade')
@@ -78,18 +76,18 @@ export default forwardRef((props, ref) => {
             return false;
         }
         setLoading(true);
-        setTimeout(() => {
-            setTextTitle(modalType == 'accept' ? 'Orderan Di Terima' : 'Orderan Di Tolak');
-            setTextDescription(modalType == 'accept' ? 'Selamat oreran berhasil di lakukan' : 'Selamat oreran berhasil di tolak');
+        modalType == 'accept' ? await props?.acceptAction() : await props?.rejectAction()
+        setTextTitle(modalType == 'accept' ? 'Orderan Di Terima' : 'Orderan Di Tolak');
+        setTextDescription(modalType == 'accept' ? 'Selamat oreran berhasil di lakukan' : 'Selamat oreran berhasil di tolak');
+        drawerHeight.value = { height: UP_SIZE }
+        imageSize.value = { width: '30%', height: '40%' }
+        setLoading(false);
 
-            drawerHeight.value = { height: UP_SIZE }
-            imageSize.value = { width: '30%', height: '40%' }
-            setLoading(false);
-        }, 1500)
     }, [drawerHeight, imageSize, imageSource, textTitle, textDescription, loading])
 
     useImperativeHandle(ref, () => ({
-        toggle,
+        accept: () => toggle('accept'),
+        reject: () => toggle('reject'),
     }));
 
     useEffect(() => { }, [animationType])

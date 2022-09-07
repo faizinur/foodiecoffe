@@ -45,9 +45,10 @@ const getUserData = async () => {
 
 const setUserData = async userData => {
     try {
-        await MyRealm.insertConfig({ key: 'userData', value: JSON.stringify(userData) })
+        await MyRealm.insertData(APP_CONFIG, { id: MyRealm._newBSON(), key: 'userData', value: JSON.stringify(userData) })
         return true;
     } catch (err) {
+        log('setUserData', err)
         return err;
     }
 }

@@ -32,7 +32,7 @@ export default () => {
             setAuthError(`error Auth ${err}`)
             setLoading(false)
         }
-    }, [])
+    }, [authError, loading])
 
     const _submitRegister = useCallback(async userData => {
         try {
@@ -46,7 +46,7 @@ export default () => {
             setLoading(false)
             global.showToast(err);
         }
-    }, [])
+    }, [authError, loading])
 
     const _getUserData = async () => {
         let data = await getUserData();

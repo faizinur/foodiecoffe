@@ -12,7 +12,7 @@ import { UseMerchant } from '@ViewModel';
 export default memo(({ navigation: { goBack }, route: { params } }) => {
     const { colors } = useTheme();
     const refDetailOrderModal = useRef(<DetailOrderModal />)
-    const { _getDetailMerchantOrder, orderDetail, _onConfirm, _onOrderChangeName } = UseMerchant(params);
+    const { _getDetailMerchantOrder, orderDetail, _onConfirm, _acceptAction, _rejectAction, _onOrderChangeName } = UseMerchant(params);
     const backAction = () => {
         if (orderDetail?.status == 'process') {
             refDetailOrderModal?.current?.toggle('reject')
@@ -22,6 +22,7 @@ export default memo(({ navigation: { goBack }, route: { params } }) => {
             return true;
         }
     }
+
     useEffect(() => {
         log('Mount DetailOrder');
         const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
@@ -67,16 +68,16 @@ export default memo(({ navigation: { goBack }, route: { params } }) => {
                 < View style={{ height: 80, backgroundColor: colors.white, borderTopWidth: 1, borderTopColor: colors.athensGray, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', paddingHorizontal: '5%' }}>
                     <InputItems.MyButton
                         secondary
-                        onPress={() => refDetailOrderModal?.current?.toggle('reject')}
+                        onPress={refDetailOrderModal?.current?.reject}
                         style={{ flexGrow: 1, marginRight: 3 }}
                         label={orderDetail?.status == 'process' ? 'batal' : 'Tolak'} />
                     <InputItems.MyButton
-                        onPress={() => refDetailOrderModal?.current?.toggle('accept')}
+                        onPress={refDetailOrderModal?.current?.accept}
                         style={{ flexGrow: 1, marginLeft: 3 }}
                         label={orderDetail?.status == 'process' ? 'pesan' : 'Terima'} />
                 </View>
             }
-            <DetailOrderModal ref={refDetailOrderModal} onConfirm={_onConfirm} />
+            <DetailOrderModal ref={refDetailOrderModal} acceptAction={_acceptAction} rejectAction={_rejectAction} onConfirm={_onConfirm} />
         </View >
     )
 })

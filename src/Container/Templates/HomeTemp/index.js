@@ -46,9 +46,10 @@ export default memo(({ navigation: { navigate } }) => {
         log('_onFABClick')
         refHomeModals?.current?.toggle()
     }
-    const _renderCardOrder = useCallback(({ item }) => <CardOrder
-        order={{ ...item, menuName: item.items.map(({ menuName }) => ` ${menuName}`).toString() }}
-        onPress={() => navigate('DetailOrder', { order: { id: item?.id, status: 'incoming' }, title: 'Konfirmasi Terima' })} />
+    const _renderCardOrder = useCallback(({ item }) =>
+        <CardOrder
+            order={{ ...item, menuName: item.items.map(({ menuName }) => ` ${menuName}`).toString() }}
+            onPress={() => navigate('DetailOrder', { order: { id: item?.id, status: 'incoming' }, title: 'Konfirmasi Terima' })} />
         , []);
 
     const _onSelectedMejaCategory = (payload) => {
@@ -93,13 +94,7 @@ export default memo(({ navigation: { navigate } }) => {
                         || <MyText light bold black style={{ textAlign: 'center' }}>upss kita ada kendala nih... {`\n\n`}{orderError}</MyText>}
                     <FAB
                         icon="plus"
-                        style={{
-                            position: 'absolute',
-                            margin: 0,
-                            right: 24,
-                            bottom: 84,
-                            backgroundColor: colors.cerulean
-                        }}
+                        style={styles.FAB}
                         color={colors.white}
                         onPress={_onFABClick}
                     />

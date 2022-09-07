@@ -14,17 +14,17 @@ import {
 const AppConfigSchema = {
     name: APP_CONFIG,
     properties: {
-        configId: "string",
+        id: "string",
         key: "string?",
         value: "string?",
     },
-    primaryKey: "configId",
+    primaryKey: "id",
 };
 
 const ProductSchema = {
     name: PRODUCT,
     properties: {
-        id: "string?",
+        id: "string",
         name: "string?",
         categoryId: "string?",
         categoryName: "string?",
@@ -69,7 +69,7 @@ const productOptionList = {
 const orderProductSchema = {
     name: ORDER,
     properties: {
-        id: "string?",
+        id: "string",
         createdAt: "string?",
         discount: "int?",
         invoice: "string?",
@@ -96,7 +96,7 @@ const orderProductItemsSchema = {
     name: ORDER_ITEMS,
     embedded: true,
     properties: {
-        id: "string?",
+        id: "string",
         name: "string?",
         categoryId: "string?",
         categoryName: "string?",
@@ -127,9 +127,9 @@ const orderProductItemsSchema = {
 const transactionSchema = {
     name: TRANSACTION,
     properties: {
+        id: "string",
         createdAt: "string?",
         discount: "int?",
-        id: "string?",
         invoice: "string?",
         items: {
             type: 'list',
@@ -176,7 +176,7 @@ const transactionItemsSchema = {
 const newOrderSchema = {
     name: NEW_ORDER,
     properties: {
-        id: "string?",
+        id: "string",
         invoice: "string?",
         merchantId: "string?",
         merchantName: "string?",
@@ -195,7 +195,7 @@ const newOrderSchema = {
         tableId: "string?",
         items: {
             type: 'list',
-            objectType: ORDER_ITEMS
+            objectType: NEW_ORDER_ITEMS
         },
     },
     primaryKey: "id",
