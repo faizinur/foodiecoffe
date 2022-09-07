@@ -5,7 +5,7 @@ const getOrders = async (merchantId, page = null) => {
     try {
         let orderData = await POST(`${merchantId}/order/all` + `${page != null ? `?page=${page}&limit=5` : ''}`, {
             createdAt: {
-                start: __DEV__ ? `2020-08-08 00:00:00` : `${moment().format('YYYY-MM-DD')} 00:00:00`,
+                start: `2020-08-08 00:00:00`,
                 end: `${moment().format('YYYY-MM-DD HH:mm:ss')}`,
             }
         });
