@@ -35,7 +35,7 @@ const refreshToken = async token => {
 
 const getUserData = async () => {
     try {
-        let data = await MyRealm.selectData(APP_CONFIG)
+        let data = await MyRealm.selectData(APP_CONFIG, appConfig => appConfig.filter(({ key }) => key == 'userData'));
         return data.length > 0 ? JSON.parse(data[0]?.value) : null;
     } catch (err) {
         log('getUserData ', err)
