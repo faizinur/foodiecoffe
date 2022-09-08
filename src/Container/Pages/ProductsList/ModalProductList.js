@@ -30,23 +30,10 @@ export default memo(forwardRef((props, ref) => {
     const _submit = useCallback(notes => {
         let tmpProduct = { ...product }
         let selectedNotes = Object.keys(notes).filter(key => key != "Catatan")
-
-        tmpProduct?.addons?.map(addon => {
-            if (selectedNotes.includes(addon.name) == true) {
-                addon?.list?.map(itemList => {
-                    selectedNotes?.map(key => {
-                        if (notes[key] == itemList.name) {
-                            itemList.available = true;
-                        } else {
-                            itemList.available = false;
-                        }
-                    })
-                    return itemList;
-                })
-            }
-            return addon
-        })
-        // log(JSON.stringify(tmpProduct?.addons))
+        //cara bodoh
+        let prices = {}
+        // looping selectedNotes, ambil harganya dari tmpProduct;
+        // push prices, { key dari selectedNotes : price yang ketemu}
         setProduct({
             ...tmpProduct,
             notes: { ...notes }

@@ -169,14 +169,9 @@ export default (params = null) => {
         Object.keys(updatedValue).map(key => { tmpCategoryList[index][key] = updatedValue[key] });
         if (parseInt(updatedValue?.qty) == 0) {
             tmpCategoryList[index].notes = {}
-            tmpCategoryList[index].addons.map(addon => {
-                addon?.list?.map(itemList => {
-                    itemList.available = false;
-                    return itemList;
-                })
-                return addon
-            })
-            log(JSON.stringify(tmpCategoryList[index].addons))
+            tmpCategoryList[index].notes = {}
+            //cara bodoh
+            // delete tmpCategoryList[index]['price']
             // log('_onBucketChanged', tmpCategoryList[index].notes)
         }
         setCategoryList(tmpCategoryList);
