@@ -1,5 +1,5 @@
 import { View, ScrollView, Modal } from 'react-native';
-import React, { useState, useCallback, forwardRef, useImperativeHandle, memo } from 'react';
+import React, { useEffect, useState, useCallback, forwardRef, useImperativeHandle, memo } from 'react';
 import { log } from '@Utils';
 import { useTheme } from 'react-native-paper';
 import { MyText, MyModal, PageWrapper } from '@Atoms';
@@ -28,22 +28,34 @@ export default memo(forwardRef((props, ref) => {
     }, [modalVisible]);
 
     const _submit = useCallback(notes => {
-        Object.keys(notes)
-            .filter(key => key != "Catatan")
-            .map(key => {
-                notes[`${key.split('Price').join('')}Price`] = product?.addons?.
-                    filter(({ name }) => name == key)[0]?.list?.
-                    filter(({ name }) => name == notes[key])[0]?.
-                    price || 0;
-            });
-        setProduct(prevState => ({
-            ...prevState,
+        let tmpProduct = { ...product }
+        let selectedNotes = Object.keys(notes).filter(key => key != "Catatan")
+
+        tmpProduct?.addons?.map(addon => {
+            if (selectedNotes.includes(addon.name) == true) {
+                addon?.list?.map(itemList => {
+                    selectedNotes?.map(key => {
+                        if (notes[key] == itemList.name) {
+                            itemList.available = true;
+                        } else {
+                            itemList.available = false;
+                        }
+                    })
+                    return itemList;
+                })
+            }
+            return addon
+        })
+        // log(JSON.stringify(tmpProduct?.addons))
+        setProduct({
+            ...tmpProduct,
             notes: { ...notes }
-        }))
+        })
         props.onChangeBucket({ id: product.id, notes: { ...notes } })
         setModalVisible(prevState => !prevState);
     }, [product, modalVisible])
 
+    useEffect(() => { return () => { } }, [product])
     return (
         <Modal
             animationType={"slide"}

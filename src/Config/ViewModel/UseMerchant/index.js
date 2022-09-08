@@ -87,13 +87,17 @@ export default (params = null) => {
     }, [categoryList])
 
     const memoizedTotalAddons = useMemo(() => {
-        log('memoizedTotalAddons')
-        let total = categoryList.filter(({ qty, addons }) => (qty > 0 && addons.length > 0))
-            .map(({ addons, notes }) => ({ key: addons.map(({ name }) => `${name}Price` in notes) }))
+        // log('memoizedTotalAddons')
+        let total = [...categoryList].filter(({ qty, addons }) => (qty > 0 && addons.length > 0))
+            .map(({ addons, notes }) => ({ addons: addons.map(({ name }) => `${name}Price`), notes }))
+        //     .map(({ addons, notes }) => (addons.map(({ name }) => {
+        //         log(`${name}Price`)
+        //         return `${name}Price` in notes ? notes[`${name}Price`] : 0;
+        //     })))
         // .reduce((acc, val) => {
         //     log(acc, val)
         // }, 0)
-        // log(total)
+        // log(JSON.stringify(total))
         return 0;
     }, [categoryList])
 
@@ -160,14 +164,23 @@ export default (params = null) => {
 
         if (index < 0) return false;
         delete updatedValue.id;
-        let tmpCategoryList = [...categoryList]
-        log('_onBucketChanged', updatedValue)
-        Object.keys(updatedValue).map(key => {
-            tmpCategoryList[index][key] = updatedValue[key]
-        })
-        // log('_onBucketChanged', tmpCategoryList[index].notes)
-        setCategoryList(tmpCategoryList)
-    }, [categoryList])
+        let tmpCategoryList = [...categoryList];
+        // log('_onBucketChanged', updatedValue?.notes)
+        Object.keys(updatedValue).map(key => { tmpCategoryList[index][key] = updatedValue[key] });
+        if (parseInt(updatedValue?.qty) == 0) {
+            tmpCategoryList[index].notes = {}
+            tmpCategoryList[index].addons.map(addon => {
+                addon?.list?.map(itemList => {
+                    itemList.available = false;
+                    return itemList;
+                })
+                return addon
+            })
+            log(JSON.stringify(tmpCategoryList[index].addons))
+            // log('_onBucketChanged', tmpCategoryList[index].notes)
+        }
+        setCategoryList(tmpCategoryList);
+    }, [categoryList]);
 
     const _getDetailMerchantOrder = useCallback(async () => {
         let selectedData = {};

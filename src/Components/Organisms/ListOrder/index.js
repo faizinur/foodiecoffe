@@ -31,9 +31,9 @@ export default (props) => {
                                     <MyText bold >Catatan : </MyText>
                                     {item?.notes?.Catatan || '-'}
                                 </MyText>
-                                {Object.keys(item?.notes)
+                                {/* {Object.keys(item?.notes)
                                     .filter(key => (key != "Catatan" && !key.includes("Price")))
-                                    .map(key => <MyText numberOfLines={10} left style={styles.notes} black fontSize={10} key={key}>{item?.notes[key]} : {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item?.notes[`${key}Price`])}</MyText>)}
+                                    .map(key => <MyText numberOfLines={10} left style={styles.notes} black fontSize={10} key={key}>{item?.notes[key]} : {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item?.notes[`${key}Price`])}</MyText>)} */}
 
                                 <View style={styles.innerContainer}>
                                     <View style={styles.orderTable}>
