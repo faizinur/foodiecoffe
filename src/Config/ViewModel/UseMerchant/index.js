@@ -86,45 +86,52 @@ export default (params = null) => {
             }))
     }, [categoryList])
 
-    const memoizedTotalAddons = useMemo(() => {
-        // log('memoizedTotalAddons')
-        let total = [...categoryList].filter(({ qty, addons }) => (qty > 0 && addons.length > 0))
-            .map(({ addons, notes }) => ({ addons: addons.map(({ name }) => `${name}Price`), notes }))
-        //     .map(({ addons, notes }) => (addons.map(({ name }) => {
-        //         log(`${name}Price`)
-        //         return `${name}Price` in notes ? notes[`${name}Price`] : 0;
-        //     })))
-        // .reduce((acc, val) => {
-        //     log(acc, val)
-        // }, 0)
-        // log(JSON.stringify(total))
-        return 0;
-    }, [categoryList])
+    const memoizedTotalNotes = useMemo(() => {
+        let totalAddons = [...categoryList].filter(({ qty, addons }) => (qty > 0 && addons.length > 0))
+            .map(({ addons, notes }) => {
+                return addons.filter(({ name }) => Object.keys(notes).includes(name))
+                    .map(({ list }) => {
+                        return list.filter(({ name }) => Object.values(notes).includes(name)).map(({ price }) => price)
+                    }).flat()
+            }).flat()
+            .reduce((acc, val) => parseInt(acc) + parseInt(val), 0);
+        let totalOptions = [...categoryList].filter(({ qty, options }) => (qty > 0 && options.length > 0))
+            .map(({ options, notes }) => {
+                return options.filter(({ name }) => Object.keys(notes).includes(name))
+                    .map(({ list }) => {
+                        return list.filter(({ name }) => Object.values(notes).includes(name)).map(({ price }) => price)
+                    }).flat()
+            }).flat()
+            .reduce((acc, val) => parseInt(acc) + parseInt(val), 0);
+        return { addons: totalAddons, options: totalOptions }
+    }, [categoryList]);
+
 
     const _clickMerchantOrder = async () => {
         try {
             if (memoizedTotalPrice == 0) return false;
-            let merchantOrder = await MyRealm.insertData(ORDER, {
-                id: MyRealm._newBSON(),
-                createdAt: moment().format('YYYY-MM-DD hh:mm:ss'),
-                discount: 0,
-                invoice: "INV/011/2212068155/2",
-                items: memoizedCartCategoryList,
-                merchantId: params?.categoryId,
-                merchantName: params?.name,
-                name: '',
-                paid: 0,
-                ppn: 0,
-                status: "process",
-                subTotal: 31000,
-                tableId: params?.tableId,
-                tableNumber: params?.tableId,
-                total: memoizedTotalPrice,
-                totalAddons: 100,
-                totalOptions: 100,
-                type: "dinein",
-            });
-            navigate('DetailOrder', { order: { id: merchantOrder[0]?.id, status: 'new' }, title: "Konfirmasi Pembayaran" })
+            let merchantOrder = await MyRealm.insertData(ORDER,
+                {
+                    id: MyRealm._newBSON(),
+                    createdAt: moment().format('YYYY-MM-DD hh:mm:ss'),
+                    discount: 0,
+                    invoice: "INV/011/2212068155/2",
+                    items: memoizedCartCategoryList,
+                    merchantId: params?.categoryId,
+                    merchantName: params?.name,
+                    name: '',
+                    paid: 0,
+                    ppn: 0,
+                    status: "process",
+                    subTotal: 31000,
+                    tableId: params?.tableId,
+                    tableNumber: params?.tableId,
+                    total: memoizedTotalPrice,
+                    totalAddons: memoizedTotalNotes?.addons,
+                    totalOptions: memoizedTotalNotes?.options,
+                    type: "dinein",
+                });
+            navigate('DetailOrder', { order: { id: merchantOrder, status: 'new' }, title: "Konfirmasi Pembayaran" })
         } catch (e) {
             log(`_clickMerchantOrder : ${e}`)
         }
@@ -169,9 +176,6 @@ export default (params = null) => {
         Object.keys(updatedValue).map(key => { tmpCategoryList[index][key] = updatedValue[key] });
         if (parseInt(updatedValue?.qty) == 0) {
             tmpCategoryList[index].notes = {}
-            tmpCategoryList[index].notes = {}
-            //cara bodoh
-            // delete tmpCategoryList[index]['price']
             // log('_onBucketChanged', tmpCategoryList[index].notes)
         }
         setCategoryList(tmpCategoryList);

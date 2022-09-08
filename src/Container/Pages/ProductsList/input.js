@@ -1,6 +1,18 @@
 import { log } from '@Utils'
-const INPUT_LIST = (addons) => [
+const INPUT_LIST = (addons, options) => [
     ...addons.map(({ list, name }) => ({
+        name: name,
+        value: '',
+        type: 'listRadio',
+        inputProps: {
+            label: `Pilh ${name}`,
+            placeholder: '* Pilih salah satu',
+        },
+        config: {
+            data: list.map(({ name, price }) => ({ code: name, description: price, prefix: 'Rp.', suffix: ',-' }))
+        },
+    })),
+    ...options.map(({ list, name }) => ({
         name: name,
         value: '',
         type: 'listRadio',

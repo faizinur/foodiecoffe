@@ -20,7 +20,7 @@ export default memo(forwardRef((props, ref) => {
     const toggle = useCallback(data => {
         log('_toggle : ')
         setProduct(data)
-        SET_FORM_INPUT_LIST(INPUT_LIST(data.addons))
+        SET_FORM_INPUT_LIST(INPUT_LIST(data.addons, data.options))
         setModalVisible(prevState => !prevState);
     }, [modalVisible, FORM_INPUT_LIST, product])
     const _onCloseModal = useCallback(() => {
@@ -28,16 +28,16 @@ export default memo(forwardRef((props, ref) => {
     }, [modalVisible]);
 
     const _submit = useCallback(notes => {
-        let tmpProduct = { ...product }
-        let selectedNotes = Object.keys(notes).filter(key => key != "Catatan")
-        //cara bodoh
-        let prices = {}
-        // looping selectedNotes, ambil harganya dari tmpProduct;
-        // push prices, { key dari selectedNotes : price yang ketemu}
-        setProduct({
-            ...tmpProduct,
-            notes: { ...notes }
-        })
+        setProduct(prevState => ({
+            ...prevState,
+            notes: {
+                ...Object.keys(notes).map(key => {
+                    if (notes[key] == undefined) {
+                        delete notes[key]
+                    }
+                })
+            }
+        }))
         props.onChangeBucket({ id: product.id, notes: { ...notes } })
         setModalVisible(prevState => !prevState);
     }, [product, modalVisible])
