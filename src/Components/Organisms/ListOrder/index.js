@@ -1,6 +1,6 @@
 import { View, Image } from 'react-native'
 import React from 'react'
-import { IC_PRODUCT } from '@Atoms/Icons'
+import { BLANK_IMAGE } from '@Atoms/Icons'
 import { MyText } from '@Atoms'
 import { useTheme, List } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -28,12 +28,12 @@ export default (props) => {
                                 </View>
 
                                 <MyText numberOfLines={10} left style={styles.notes} black fontSize={10}>
-                                    {/* {item?.options && item?.options.map(({ name: optionName, value: { name, price } }) => <MyText key={`key-options-${name}`}><MyText bold>{optionName} : </MyText> {name} ({price}){`\n`}</MyText>)} */}
-                                    {/* <MyText bold >Addons : <MyText> {Object.values(item?.addons.map(({ name }) => (name))).toString()}</MyText>{`\n`}
-                                    </MyText> */}
                                     <MyText bold >Catatan : </MyText>
-                                    {item?.information || '-'}
+                                    {item?.notes?.Catatan || '-'}
                                 </MyText>
+                                {Object.keys(item?.notes)
+                                    .filter(key => (key != "Catatan" && !key.includes("Price")))
+                                    .map(key => <MyText numberOfLines={10} left style={styles.notes} black fontSize={10} key={key}>{item?.notes[key]} : {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item?.notes[`${key}Price`])}</MyText>)}
 
                                 <View style={styles.innerContainer}>
                                     <View style={styles.orderTable}>

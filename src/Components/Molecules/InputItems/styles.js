@@ -40,7 +40,7 @@ export default StyleSheet.create({
     textInput: (paddingLeft) => ({
         backgroundColor: colors.white,
         marginVertical: 5,
-        fontSize: 14,
+        fontSize: 12,
         paddingLeft
     }),
     button: borderWidth => ({

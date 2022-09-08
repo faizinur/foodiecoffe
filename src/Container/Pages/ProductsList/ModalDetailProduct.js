@@ -97,7 +97,8 @@ export default forwardRef((props, ref) => {
                         <>
                             <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
                                 <MyText left medium black style={{ marginVertical: 6 }}>List Belanja</MyText>
-                                {cart[0].map(({ qty, totalPrice, name }, index) => <View key={`cart-${index}`} style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6 }}>
+                                {cart[0].map(({ qty, totalPrice, name, notes }, index) => <View key={`cart-${index}`} style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6 }}>
+                                    {/* {log(JSON.stringify(notes))} */}
                                     <MyText left black >{name} {qty > 0 && `x(${qty})`}</MyText>
                                     <MyText left black >{new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(totalPrice)}</MyText>
                                 </View>

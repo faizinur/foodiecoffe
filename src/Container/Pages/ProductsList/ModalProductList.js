@@ -18,7 +18,7 @@ export default memo(forwardRef((props, ref) => {
         toggle,
     }));
     const toggle = useCallback(data => {
-        log('_toggle : ',)
+        log('_toggle : ')
         setProduct(data)
         SET_FORM_INPUT_LIST(INPUT_LIST(data.addons))
         setModalVisible(prevState => !prevState);
@@ -28,6 +28,14 @@ export default memo(forwardRef((props, ref) => {
     }, [modalVisible]);
 
     const _submit = useCallback(notes => {
+        Object.keys(notes)
+            .filter(key => key != "Catatan")
+            .map(key => {
+                notes[`${key.split('Price').join('')}Price`] = product?.addons?.
+                    filter(({ name }) => name == key)[0]?.list?.
+                    filter(({ name }) => name == notes[key])[0]?.
+                    price || 0;
+            });
         setProduct(prevState => ({
             ...prevState,
             notes: { ...notes }
@@ -35,6 +43,7 @@ export default memo(forwardRef((props, ref) => {
         props.onChangeBucket({ id: product.id, notes: { ...notes } })
         setModalVisible(prevState => !prevState);
     }, [product, modalVisible])
+
     return (
         <Modal
             animationType={"slide"}
@@ -48,10 +57,11 @@ export default memo(forwardRef((props, ref) => {
                     <View style={{ width: 30, height: 4, backgroundColor: colors.athensGray, borderRadius: 10, alignSelf: 'center', marginBottom: 25 }} />
                     <KeyboardAwareScrollView
                         style={{ backgroundColor: 'rgba(0,0,0,.05)' }}
-                        contentContainerStyle={{ backgroundColor: colors.white }}
+                        contentContainerStyle={{ backgroundColor: colors.white, paddingBottom: 25 }}
                         showsVerticalScrollIndicator={false}>
                         <Forms
                             formname={FORM_NAME}
+                            defaultValue={product?.notes || {}}
                             inputList={FORM_INPUT_LIST}
                             onFormSubmit={_submit}
                             submitLabel={'Simpan'}

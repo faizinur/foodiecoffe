@@ -11,7 +11,7 @@ import { UseAuth } from '@ViewModel';
 import styles from './styles';
 import { useSelector } from 'react-redux';
 export default memo(() => {
-    const { _saveProfile, _logOut } = UseAuth();
+    const { _saveProfile, _logOut, _loadProfile, profile } = UseAuth();
     const { colors } = useTheme();
     const refAkunModals = useRef(<AkunModals />)
     const _onEditProfilePress = useCallback(() => {
@@ -27,6 +27,7 @@ export default memo(() => {
 
     useEffect(() => {
         log('Mount Akun');
+        _loadProfile();
         return () => {
             log('Unmount Akun')
         }
@@ -35,6 +36,7 @@ export default memo(() => {
         <View style={styles.pages}>
             <TitleBar title={'profil'} />
             <View style={styles.akunContainer}>
+                <MyText>profile : {JSON.stringify(profile)}</MyText>
                 <CardProfile onEditProfilePress={_onEditProfilePress} userData={userData} />
 
                 <View style={styles.cardTansaksiWrapper}>
@@ -54,7 +56,7 @@ export default memo(() => {
                         renderItem={_renderCardPendapatan}
                         snapToInterval={200}
                         keyExtractor={({ id }) => id}
-                        ListEmptyComponent={<MyText light bold black>Oops, Transaksi kosong nih...!</MyText>}
+                        ListEmptyComponent={<MyText light bold black style={{ marginHorizontal: '5%' }}>Oops, Pendapatan kosong nih...!</MyText>}
                         showsHorizontalScrollIndicator={false}
                         showsVerticalScrollIndicator={false}
                         nestedScrollEnabled={true}
@@ -72,7 +74,7 @@ export default memo(() => {
                         renderItem={_renderCardTraffic}
                         snapToInterval={200}
                         keyExtractor={({ id }) => id}
-                        ListEmptyComponent={<MyText light bold black>Oops, Traffic kosong nih...!</MyText>}
+                        ListEmptyComponent={<MyText light bold black style={{ marginHorizontal: '5%' }}>Oops, Traffic kosong nih...!</MyText>}
                         showsHorizontalScrollIndicator={false}
                         showsVerticalScrollIndicator={false}
                         nestedScrollEnabled={true}

@@ -46,17 +46,14 @@ export default memo(({ navigation, route: { params } }) => {
 
     const _onDetailBucketPress = () => refModalDetailProduct?.current?.toggle('DETAIL', [memoizedCartCategoryList, memoizedTotalPrice]);
 
-    const _onAddNotes = product => refModalProductList?.current?.toggle(product)
-
     const _onPressFilter = () => refModalFilterProduct?.current?.toggle()
-
 
     const _renderCardProduct = useCallback(({ item }) =>
         <CardProduct
             item={item}
             onAdd={() => _onChangeBucket('CHANGE', item)}
             onRemove={() => _onChangeBucket('CHANGE', item)}
-            addNotes={() => _onAddNotes(item)} />
+            addNotes={() => refModalProductList?.current?.toggle(item)} />
         , [])
 
     useEffect(() => {
@@ -82,8 +79,7 @@ export default memo(({ navigation, route: { params } }) => {
                         alignItems: 'center',
                     }}>
                     <Icon name={'filter-outline'} size={26} black />
-                </TouchableOpacity>}
-            />
+                </TouchableOpacity>} />
             <View style={styles.container}>
                 <View style={{ backgroundColor: colors.white, flex: 1 }}>
                     <FlatList
@@ -98,7 +94,7 @@ export default memo(({ navigation, route: { params } }) => {
                         keyExtractor={({ id }) => id}
                         showsVerticalScrollIndicator={false}
                         nestedScrollEnabled={true}
-                        ListEmptyComponent={<MyText large bold black>Oops, Kategori Masih kosong nih...!</MyText>}
+                        ListEmptyComponent={<MyText style={{ marginHorizontal: '5%' }} large bold black>Oops, Produk Masih kosong nih...!</MyText>}
                         ListFooterComponent={<Animated.View style={footerHeightStyle} />}
                     />
                 </View>

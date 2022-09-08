@@ -15,7 +15,7 @@ export default memo(({ navigation: { goBack }, route: { params } }) => {
     const { _getDetailMerchantOrder, orderDetail, _onConfirm, _acceptAction, _rejectAction, _onOrderChangeName } = UseMerchant(params);
     const backAction = () => {
         if (orderDetail?.status == 'process') {
-            refDetailOrderModal?.current?.toggle('reject')
+            refDetailOrderModal?.current?.reject()
             return true;
         } else {
             goBack()

@@ -40,7 +40,7 @@ export default (params = null) => {
             setMerchantError('')
             const data = await getProductList();
             setCategoryList(
-                data.map(item => ({ ...item, ...{ notes: null, qty: 0 } }))
+                data.map(item => ({ ...item, ...{ notes: {}, qty: 0 } }))
                     .sort((prev, next) => prev.id < next.id)
                     .filter(({ categoryId }) => categoryId == selectedCategoryId)
             )
@@ -61,8 +61,13 @@ export default (params = null) => {
 
     const memoizedTotalPrice = useMemo(() => {
         return categoryList.filter(({ qty }) => qty > 0)
-            .map(({ qty, price }) => ({ totalPrice: parseInt(qty) * parseFloat(price) }))
-            .reduce((acc, { totalPrice }) => acc + totalPrice, 0)
+            .map(({ qty, price, notes }) => ({
+                totalPrice: (parseInt(qty) * parseFloat(price)) + Object.keys(notes || {})
+                    .filter(key => key.includes('Price'))
+                    .map((key) => notes[key])
+                    .reduce((acc, val) => parseInt(acc) + parseInt(val), 0)
+            }))
+            .reduce((acc, { totalPrice }) => parseInt(acc) + parseInt(totalPrice), 0)
     }, [categoryList])
 
     const memoizedCartCategoryList = useMemo(() => {
@@ -79,6 +84,17 @@ export default (params = null) => {
                 totalOptions: 0,
                 totalPrice: parseInt(category?.qty) * parseFloat(category?.price),
             }))
+    }, [categoryList])
+
+    const memoizedTotalAddons = useMemo(() => {
+        log('memoizedTotalAddons')
+        let total = categoryList.filter(({ qty, addons }) => (qty > 0 && addons.length > 0))
+            .map(({ addons, notes }) => ({ key: addons.map(({ name }) => `${name}Price` in notes) }))
+        // .reduce((acc, val) => {
+        //     log(acc, val)
+        // }, 0)
+        // log(total)
+        return 0;
     }, [categoryList])
 
     const _clickMerchantOrder = async () => {
@@ -100,6 +116,8 @@ export default (params = null) => {
                 tableId: params?.tableId,
                 tableNumber: params?.tableId,
                 total: memoizedTotalPrice,
+                totalAddons: 100,
+                totalOptions: 100,
                 type: "dinein",
             });
             navigate('DetailOrder', { order: { id: merchantOrder[0]?.id, status: 'new' }, title: "Konfirmasi Pembayaran" })
@@ -139,6 +157,7 @@ export default (params = null) => {
 
     const _onBucketChanged = useCallback((updatedValue) => {
         let index = categoryList.findIndex(({ id }) => id === updatedValue.id);
+
         if (index < 0) return false;
         delete updatedValue.id;
         let tmpCategoryList = [...categoryList]
@@ -146,7 +165,7 @@ export default (params = null) => {
         Object.keys(updatedValue).map(key => {
             tmpCategoryList[index][key] = updatedValue[key]
         })
-        log('_onBucketChanged', tmpCategoryList[index].notes)
+        // log('_onBucketChanged', tmpCategoryList[index].notes)
         setCategoryList(tmpCategoryList)
     }, [categoryList])
 

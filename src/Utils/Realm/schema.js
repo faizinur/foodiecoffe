@@ -112,7 +112,7 @@ const orderProductItemsSchema = {
             objectType: PRODUCT_OPTION
         },
         merchantId: "string?",
-        notes: "string?",
+        notes: "{}",
         qty: "int?",
         discount: "int?",
         information: "string?",

@@ -1,26 +1,28 @@
 import { log } from '@Utils'
-const INPUT_LIST = (addons) => [...addons.map(({ list, name }) => ({
-    name: name,
-    value: '',
-    type: 'listRadio',
-    inputProps: {
-        label: `Pilh ${name}`,
-        placeholder: '* Pilih salah satu',
-    },
-    config: {
-        data: list.map(({ name, price }) => ({ code: name, description: price, prefix: 'Rp.', suffix: ',-' }))
-    },
-})),
-{
-    name: 'Catatan',
-    value: '',
-    type: 'textArea',
-    inputProps: {
-        label: 'Catatan',
-        placeholder: 'Tulis catatan',
-        maxLength: 100,
-    },
-}]
+const INPUT_LIST = (addons) => [
+    ...addons.map(({ list, name }) => ({
+        name: name,
+        value: '',
+        type: 'listRadio',
+        inputProps: {
+            label: `Pilh ${name}`,
+            placeholder: '* Pilih salah satu',
+        },
+        config: {
+            data: list.map(({ name, price }) => ({ code: name, description: price, prefix: 'Rp.', suffix: ',-' }))
+        },
+    })),
+    {
+        name: 'Catatan',
+        value: '',
+        type: 'textArea',
+        inputProps: {
+            label: 'Catatan',
+            placeholder: 'Tulis catatan',
+            maxLength: 100,
+        },
+    }
+]
 // [
 //     {
 //         name: 'Ukuran',

@@ -9,11 +9,21 @@ export default () => {
     const { authUser, refreshToken, getUserData, setUserData, logOut, updateUserData } = Auth;
     const [authError, setAuthError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [profile, setProfile] = useState({})
     const dispatch = useDispatch();
 
     const _saveProfile = () => {
         log('_saveProfile')
     }
+
+    const _loadProfile = useCallback(async () => {
+        try {
+            let profile = await getUserData();
+            setProfile(profile)
+        } catch (e) {
+            log(`_loadProfile : Error : ${e}`)
+        }
+    }, [profile]);
 
     const _submitLogin = useCallback(async userData => {
         try {
@@ -117,6 +127,8 @@ export default () => {
         _refreshToken,
         _logOut,
         _saveProfile,
+        _loadProfile,
+        profile,
     }
 }
 
