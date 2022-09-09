@@ -1,5 +1,5 @@
 import { View, Image } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { MyText } from '@Atoms'
 import { useTheme, List } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -7,10 +7,12 @@ import styles from './styles'
 
 export default (props) => {
     const { colors } = useTheme()
+    const [expanded, setExpanded] = useState(true);
     return (
         <View style={{ marginVertical: 16 }}>
             <List.Accordion
-                expanded={true}
+                expanded={expanded}
+                onPress={() => setExpanded(prevState => !prevState)}
                 title={`Pesanan ${props?.orders?.length > 0 ? `(${props?.orders?.length})` : ''}`}
                 style={{ backgroundColor: colors.white, padding: 0, marginHorizontal: -8, }}
                 titleStyle={{ color: colors.black, fontSize: 15, fontWeight: 'bold', fontFamily: 'ReadexProMedium' }}>
