@@ -28,6 +28,8 @@ export default memo(({ navigation, route: { params } }) => {
         _clickMerchantOrder,
         _onRefreshCategory,
         _filterProduct,
+        memoizedTotalNotes,
+        _countSubTotalPrice,
     } = UseMerchant(params)
     const { colors } = useTheme();
     const refModalProductList = useRef(<ModalProductList />)
@@ -81,6 +83,7 @@ export default memo(({ navigation, route: { params } }) => {
                     <Icon name={'filter-outline'} size={26} black />
                 </TouchableOpacity>} />
             <View style={styles.container}>
+                <MyText>memoizedTotalNotes : {JSON.stringify(memoizedTotalNotes)}</MyText>
                 <View style={{ backgroundColor: colors.white, flex: 1 }}>
                     <FlatList
                         refreshControl={
@@ -114,7 +117,7 @@ export default memo(({ navigation, route: { params } }) => {
                             labelStyle={{ fontSize: 16 }} />
                     </View>
                 </Animated.View>
-                <ModalProductList ref={refModalProductList} navigation={navigation} onChangeBucket={_onBucketChanged} />
+                <ModalProductList ref={refModalProductList} countSubTotalPrice={_countSubTotalPrice} onChangeBucket={_onBucketChanged} />
                 <ModalFilterProduct ref={refModalFilterProduct} onApplyFilter={_filterProduct} />
                 <ModalDetailProduct ref={refModalDetailProduct} onChangeBucket={_onBucketChanged} />
             </View>

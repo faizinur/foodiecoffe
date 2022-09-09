@@ -6,7 +6,6 @@ import { MyText, MyModal, PageWrapper } from '@Atoms';
 import { Forms } from '@Organisms';
 import { INPUT_LIST, FORM_NAME } from './input';
 import styles, { height } from './styles';
-
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default memo(forwardRef((props, ref) => {
@@ -28,21 +27,26 @@ export default memo(forwardRef((props, ref) => {
     }, [modalVisible]);
 
     const _submit = useCallback(notes => {
-        setProduct(prevState => ({
-            ...prevState,
-            notes: {
-                ...Object.keys(notes).map(key => {
-                    if (notes[key] == undefined) {
-                        delete notes[key]
-                    }
-                })
+        let tmpProduct = { ...product }
+        Object.keys(notes).map(key => {
+            if (notes[key] === undefined) delete notes[key]
+        })
+
+        tmpProduct = {
+            ...tmpProduct,
+            notes,
+            subTotal: {
+                Addons: props?.countSubTotalPrice(tmpProduct?.addons, notes),
+                Options: props?.countSubTotalPrice(tmpProduct?.options, notes),
             }
-        }))
-        props.onChangeBucket({ id: product.id, notes: { ...notes } })
+        }
+
+        setProduct(tmpProduct)
+        props.onChangeBucket({ id: tmpProduct.id, notes: tmpProduct.notes, subTotal: tmpProduct.subTotal })
         setModalVisible(prevState => !prevState);
+        tmpProduct = {};
     }, [product, modalVisible])
 
-    useEffect(() => { return () => { } }, [product])
     return (
         <Modal
             animationType={"slide"}

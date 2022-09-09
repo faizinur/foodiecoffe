@@ -40,7 +40,16 @@ export default (params = null) => {
             setMerchantError('')
             const data = await getProductList();
             setCategoryList(
-                data.map(item => ({ ...item, ...{ notes: {}, qty: 0 } }))
+                data.map(item => ({
+                    ...item, ...{
+                        notes: {},
+                        qty: 0,
+                        subTotal: {
+                            Addons: [],
+                            Options: [],
+                        }
+                    }
+                }))
                     .sort((prev, next) => prev.id < next.id)
                     .filter(({ categoryId }) => categoryId == selectedCategoryId)
             )
@@ -86,24 +95,25 @@ export default (params = null) => {
             }))
     }, [categoryList])
 
+    const _countSubTotalPrice = (lists, param) => {
+        Object.keys(param).map(key => {
+            if (param[key] === undefined) delete param[key]
+        })
+        return lists.filter(({ name }) => Object.keys(param).includes(name))
+            .map(({ list }) => {
+                return list.filter(({ name }) => Object.values(param).includes(name)).map(({ price }) => price)
+            }).flatMap(num => num)
+    }
+
     const memoizedTotalNotes = useMemo(() => {
-        let totalAddons = [...categoryList].filter(({ qty, addons }) => (qty > 0 && addons.length > 0))
-            .map(({ addons, notes }) => {
-                return addons.filter(({ name }) => Object.keys(notes).includes(name))
-                    .map(({ list }) => {
-                        return list.filter(({ name }) => Object.values(notes).includes(name)).map(({ price }) => price)
-                    }).flat()
-            }).flat()
-            .reduce((acc, val) => parseInt(acc) + parseInt(val), 0);
-        let totalOptions = [...categoryList].filter(({ qty, options }) => (qty > 0 && options.length > 0))
-            .map(({ options, notes }) => {
-                return options.filter(({ name }) => Object.keys(notes).includes(name))
-                    .map(({ list }) => {
-                        return list.filter(({ name }) => Object.values(notes).includes(name)).map(({ price }) => price)
-                    }).flat()
-            }).flat()
-            .reduce((acc, val) => parseInt(acc) + parseInt(val), 0);
-        return { addons: totalAddons, options: totalOptions }
+        let totalAddons = [...categoryList].filter(({ qty }) => (qty > 0)).map(({ subTotal: { Addons, Options } }) => {
+            return {
+                Addons: Addons.reduce((acc, val) => parseInt(acc) + parseInt(val), 0),
+                Options: Options.reduce((acc, val) => parseInt(acc) + parseInt(val), 0)
+            }
+        })
+        log(totalAddons)
+        return { addons: 0, options: 0 }
     }, [categoryList]);
 
 
@@ -172,7 +182,7 @@ export default (params = null) => {
         if (index < 0) return false;
         delete updatedValue.id;
         let tmpCategoryList = [...categoryList];
-        // log('_onBucketChanged', updatedValue?.notes)
+        // log('_onBucketChanged', JSON.stringify(updatedValue))
         Object.keys(updatedValue).map(key => { tmpCategoryList[index][key] = updatedValue[key] });
         if (parseInt(updatedValue?.qty) == 0) {
             tmpCategoryList[index].notes = {}
@@ -271,6 +281,8 @@ export default (params = null) => {
         _onOrderChangeName,
         _acceptAction,
         _rejectAction,
+        memoizedTotalNotes,
+        _countSubTotalPrice,
     }
 }
 
