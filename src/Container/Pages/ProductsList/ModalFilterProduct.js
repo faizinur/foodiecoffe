@@ -33,7 +33,7 @@ export default memo(forwardRef((props, ref) => {
             onRequestClose={_onCloseModal}
             statusBarTranslucent={true}
             contentContainerStyle={styles.filterContainerStyle}>
-            <View style={{ width: '100%', position: 'absolute', bottom: 0, left: 0, backgroundColor: colors.white, paddingHorizontal: '5%', paddingTop: '5%', borderTopLeftRadius: 15, borderTopRightRadius: 15, }}>
+            <View style={{ width: '100%', position: 'absolute', bottom: -height, left: 0, backgroundColor: colors.white, paddingHorizontal: '5%', paddingTop: '5%', borderTopLeftRadius: 15, borderTopRightRadius: 15, }}>
                 <ScrollView
                     style={{ maxHeight: height * .755, minHeight: 180 }}
                     showsVerticalScrollIndicator={false}>

@@ -18,7 +18,7 @@ export default () => {
             if (status != 'SUCCESS') throw message;
             let tmpTransaction = data.map(transaction => {
                 transaction.summaryItem.map(summaryItem => summaryItem.options = summaryItem.options == null ? [] : summaryItem.options)
-                transaction = { ...transaction, items: transaction.summaryItem, tableNumber: '??xx??' }
+                transaction = { ...transaction, items: transaction.summaryItem, tableNumber: '??xx??', totalAddons: 0, totalOptions: 0, }
                 delete transaction['summaryItem']
                 return transaction;
             });
@@ -36,7 +36,7 @@ export default () => {
         if (status == 'SUCCESS') return false;
         let tmpTransaction = data.map(transaction => {
             transaction.summaryItem.map(summaryItem => summaryItem.options = summaryItem.options == null ? [] : summaryItem.options)
-            transaction = { ...transaction, items: transaction.summaryItem, tableNumber: '??xx??' }
+            transaction = { ...transaction, items: transaction.summaryItem, tableNumber: '??xx??', totalAddons: 0, totalOptions: 0, }
             delete transaction['summaryItem']
             return transaction;
         });

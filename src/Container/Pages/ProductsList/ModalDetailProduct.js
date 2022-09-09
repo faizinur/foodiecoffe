@@ -40,7 +40,6 @@ export default forwardRef((props, ref) => {
     }));
 
     const _changeqty = useCallback((type) => {
-        log('_changeqty : ', type)
         setProduct(prevState => ({
             ...prevState,
             qty: type == 'plus' ? prevState.qty + 1 : (prevState.qty > 0 ? prevState.qty - 1 : 0)
@@ -97,8 +96,7 @@ export default forwardRef((props, ref) => {
                         <>
                             <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
                                 <MyText left medium black style={{ marginVertical: 6 }}>List Belanja</MyText>
-                                {cart[0].map(({ qty, totalPrice, name, notes }, index) => <View key={`cart-${index}`} style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6 }}>
-                                    {/* {log(JSON.stringify(notes))} */}
+                                {cart?.items.map(({ qty, totalPrice, name, }, index) => <View key={`cart-${index}`} style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6 }}>
                                     <MyText left black >{name} {qty > 0 && `x(${qty})`}</MyText>
                                     <MyText left black >{new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(totalPrice)}</MyText>
                                 </View>
@@ -111,7 +109,7 @@ export default forwardRef((props, ref) => {
                             <View style={{ height: 2, backgroundColor: colors.athensGray }} />
                             <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, marginTop: 10 }}>
                                 <MyText left bold black >Total Pembayaran</MyText>
-                                <MyText left bold black >{new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(cart[1])}</MyText>
+                                <MyText left bold black >{new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(cart?.totalPrice)}</MyText>
                             </View>
                         </>
                     }

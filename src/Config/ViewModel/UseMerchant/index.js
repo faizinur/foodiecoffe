@@ -63,36 +63,42 @@ export default (params = null) => {
     }, [categoryList])
 
     const _onRefreshCategory = useCallback(() => {
-        _getCategoryList(params);
         setMerchantLoading(true);
+        _getCategoryList(params);
         setTimeout(() => setMerchantLoading(false), 3000);
     }, [merchantLoading])
 
-    const memoizedTotalPrice = useMemo(() => {
-        return categoryList.filter(({ qty }) => qty > 0)
-            .map(({ qty, price, notes }) => ({
-                totalPrice: (parseInt(qty) * parseFloat(price)) + Object.keys(notes || {})
-                    .filter(key => key.includes('Price'))
-                    .map((key) => notes[key])
-                    .reduce((acc, val) => parseInt(acc) + parseInt(val), 0)
-            }))
-            .reduce((acc, { totalPrice }) => parseInt(acc) + parseInt(totalPrice), 0)
-    }, [categoryList])
-
     const memoizedCartCategoryList = useMemo(() => {
-        return categoryList.filter(({ qty }) => qty > 0)
-            .map((category) => ({
-                ...category,
-                name: category?.name,
-                notes: category?.notes,
-                discount: 0,
-                information: '',
-                menuId: category?.id,
-                menuName: category?.name,
-                totalAddons: 0,
-                totalOptions: 0,
-                totalPrice: parseInt(category?.qty) * parseFloat(category?.price),
-            }))
+        let subTotalAddons = 0;
+        let subTotalOptions = 0;
+        let subTotalPrice = 0;
+        let items = categoryList.filter(({ qty }) => qty > 0)
+            .map((category) => {
+                subTotalAddons = category?.subTotal.Addons.reduce((acc, val) => parseInt(acc) + parseInt(val), 0) * parseInt(category?.qty)
+                subTotalOptions = category?.subTotal.Options.reduce((acc, val) => parseInt(acc) + parseInt(val), 0) * parseInt(category?.qty)
+                subTotalPrice = (parseFloat(category?.price) * parseInt(category?.qty)) + (parseInt(subTotalAddons) + parseInt(subTotalOptions))
+                return {
+                    ...category,
+                    name: category?.name,
+                    notes: category?.notes,
+                    discount: 0,
+                    information: '',
+                    menuId: category?.id,
+                    menuName: category?.name,
+                    totalAddons: subTotalAddons,
+                    totalOptions: subTotalOptions,
+                    totalPrice: subTotalPrice,
+                }
+            })
+        let totalPrice = items.reduce((acc, val) => parseInt(acc) + parseInt(val.totalPrice), 0) || 0;
+        let totalAddons = items.reduce((acc, val) => parseInt(acc) + parseInt(val.totalAddons), 0) || 0;
+        let totalOptions = items.reduce((acc, val) => parseInt(acc) + parseInt(val.totalOptions), 0) || 0;
+        return {
+            items,
+            totalPrice,
+            totalAddons,
+            totalOptions,
+        }
     }, [categoryList])
 
     const _countSubTotalPrice = (lists, param) => {
@@ -105,43 +111,31 @@ export default (params = null) => {
             }).flatMap(num => num)
     }
 
-    const memoizedTotalNotes = useMemo(() => {
-        let totalAddons = [...categoryList].filter(({ qty }) => (qty > 0)).map(({ subTotal: { Addons, Options } }) => {
-            return {
-                Addons: Addons.reduce((acc, val) => parseInt(acc) + parseInt(val), 0),
-                Options: Options.reduce((acc, val) => parseInt(acc) + parseInt(val), 0)
-            }
-        })
-        log(totalAddons)
-        return { addons: 0, options: 0 }
-    }, [categoryList]);
-
-
     const _clickMerchantOrder = async () => {
         try {
-            if (memoizedTotalPrice == 0) return false;
             let merchantOrder = await MyRealm.insertData(ORDER,
                 {
                     id: MyRealm._newBSON(),
                     createdAt: moment().format('YYYY-MM-DD hh:mm:ss'),
                     discount: 0,
                     invoice: "INV/011/2212068155/2",
-                    items: memoizedCartCategoryList,
+                    items: memoizedCartCategoryList?.items,
                     merchantId: params?.categoryId,
                     merchantName: params?.name,
                     name: '',
                     paid: 0,
                     ppn: 0,
                     status: "process",
-                    subTotal: 31000,
+                    subTotal: 0,
                     tableId: params?.tableId,
                     tableNumber: params?.tableId,
-                    total: memoizedTotalPrice,
-                    totalAddons: memoizedTotalNotes?.addons,
-                    totalOptions: memoizedTotalNotes?.options,
+                    total: memoizedCartCategoryList?.totalPrice,
+                    totalAddons: memoizedCartCategoryList?.totalAddons,
+                    totalOptions: memoizedCartCategoryList?.totalOptions,
                     type: "dinein",
-                });
-            navigate('DetailOrder', { order: { id: merchantOrder, status: 'new' }, title: "Konfirmasi Pembayaran" })
+                }
+            );
+            navigate('DetailOrder', { order: { id: merchantOrder[0]?.id, status: 'new' }, title: "Konfirmasi Pembayaran" })
         } catch (e) {
             log(`_clickMerchantOrder : ${e}`)
         }
@@ -193,6 +187,7 @@ export default (params = null) => {
 
     const _getDetailMerchantOrder = useCallback(async () => {
         let selectedData = {};
+        log('_getDetailMerchantOrder : ', params?.order?.status)
         const filteredSelect = products => products.filter(({ id }) => id == params?.order?.id)
         switch (params?.order?.status) {
             case "success":
@@ -270,7 +265,6 @@ export default (params = null) => {
         filteredCategory,
         _clearFilteredCategory,
         _onBucketChanged,
-        memoizedTotalPrice,
         memoizedCartCategoryList,
         _clickMerchantOrder,
         _onRefreshCategory,
@@ -281,8 +275,6 @@ export default (params = null) => {
         _onOrderChangeName,
         _acceptAction,
         _rejectAction,
-        memoizedTotalNotes,
         _countSubTotalPrice,
     }
 }
-

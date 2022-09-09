@@ -21,14 +21,10 @@ export default memo(({ navigation, route: { params } }) => {
     const {
         _getCategoryList,
         categoryList,
-        merchantLoading,
-        memoizedTotalPrice,
         memoizedCartCategoryList,
         _onBucketChanged,
         _clickMerchantOrder,
-        _onRefreshCategory,
         _filterProduct,
-        memoizedTotalNotes,
         _countSubTotalPrice,
     } = UseMerchant(params)
     const { colors } = useTheme();
@@ -37,16 +33,16 @@ export default memo(({ navigation, route: { params } }) => {
     const refModalDetailProduct = useRef(<ModalDetailProduct />)
     const navBarPosY = useSharedValue({ bottom: -80 })
     const navBarPosYStyle = useAnimatedStyle(() => ({
-        bottom: withSpring(memoizedTotalPrice > 0 ? 0 : navBarPosY.value.bottom, CONSTANT.SPRING_CONFIG),
+        bottom: withSpring(memoizedCartCategoryList?.totalPrice > 0 ? 0 : navBarPosY.value.bottom, CONSTANT.SPRING_CONFIG),
     }))
     const footerHeight = useSharedValue({ height: 0 })
     const footerHeightStyle = useAnimatedStyle(() => ({
-        height: withSpring(memoizedTotalPrice > 0 ? 80 : footerHeight.value.height, CONSTANT.SPRING_CONFIG),
+        height: withSpring(memoizedCartCategoryList?.totalPrice > 0 ? 80 : footerHeight.value.height, CONSTANT.SPRING_CONFIG),
     }))
 
     const _onChangeBucket = (type, product) => refModalDetailProduct?.current?.toggle(type, product)
 
-    const _onDetailBucketPress = () => refModalDetailProduct?.current?.toggle('DETAIL', [memoizedCartCategoryList, memoizedTotalPrice]);
+    const _onDetailBucketPress = () => refModalDetailProduct?.current?.toggle('DETAIL', memoizedCartCategoryList);
 
     const _onPressFilter = () => refModalFilterProduct?.current?.toggle()
 
@@ -83,14 +79,8 @@ export default memo(({ navigation, route: { params } }) => {
                     <Icon name={'filter-outline'} size={26} black />
                 </TouchableOpacity>} />
             <View style={styles.container}>
-                <MyText>memoizedTotalNotes : {JSON.stringify(memoizedTotalNotes)}</MyText>
                 <View style={{ backgroundColor: colors.white, flex: 1 }}>
                     <FlatList
-                        refreshControl={
-                            <RefreshControl
-                                refreshing={merchantLoading}
-                                onRefresh={_onRefreshCategory}
-                            />}
                         data={categoryList}
                         renderItem={_renderCardProduct}
                         snapToInterval={150}
@@ -105,7 +95,7 @@ export default memo(({ navigation, route: { params } }) => {
                     <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
                         <View>
                             <MyText left light>1 Pesanan</MyText>
-                            <MyText left medium black style={{ minWidth: 70, maxWidth: 120 }} numberOfLines={1}>{memoizedTotalPrice > 0 && new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(memoizedTotalPrice)}</MyText>
+                            <MyText left medium black style={{ minWidth: 70, maxWidth: 120 }} numberOfLines={1}>{memoizedCartCategoryList?.totalPrice > 0 && new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(memoizedCartCategoryList?.totalPrice)}</MyText>
                         </View>
                         <Icon name={'chevron-up'} size={30} style={{ alignSelf: 'center' }} black onPress={_onDetailBucketPress} />
                     </View>

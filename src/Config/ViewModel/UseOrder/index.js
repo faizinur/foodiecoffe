@@ -21,7 +21,7 @@ export default () => {
             if (status != 'SUCCESS') throw message;
             if (data.length > 0) {
                 setOrderList(data)
-                await MyRealm.insertData(NEW_ORDER, data);
+                await MyRealm.insertData(NEW_ORDER, data.map(order => ({ ...order, total: 0, totalAddons: 0, totalOptions: 0 })));
                 page = 1;
             }
             setRefreshingOrder(false)
@@ -40,7 +40,7 @@ export default () => {
             if (status == 'SUCCESS') {
                 if (data.length > 0) {
                     memoizedOrderList(data)
-                    await MyRealm.insertData(NEW_ORDER, data);
+                    await MyRealm.insertData(NEW_ORDER, data.map(order => ({ ...order, total: 0, totalAddons: 0, totalOptions: 0 })));
                 }
             }
             await new Promise(resolve => {

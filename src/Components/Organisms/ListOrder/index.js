@@ -1,10 +1,8 @@
 import { View, Image } from 'react-native'
 import React from 'react'
-import { BLANK_IMAGE } from '@Atoms/Icons'
 import { MyText } from '@Atoms'
 import { useTheme, List } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { log } from '@Utils'
 import styles from './styles'
 
 export default (props) => {
@@ -12,6 +10,7 @@ export default (props) => {
     return (
         <View style={{ marginVertical: 16 }}>
             <List.Accordion
+                expanded={true}
                 title={`Pesanan ${props?.orders?.length > 0 ? `(${props?.orders?.length})` : ''}`}
                 style={{ backgroundColor: colors.white, padding: 0, marginHorizontal: -8, }}
                 titleStyle={{ color: colors.black, fontSize: 15, fontWeight: 'bold', fontFamily: 'ReadexProMedium' }}>
@@ -26,20 +25,17 @@ export default (props) => {
                                         <Icon name='check' size={17} color={colors.emerald} />
                                     </View>
                                 </View>
-
                                 <MyText numberOfLines={10} left style={styles.notes} black fontSize={10}>
-                                    <MyText bold >Catatan : </MyText>
-                                    {item?.notes?.Catatan || '-'}
+                                    {item?.notes && Object.keys(item?.notes).filter(key => (key != "Catatan")).map(key => item?.notes[key]).join(", ") || '-'}
                                 </MyText>
-                                {/* {Object.keys(item?.notes)
-                                    .filter(key => (key != "Catatan" && !key.includes("Price")))
-                                    .map(key => <MyText numberOfLines={10} left style={styles.notes} black fontSize={10} key={key}>{item?.notes[key]} : {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item?.notes[`${key}Price`])}</MyText>)} */}
-
+                                <MyText numberOfLines={10} left style={styles.notes} black fontSize={10}>
+                                    <MyText bold >Catatan : </MyText>{item?.notes && item?.notes?.Catatan || '-'}
+                                </MyText>
                                 <View style={styles.innerContainer}>
                                     <View style={styles.orderTable}>
                                         <MyText light bold color={colors.cerulean}>x{item?.qty || 1}</MyText>
                                     </View>
-                                    <MyText bold light black><MyText strikeThrough>{item?.discount > 0 ? `Rp${item?.price}` : ''}</MyText>  Rp{parseInt(item?.price) - parseInt(item?.discount)}</MyText>
+                                    <MyText bold light black><MyText strikeThrough>{item?.discount > 0 ? `Rp${item?.price}` : ''}</MyText>  Rp{parseInt(item?.price) * parseInt(item?.qty)}</MyText>
                                 </View>
                             </View>
                         </View>

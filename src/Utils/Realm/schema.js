@@ -87,6 +87,8 @@ const orderProductSchema = {
         tableId: "string?",
         tableNumber: "string?",
         total: "int?",
+        totalAddons: "int?",
+        totalOptions: "int?",
         type: "string?",
     },
     primaryKey: "id",
@@ -146,6 +148,8 @@ const transactionSchema = {
         subTotal: "int?",
         tableNumber: "string?",
         total: "int?",
+        totalAddons: "int?",
+        totalOptions: "int?",
     },
     primaryKey: "id",
 }
@@ -197,6 +201,9 @@ const newOrderSchema = {
             type: 'list',
             objectType: NEW_ORDER_ITEMS
         },
+        total: "int?",
+        totalAddons: "int?",
+        totalOptions: "int?",
     },
     primaryKey: "id",
 }

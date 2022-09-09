@@ -30,8 +30,8 @@ const INPUT_LIST = (addons, options) => [
         type: 'textArea',
         inputProps: {
             label: 'Catatan',
-            placeholder: 'Tulis catatan',
-            maxLength: 100,
+            placeholder: 'kalau kurang detail bisa tulis pesan disini ya.',
+            maxLength: 300,
         },
     }
 ]

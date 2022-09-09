@@ -12,7 +12,14 @@ import { UseMerchant } from '@ViewModel';
 export default memo(({ navigation: { goBack }, route: { params } }) => {
     const { colors } = useTheme();
     const refDetailOrderModal = useRef(<DetailOrderModal />)
-    const { _getDetailMerchantOrder, orderDetail, _onConfirm, _acceptAction, _rejectAction, _onOrderChangeName } = UseMerchant(params);
+    const {
+        _getDetailMerchantOrder,
+        orderDetail,
+        _onConfirm,
+        _acceptAction,
+        _rejectAction,
+        _onOrderChangeName
+    } = UseMerchant(params);
     const backAction = () => {
         if (orderDetail?.status == 'process') {
             refDetailOrderModal?.current?.reject()
@@ -47,7 +54,7 @@ export default memo(({ navigation: { goBack }, route: { params } }) => {
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', height: 30 }}>
                         <MyText center left light black>Total Harga</MyText>
                         <MyText center right bold black>
-                            Rp.{orderDetail?.subTotal}</MyText>
+                            Rp.{orderDetail?.total}</MyText>
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', height: 30 }}>
                         <MyText center left light black>PPN</MyText>
@@ -60,7 +67,7 @@ export default memo(({ navigation: { goBack }, route: { params } }) => {
                     <View style={{ width: '100%', borderTopColor: colors.athensGray, borderTopWidth: 1, borderStyle: 'dashed', marginVertical: 6 }} />
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', height: 30 }}>
                         <MyText center left light bold black>Total Pembayaran</MyText>
-                        <MyText center right bold black>Rp.{orderDetail?.subTotal}</MyText>
+                        <MyText center right bold black>Rp.{orderDetail?.total}</MyText>
                     </View>
                 </View>
             </ScrollView>

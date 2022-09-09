@@ -3,6 +3,7 @@ import React from 'react'
 import { MyText, MyImage } from '@Atoms'
 import { useTheme, Chip } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { log } from '@Utils';
 
 export default (props) => {
     const { colors } = useTheme()
@@ -23,7 +24,7 @@ export default (props) => {
                                 <Icon name={'plus'} size={20} color={colors.wildWaterMelon} />
                             </TouchableOpacity>
                         </View>
-                        {props?.item?.qty > 0 && <Chip selectedColor={colors.jumbo} onPress={props?.addNotes} icon={'pencil'} textStyle={{ fontSize: 12, width: '100%' }} style={{ height: 33, width: 100, borderWidth: 1, backgroundColor: colors.white, borderColor: colors.athensGray }}>Catatan</Chip>}
+                        {((props?.item?.addons.length || 0) > 0 || (props?.item?.options.length || 0) > 0) && props?.item?.qty > 0 && <Chip selectedColor={Object.keys(props?.item?.notes).length > 0 ? colors.cerulean : colors.jumbo} onPress={props?.addNotes} icon={'pencil'} textStyle={{ fontSize: 12, width: '100%' }} style={{ height: 33, width: 100, borderWidth: .5, backgroundColor: colors.white, borderColor: Object.keys(props?.item?.notes).length > 0 ? colors.cerulean : colors.athensGray }}>Catatan</Chip>}
                     </View>
                 </View>
             </View>
