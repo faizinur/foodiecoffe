@@ -36,7 +36,6 @@ export default memo(() => {
         <View style={styles.pages}>
             <TitleBar title={'profil'} />
             <View style={styles.akunContainer}>
-                <MyText>profile : {JSON.stringify(profile)}</MyText>
                 <CardProfile onEditProfilePress={_onEditProfilePress} userData={userData} />
 
                 <View style={styles.cardTansaksiWrapper}>
