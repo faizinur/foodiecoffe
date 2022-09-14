@@ -4,6 +4,7 @@ import { log, MyRealm } from '@Utils';
 import { TRANSACTION } from '@Utils/Realm/types';
 import { useState, useMemo, useCallback } from 'react';
 export default () => {
+    let page = 1;
     const [errorTransaksi, setErrorTransaksi] = useState('');
     const [transactionLoading, setTransactionLoading] = useState(false);
     const [transactionList, setTransactionList] = useState([]);
@@ -14,17 +15,12 @@ export default () => {
             setTransactionLoading(true);
             setErrorTransaksi('')
             setActiveTransationList(transactionType)
-            const { status, data, message } = await getDaftarTransaksi();
+            const { status, data, message } = await getDaftarTransaksi(page);
             if (status != 'SUCCESS') throw message;
-            let tmpTransaction = data.map(transaction => {
-                transaction.summaryItem.map(summaryItem => summaryItem.options = summaryItem.options == null ? [] : summaryItem.options)
-                transaction = { ...transaction, items: transaction.summaryItem, tableNumber: '??xx??', totalAddons: 0, totalOptions: 0, }
-                delete transaction['summaryItem']
-                return transaction;
-            });
-            setTransactionList(tmpTransaction);
-            await MyRealm.insertData(TRANSACTION, tmpTransaction)
+            memoizedtransactionList(data)
+            await MyRealm.insertData(TRANSACTION, transactionList)
             setTransactionLoading(false);
+            page = 1;
         } catch (e) {
             setErrorTransaksi(e);
             global.showToast(e);
@@ -33,15 +29,9 @@ export default () => {
 
     const _pollingTransaksiList = useCallback(async () => {
         const { status, data } = await getDaftarTransaksi();
-        if (status == 'SUCCESS') return false;
-        let tmpTransaction = data.map(transaction => {
-            transaction.summaryItem.map(summaryItem => summaryItem.options = summaryItem.options == null ? [] : summaryItem.options)
-            transaction = { ...transaction, items: transaction.summaryItem, tableNumber: '??xx??', totalAddons: 0, totalOptions: 0, }
-            delete transaction['summaryItem']
-            return transaction;
-        });
-        setTransactionList(tmpTransaction);
-        await MyRealm.insertData(TRANSACTION, tmpTransaction)
+        if (status != 'SUCCESS' || data.length == 0) return false;
+        memoizedtransactionList(data)
+        await MyRealm.insertData(TRANSACTION, transactionList)
     }, [transactionList])
 
     const _filterTransaksi = async (date) => {
@@ -52,6 +42,36 @@ export default () => {
         setActiveTransationList(state)
     }, [activeTransationList])
 
+    const _onReachEnd = useCallback(async () => {
+        try {
+            const { status, data } = await getDaftarTransaksi(page);
+            if (status != 'SUCCESS' || data.length == 0) return false;
+            memoizedtransactionList(data);
+            await MyRealm.insertData(TRANSACTION, transactionList);
+            page = page + 1
+        } catch (err) {
+            global.showToast(err);
+            page = page - 1;
+        }
+    }, [activeTransationList, transactionList])
+
+
+    const memoizedtransactionList = useCallback(data => {
+        let tmpTransaction = data.map(transaction => {
+            transaction.summaryItem.map(summaryItem => summaryItem.options = summaryItem.options == null ? [] : summaryItem.options)
+            transaction = { ...transaction, items: transaction.summaryItem, tableNumber: '??xx??', totalAddons: 0, totalOptions: 0, }
+            delete transaction['summaryItem']
+            return transaction;
+        });
+        setTransactionList(prevState => {
+            tmpTransaction.map(transaction => {
+                if (prevState.filter(({ id }) => id == transaction?.id) == 0) {
+                    prevState = [...prevState, transaction]
+                }
+            })
+            return prevState;
+        })
+    }, [transactionList])
 
     const memoizedTransactionList = useMemo(() =>
         transactionList.filter(({ status }) => status == activeTransationList),
@@ -81,5 +101,6 @@ export default () => {
         _filterTransaksi,
         _onChangeTransactionList,
         _onRefreshTransaction,
+        _onReachEnd,
     }
 }

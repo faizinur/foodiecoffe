@@ -42,7 +42,7 @@ export default forwardRef(({ submitProfile, userData }, ref) => {
                         onPress={_onPressAvatar}
                         activeOpacity={.8}
                         style={styles.avatarProfile}>
-                        <MyImage source={{ uri: `${CONSTANT.BASE_URL}${userData.image.name}` }} width={80} height={80} radius={[40, 40, 40, 40]} />
+                        <MyImage source={{ uri: userData?.image?.url || null }} width={80} height={80} radius={[40, 40, 40, 40]} />
                         <View style={styles.avatarIcon}>
                             <Icon name={'camera'} size={18} color={colors.white} />
                         </View>
@@ -52,6 +52,7 @@ export default forwardRef(({ submitProfile, userData }, ref) => {
                 <Forms
                     formname={FORM_NAME}
                     defaultValue={{
+                        username: userData?.username,
                         email: userData?.email,
                         password: userData?.passowrd,
                     }}

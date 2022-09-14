@@ -1,8 +1,8 @@
 import { log, POST } from '@Utils';
 
-const getDaftarTransaksi = async () => {
+const getDaftarTransaksi = async (page = null) => {
     try {
-        let transaksiData = await POST('transaction/all?page=1&limit=5');
+        let transaksiData = await POST(`transaction/all${page != null ? `?page=${page}&limit=5` : ``}`);
         return {
             status: 'SUCCESS',
             message: 'SUCCESS',

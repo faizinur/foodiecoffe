@@ -23,10 +23,10 @@ export default memo(() => {
     }, [])
     const _renderCardPendapatan = ({ item, index }) => <CardPendapatan {...item} index={index} />
     const _renderCardTraffic = ({ item, index }) => <CardTraffic {...item} index={index} />
-    const userData = useSelector(state => state.userReducers.user);
+    const userData = useSelector(({ userReducers: { user } }) => user);
 
     useEffect(() => {
-        log('Mount Akun');
+        log('Mount Akun', userData);
         _loadProfile();
         return () => {
             log('Unmount Akun')

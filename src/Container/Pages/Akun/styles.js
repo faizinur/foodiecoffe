@@ -46,6 +46,9 @@ export default StyleSheet.create({
         height: 100,
         justifyContent: 'center',
         alignItems: 'center',
+        borderWidth: .2,
+        borderColor: colors.cerulean,
+        borderRadius: 50,
     },
     avatarImg: {
         borderRadius: 40,

@@ -3,8 +3,8 @@ import { useState, useMemo, useCallback } from 'react';
 import { log, CONSTANT, MyRealm } from '@Utils';
 import { NEW_ORDER } from '@Utils/Realm/types';
 let SUBSCRIBE_ORDER_TIMEOUT = null;
-let page = 1;
 export default () => {
+    let page = 1;
     const { getOrders } = Order;
     const { getUserData } = Auth;
     const [orderList, setOrderList] = useState([])

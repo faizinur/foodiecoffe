@@ -20,6 +20,7 @@ export default memo(({ navigation: { navigate } }) => {
         _onChangeTransactionList,
         _pollingTransaksiList,
         _onRefreshTransaction,
+        _onReachEnd,
     } = UseTransaksi();
 
     const [startSubscribePollingTransaksiList, stopSubscribePollingTransaksiList] = UsePolling(_pollingTransaksiList)
@@ -80,6 +81,7 @@ export default memo(({ navigation: { navigate } }) => {
                     keyExtractor={({ id }) => id}
                     showsVerticalScrollIndicator={false}
                     ListEmptyComponent={() => <MyText light bold black>{JSON.stringify(errorTransaksi) !== '""' ? errorTransaksi : (memoizedTransactionList.length == 0 ? `Ups... sepertinya transaksi ini masih kosong` : 'Harap Tunggu...')}</MyText>}
+                    onEndReached={_onReachEnd}
                 />
             </View>
         </View>
