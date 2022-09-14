@@ -65,7 +65,7 @@ export default memo(({ onChooseMeja = null }) => {
 
     const _onPressQR = async props => {
         const { user: { merchantId } } = await _getUserData()
-        const qrURI = `${BASE_URL}${merchantId || 'B1778H'}/qr/${props.qr.name}`;
+        const qrURI = `${BASE_URL}${merchantId}/qr/${props.qr.name}`;
         refMejaModals.current?.toggle({ ...props, qr: { uri: qrURI } })
     }
 

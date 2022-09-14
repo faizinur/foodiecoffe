@@ -21,7 +21,7 @@ export default memo(forwardRef((props, ref) => {
     const _onSelectCategory = useCallback(category => {
         SELECTED_CATEGORY = category;
         setModalVisible(prevState => !prevState);
-        props.onSelectedMejaCategory({ categoryId: SELECTED_CATEGORY.id, tableId: SELECTED_TABLE.id, name: SELECTED_CATEGORY.name });
+        props.onSelectedMejaCategory({ merchantId: SELECTED_CATEGORY.merchantId, categoryId: SELECTED_CATEGORY.id, tableId: SELECTED_TABLE.id, name: SELECTED_CATEGORY.name });
     }, [modalVisible])
     useImperativeHandle(ref, () => ({
         toggle,

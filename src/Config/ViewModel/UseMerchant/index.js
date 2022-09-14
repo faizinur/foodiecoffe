@@ -1,4 +1,4 @@
-import { Merchant, Auth, Product } from '@Model';
+import { Merchant, Auth, Product, Order as ModelOrder } from '@Model';
 import { useState, useCallback, useMemo } from 'react';
 import { log, MyRealm } from '@Utils';
 import { ORDER, TRANSACTION, NEW_ORDER } from '@Utils/Realm/types';
@@ -8,6 +8,7 @@ export default (params = null) => {
     const { getMerchantCategory } = Merchant;
     const { getProductList } = Product;
     const { getUserData } = Auth;
+    const { makeOrder } = ModelOrder;
     const [merchantList, setMerchantList] = useState([])
     const [merchantError, setMerchantError] = useState('');
     const [merchantLoading, setMerchantLoading] = useState(false);
@@ -120,7 +121,7 @@ export default (params = null) => {
                     discount: 0,
                     invoice: "INV/011/2212068155/2",
                     items: memoizedCartCategoryList?.items,
-                    merchantId: params?.categoryId,
+                    merchantId: params?.merchantId,
                     merchantName: params?.name,
                     name: '',
                     paid: 0,
@@ -232,14 +233,16 @@ export default (params = null) => {
         }
     }, [orderDetail])
 
-    const _acceptAction = async () => {
+    const _acceptAction = useCallback(async () => {
         try {
-            log('sedang melakukan sesuatu selama 10 detik')
-            await new Promise(resolve => setTimeout(resolve, 10000));
+            await makeOrder(orderDetail?.items[0]?.merchantId, orderDetail?.tableId)
+            // log('sedang melakukan sesuatu selama 10 detik')
+            // await new Promise(resolve => setTimeout(resolve, 10000));
+
         } catch (e) {
             log('_acceptAction', e)
         }
-    }
+    }, [orderDetail])
 
     const _rejectAction = async () => {
         try {

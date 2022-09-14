@@ -23,6 +23,25 @@ const getOrders = async (merchantId, page = null) => {
     }
 };
 
+const makeOrder = async (merchantId = null, tableId = null) => {
+    try {
+        if (merchantId == null || tableId == null) throw `params null`;
+        await POST(`${merchantId}/${tableId}/order/create`);
+        return {
+            status: 'SUCCESS',
+            message: 'API SUCCESS!',
+            data: null,
+        }
+    } catch (e) {
+        return {
+            status: "FAILED",
+            message: `MODEL ORDER ${JSON.stringify(e)}`,
+            data: null,
+        }
+    }
+}
+
 export {
     getOrders,
+    makeOrder,
 }

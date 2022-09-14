@@ -79,7 +79,8 @@ export default memo(({ navigation: { goBack }, route: { params } }) => {
                         style={{ flexGrow: 1, marginRight: 3 }}
                         label={orderDetail?.status == 'process' ? 'batal' : 'Tolak'} />
                     <InputItems.MyButton
-                        onPress={refDetailOrderModal?.current?.accept}
+                        // onPress={refDetailOrderModal?.current?.accept}
+                        onPress={_acceptAction}
                         style={{ flexGrow: 1, marginLeft: 3 }}
                         label={orderDetail?.status == 'process' ? 'pesan' : 'Terima'} />
                 </View>
