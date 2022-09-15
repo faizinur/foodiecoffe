@@ -34,9 +34,12 @@ export default () => {
         await MyRealm.insertData(TRANSACTION, transactionList)
     }, [transactionList])
 
-    const _filterTransaksi = async (date) => {
-        log('_filterTransaksi : ', date)
-    }
+    const _filterTransaksi = useCallback(async date => {
+        if(date == null) return false;
+        let currentDate = moment(date);
+        let filteredTransaction = transactionList.filter(({createdAt}) => moment(createdAt) ==currentDate)
+        log('filteredTransaction : ',filteredTransaction.length)
+    },[transactionList])
 
     const _onChangeTransactionList = useCallback(state => {
         setActiveTransationList(state)
